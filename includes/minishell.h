@@ -1,5 +1,5 @@
 #ifndef MINISHELL_H
-# define MNISHELL_H
+# define MINISHELL_H
 
 # include <stdio.h>
 # include <unistd.h>
