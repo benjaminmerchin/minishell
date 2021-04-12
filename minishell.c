@@ -41,3 +41,11 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	str[len] = '\0';
 	return (str);
 }
+
+
+
+void	ft_bs(int a)
+{
+	(void)a;
+}
+
