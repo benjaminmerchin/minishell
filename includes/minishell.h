@@ -7,10 +7,6 @@
 # include <signal.h>
 # include <sys/wait.h>
 
-#ifndef SEP
-# define SEP " '\";><"
-# endif
-
 typedef struct	s_raw {
 	int			type;
 	char		*str;

@@ -92,6 +92,10 @@ void	ft_split_sh(t_a *a)
 		}
 		else
 			i++;
+		if (a->line[i - 1] == '\'' || a->line[i - 1] == '\"')
+			a->sep = "\'\"";
+		else
+			a->sep = " '\"|><;";
 	}
 	a->raw[k].str = 0;
 	return ;

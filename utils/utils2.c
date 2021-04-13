@@ -13,6 +13,7 @@ void	ft_cleanstruct(t_a *a)
 	while (a->raw[++i].str)
 		free(a->raw[i].str);
 	free (a->raw);
+	a->sep = " '\"|;><";
 }
 
 void	ft_putnbr_fd(int n, int fd)
