@@ -1,10 +1,5 @@
 #include "./includes/minishell.h"
 
-void	parsing(t_a *a)
-{
-	(void)a;
-}
-
 int		main(int ac, char **av, char **env)
 {
 	t_a a;
@@ -12,15 +7,13 @@ int		main(int ac, char **av, char **env)
 	a.ac = ac;
 	a.av = av;
 	a.env = env;
-	
-/*	int i = 1;
-	while (env[++i])
-		printf("%s\n", env[i]);*/
 
 	while(1)
 	{
-		//ft_putstr_fd("On est chez nous:\n", 1);
-		parsing(&a);
+		ft_putstr_fd("Cristaline ", 1);
+		ft_parsenv(&a);
+		ft_putstr_fd("$ ", 1);
+		ft_parsing(&a);
 	}
 	return (0);
 }
