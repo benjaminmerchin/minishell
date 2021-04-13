@@ -19,6 +19,6 @@ void	ft_parsing(t_a *a)
 {
 
 	get_next_line(0, &a->line);
-	if (a->line[0] == 'a')
-		ft_putstr_fd(" On capture bien\n", 1);
+/*	if (a->line[0] == 'a')
+		ft_putstr_fd(" On capture bien\n", 1);*/
 }
