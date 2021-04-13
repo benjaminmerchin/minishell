@@ -2,7 +2,8 @@ NAME	=	minishell
 CC		=	clang
 HEADER	=	includes/minishell.h
 OBJDIR	=	object
-SRC		=	minishell.c utils/utils.c
+SRC		=	minishell.c utils/utils.c parsing/parsing.c utils/gnl.c\
+			utils/gnl_utils.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 CFLAGS	=	-Wall -Wextra -Werror -g#-fsanitize=address
 

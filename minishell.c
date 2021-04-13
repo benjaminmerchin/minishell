@@ -13,10 +13,14 @@ int		main(int ac, char **av, char **env)
 	a.av = av;
 	a.env = env;
 	
-	int i = -1;
+/*	int i = 1;
 	while (env[++i])
-		printf("%s\n", env[i]);
+		printf("%s\n", env[i]);*/
 
-	parsing(&a);
+	while(1)
+	{
+		//ft_putstr_fd("On est chez nous:\n", 1);
+		parsing(&a);
+	}
 	return (0);
 }

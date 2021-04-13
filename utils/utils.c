@@ -1,21 +1,16 @@
 #include "../includes/minishell.h"
 
-int		ft_strlen(char *s)
-{
-	int i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
 void	ft_putchar_fd(char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-char	*ft_strdup(const char *s)
+void	ft_putstr_fd(char *s, int fd)
+{
+	write(fd, (unsigned char *)s, ft_strlen(s));
+}
+
+char	*ft_strdup(char *s)
 {
 	char	*res;
 	int		i;
