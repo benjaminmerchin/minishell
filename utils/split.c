@@ -121,7 +121,7 @@ void	ft_split_sh(t_a *a)
 }*/
 
 
-int		is_insep(char c, t_a *a)
+int		is_sep(char c, t_a *a)
 {
 	int i;
 
@@ -132,6 +132,8 @@ int		is_insep(char c, t_a *a)
 		{
 			if (a->sep[i] == '"')
 				a->sep = "\"";
+			if (a->sep[i] == '\'')
+				a->sep = "'";
 			return (1);
 		}
 		i++;
@@ -144,14 +146,17 @@ char	*store_my_token(t_a *a, int *i)
 	int len_counter;
 	char *tmp;
 	int j;
-	
+
 	j = 0;
 	len_counter = 0;
-	while (!is_insep(a->line[*i + len_counter], a) && a->line[*i + len_counter] != '\0')
+	while (!is_sep(a->line[*i + len_counter], a) && a->line[*i + len_counter] != '\0')
 		len_counter++;
 	tmp = malloc(sizeof(char) * (len_counter + 1));
 	if (!tmp)
 		return (NULL);
+	write(1, "#", 1);
+	ft_putnbr(len_counter);
+	write(1, "#", 1);
 	while (j < len_counter)
 	{
 		tmp[j] = a->line[*i];
@@ -166,7 +171,9 @@ void	ft_split_sh(t_a *a)
 {
 	int		i; // parcours le string
 	int		k; // parcours le tableau de rangement des tokens
+	char	*backup_line;
 
+	backup_line = a->line;
 	a->raw = malloc(sizeof(*a->raw) * (1 + 1000));
 	if (!a->raw)
 		return ;
@@ -174,32 +181,31 @@ void	ft_split_sh(t_a *a)
 	k = 0;
 	while (a->line[i])
 	{
-		if (is_insep(a->line[i], a) || i == 0)
+		if (a->line[i] == ' ')
 		{
-			if (a->line[i] == ' ')
-			{
-				while (a->line[i + 1] == ' ')
-					i++;
-			}
-			if (i == 0 && !is_insep(a->line[0], a))
-			{
-				a->raw[k].type = ' ';
-				i--;
-			}
-			else
-				a->raw[k].type = (int)a->line[i];
-			i++;
-			a->raw[k].str = store_my_token(a, &i);
-			k++;
+			while (a->line[i + 1] == ' ')
+				i++;
+			if (is_sep(a->line[i + 1], a))
+				i++;
+		}
+		if (i == 0 && !is_sep(a->line[0], a))
+		{
+			a->raw[k].type = ' ';
+			i--;
 		}
 		else
-			i++;
-		if (a->line[i] == '"')
+			a->raw[k].type = a->line[i];
+		i++;
+		a->raw[k].str = store_my_token(a, &i);
+		k++;
+		if (a->line[i] == '\'' || a->line[i] == '"')
 		{
 			a->sep = " '\"|><;";
+			write(1, "@", 1);
 			i++;
 		}
 	}
 	a->raw[k].str = 0;
+	a->line = backup_line;
 	return ;
 }

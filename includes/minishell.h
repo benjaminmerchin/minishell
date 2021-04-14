@@ -25,7 +25,9 @@ typedef struct	s_a {
 }				t_a;
 
 void	ft_putchar_fd(char c, int fd);
+void	ft_putchar(char c);
 void	ft_putstr_fd(char *s, int fd);
+void	ft_putstr(char *s);
 int		ft_strlen(char *s);
 void	ft_parsenv(t_a *a);
 void	ft_split_sh(t_a *a);
@@ -33,6 +35,7 @@ void	ft_split_sh(t_a *a);
 void	ft_initstruct(t_a *a);
 void	ft_cleanstruct(t_a *a);
 void	ft_putnbr_fd(int n, int fd);
+void	ft_putnbr(int n);
 
 
 
