@@ -11,7 +11,7 @@ void 			ft_store_string(t_a *a)
 	while (a->raw[i].str)
 	{
 		ft_putchar_fd('[', 1);
-		ft_putchar_fd(a->sep[a->raw[i].type], 1);
+		ft_putchar_fd(a->raw[i].type, 1);
 		ft_putchar_fd(']', 1);
 //		ft_putnbr_fd(a->raw[i].type, 1);
 		ft_putchar_fd(' ', 1);
