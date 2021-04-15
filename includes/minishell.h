@@ -20,7 +20,11 @@ typedef struct	s_a {
 	char		**av;
 	char		**env; //on y cherche le path PWD
 	char		*line;
+<<<<<<< HEAD
 
+=======
+	char		*backup;
+>>>>>>> 672537cdf16ac1caaa2f86948fa64df768166daa
 	t_raw		*raw;
 
 //Section termcap
@@ -34,8 +38,11 @@ typedef struct	s_a {
 	int			nline;
 	char		**h;
 //section utile pour split
-	char 		*sep; //separateur sur lequel on parse
+	char 		*sep; //a->sep = " '\"|;><";
+	char		*backup_sep; //sep mais on y touche pas
 	char		last_sep;
+
+	int			vb_ap;
 }				t_a;
 
 void	ft_putchar_fd(char c, int fd);
@@ -49,6 +56,7 @@ void	ft_split_sh(t_a *a);
 void	ft_initstruct(t_a *a);
 void	ft_cleanstruct(t_a *a);
 void	ft_putnbr_fd(int n, int fd);
+void	ft_putnbr(int n);
 
 
 //navigation
