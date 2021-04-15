@@ -21,10 +21,7 @@ int		main(int ac, char **av, char **env)
 	term_type = getenv("TERM");
 
 	ft_initstruct(&a);
-	/*ft_nav(&a);*/
-    if (term_type == NULL)
-        ft_putstr_fd("TERM must be set (see 'env').\n", 2);
-    ret = tgetent(NULL, term_type);
+	ft_nav(&a);
 
 
 	while(1)

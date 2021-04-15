@@ -1,17 +1,32 @@
 #include "../includes/minishell.h"
 
+void	ft_getinput(t_a *a)
+{
+	a->str_tcapped = tgetstr("cl", NULL);
+	tputs (a->str_tcapped, 1, putchar);
+	ft_putchar_fd('\n', 1);
+}
+
+
 void	ft_nav(t_a *a)
 {
-	char	*term_type;
-	int		ret;
+	int		ent;
 
-	term_type = getenv("TERM");
-    if (term_type == NULL)
+	a->term_type = getenv("TERM");
+    if (a->term_type == NULL)
         ft_putstr_fd("TERM must be set (see 'env').\n", 2);
-    ret = tgetent(NULL, term_type);
-	ft_putnbr_fd(ret, 1);
-	ft_putstr_fd(term_type, 1);
-	ft_putchar_fd('\n', 1);
+    ent = tgetent(NULL, a->term_type);
+	if (ent == -1 || ent == 0)
+    {
+        ft_putstr_fd("We crashed the tgetent\n", 1);
+        return ;
+    }
+	if (setupterm(NULL, STDOUT_FILENO, NULL) == 0)
+	{
+		a->column_count = tgetnum("co");
+		a->line_count = tgetnum("li");
+		ft_getinput(a);
+	}
 	(void)a;
 }
 

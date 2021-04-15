@@ -20,7 +20,14 @@ typedef struct	s_a {
 	char		**av;
 	char		**env; //on y cherche le path PWD
 	char		*line;
+
 	t_raw		*raw;
+
+//Section termcap
+	int			column_count;
+	int			line_count;
+	char		*term_type;
+	char		*str_tcapped;
 
 //section pour la navigation fleche haut/bas
 	int			nav;
@@ -32,6 +39,7 @@ typedef struct	s_a {
 }				t_a;
 
 void	ft_putchar_fd(char c, int fd);
+void	ft_putchar(char c);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strdup(char *s);
 int		ft_strlen(char *s);

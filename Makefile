@@ -7,14 +7,14 @@ SRC		=	minishell.c \
 			utils/utils2.c \
 			parsing/parsing.c parsing/store_string.c parsing/nav.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
-CFLAGS	=	-Wall -Wextra -Werror -g#-fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror#-fsanitize=address
 
 all: $(NAME)
 
 bonus: all
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@$(CC) $(CFLAGS) -lncurses -ltermcap $(OBJ) -o $(NAME)
 #	@echo 'Checker Compilation OK'
 
 $(OBJDIR)/%.o: %.c
