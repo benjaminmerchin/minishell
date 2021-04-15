@@ -7,7 +7,7 @@ SRC		=	minishell.c \
 			utils/utils2.c utils/libft.c \
 			parsing/parsing.c parsing/store_string.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
-CFLAGS	=	-Wall -Wextra -Werror -g#-fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 
 all: $(NAME)
 

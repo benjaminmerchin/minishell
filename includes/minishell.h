@@ -17,11 +17,15 @@ typedef struct	s_a {
 	char		**av;
 	char		**env; //on y cherche le path PWD
 	char		*line;
+	char		*backup;
 	t_raw		*raw;
 
 //section utile pour split
-	char 		*sep; //separateur sur lequel on parse
+	char 		*sep; //a->sep = " '\"|;><";
+	char		*backup_sep; //sep mais on y touche pas
 	char		last_sep;
+
+	int			vb_ap;
 }				t_a;
 
 void	ft_putchar_fd(char c, int fd);

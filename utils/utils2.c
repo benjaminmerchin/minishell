@@ -3,6 +3,7 @@
 void	ft_initstruct(t_a *a)
 {
 	a->sep = " '\"|;><";
+	a->backup_sep = a->sep;
 }
 
 void	ft_cleanstruct(t_a *a)
