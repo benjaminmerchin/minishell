@@ -2,9 +2,9 @@
 
 void	ft_getinput(t_a *a)
 {
-	a->str_tcapped = tgetstr("cl", NULL);
+	a->str_tcapped = tgetstr("AF", NULL);
+	ft_putstr_fd(a->str_tcapped, 1);
 	tputs (a->str_tcapped, 1, putchar);
-	ft_putchar_fd('\n', 1);
 }
 
 

@@ -5,6 +5,7 @@ void	ft_initstruct(t_a *a)
 	a->sep = " '\"|;><";
 	a->nav = 0;
 	a->nline = 0;
+	a->backup_sep = a->sep;
 	a->h = malloc(sizeof(char *) * 1000);
 }
 
