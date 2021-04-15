@@ -20,11 +20,7 @@ typedef struct	s_a {
 	char		**av;
 	char		**env; //on y cherche le path PWD
 	char		*line;
-<<<<<<< HEAD
-
-=======
 	char		*backup;
->>>>>>> 672537cdf16ac1caaa2f86948fa64df768166daa
 	t_raw		*raw;
 
 //Section termcap

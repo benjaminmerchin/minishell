@@ -3,13 +3,9 @@
 void	ft_initstruct(t_a *a)
 {
 	a->sep = " '\"|;><";
-<<<<<<< HEAD
 	a->nav = 0;
 	a->nline = 0;
 	a->h = malloc(sizeof(char *) * 1000);
-=======
-	a->backup_sep = a->sep;
->>>>>>> 672537cdf16ac1caaa2f86948fa64df768166daa
 }
 
 void	ft_cleanstruct(t_a *a)
