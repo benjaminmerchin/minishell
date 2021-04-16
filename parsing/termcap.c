@@ -1,38 +1,31 @@
 #include "../includes/minishell.h"
 
-void	ft_init_tcap(t_a *a)
+void	ft_raw_mode(t_a *a)
 {
-	struct termios s_termios;
 
-
-	tcgetattr(STDIN_FILENO, origin);
-	s_termios.c_lflag &= ~(ICANON);
-    s_termios.c_lflag &= ~(ECHO);
-	if (tcsetattr(0, 0, &s_termios) == -1)
-        return ;
+	tcgetattr(STDIN_FILENO, a->trms);
+	a->trms->c_lflag &= ~(ICANON);
+    a->trms->c_lflag &= ~(ECHO);
+	if (tcsetattr(0, 0, a->trms) == -1)
+        ft_exit_clean(a, "Error\nTermcap raw mode failed\n");
 
 }
 
-void	ft_getinput(t_a *a)
+void	ft_init_tcap(t_a *a)
 {
-	int		ent;
+	int		i;
 
-	a->term_type = getenv("TERM");
     if (a->term_type == NULL)
-        ft_putstr_fd("TERM must be set (see 'env').\n", 2);
-    ent = tgetent(NULL, a->term_type);
-	if (ent == -1 || ent == 0)
-    {
-        ft_putstr_fd("We crashed the tgetent\n", 1);
-        return ;
-    }
+		ft_exit_clean(a, "Error\nTERM must be set (see 'env').\n");
+    i = tgetent(NULL, a->term_type);
+	if (i == -1 || i == 0)
+        ft_exit_clean(a, "Error\nWe crashed the tgetent\n");
 	if (setupterm(NULL, STDOUT_FILENO, NULL) == 0)
 	{
 		a->column_count = tgetnum("co");
 		a->line_count = tgetnum("li");
-		ft_init_tcap(a);
+		ft_raw_mode(a);
 	}
-	(void)a;
 }
 
 void	ft_save_hist(t_a *a, char *line)

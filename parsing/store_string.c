@@ -8,6 +8,7 @@ void 			ft_store_string(t_a *a)
 	//while ()
 	ft_split_sh(a);
 	i = 0;
+	ft_putchar_fd('\n', 1);
 	while (a->raw[i].str && !a->nav)
 	{
 		ft_putchar_fd('[', 1);
