@@ -25,7 +25,9 @@ typedef struct	s_a {
 	char		*line;
 	char		*backup;
 	t_raw		*raw;
-	struct termios	*trms;
+	struct termios	trms;
+	char		buff[5];
+	int			fd;
 
 //Section termcap
 	int			column_count;
@@ -57,6 +59,7 @@ void	ft_init_struct(t_a *a);
 void	ft_cleanstruct(t_a *a);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putnbr(int n);
+int		ft_isprint(int c);
 
 
 //navigation
@@ -66,10 +69,10 @@ void	ft_parsing(t_a *a);
 int		get_next_line(int fd, char **line);
 char	*ft_joinofgnl(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, int n);
-void 	ft_store_string(t_a *a);
 
-void	ft_init_tcap(t_a *a);
+void	ft_init_termcap(t_a *a);
 void	ft_exit_clean(t_a *a, char *str);
+void	ft_print_string(t_a *a);
 
 
 

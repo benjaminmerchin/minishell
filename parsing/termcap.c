@@ -2,30 +2,33 @@
 
 void	ft_raw_mode(t_a *a)
 {
+	struct termios z;
 
-	tcgetattr(STDIN_FILENO, a->trms);
-	a->trms->c_lflag &= ~(ICANON);
-    a->trms->c_lflag &= ~(ECHO);
-	if (tcsetattr(0, 0, a->trms) == -1)
+	tcgetattr(STDIN_FILENO, &a->trms);
+	z = a->trms;
+    z.c_lflag &= ~(ECHO | ICANON);
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &a->trms) == -1)
         ft_exit_clean(a, "Error\nTermcap raw mode failed\n");
 
 }
 
-void	ft_init_tcap(t_a *a)
+void	ft_init_termcap(t_a *a)
 {
 	int		i;
+	char	*term_type;
 
-    if (a->term_type == NULL)
+	term_type = getenv("TERM");
+
+    if (term_type == NULL)
 		ft_exit_clean(a, "Error\nTERM must be set (see 'env').\n");
-    i = tgetent(NULL, a->term_type);
+    i = tgetent(NULL, term_type);
 	if (i == -1 || i == 0)
         ft_exit_clean(a, "Error\nWe crashed the tgetent\n");
-	if (setupterm(NULL, STDOUT_FILENO, NULL) == 0)
-	{
-		a->column_count = tgetnum("co");
-		a->line_count = tgetnum("li");
-		ft_raw_mode(a);
-	}
+
+	tcgetattr(STDIN_FILENO, &a->trms);
+	a->column_count = tgetnum("co");
+	a->line_count = tgetnum("li");
+	ft_raw_mode(a);
 }
 
 void	ft_save_hist(t_a *a, char *line)

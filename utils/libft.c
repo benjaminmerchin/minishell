@@ -19,13 +19,12 @@ void	ft_putnbr(int n)
 		ft_putchar(nbr + '0');
 }
 
-
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
-}
-
 void	ft_putstr(char *s)
 {
 	write(1, s, ft_strlen(s));
+}
+
+int	ft_isprint(int c)
+{
+	return (c >= ' ' && c <= '~');
 }

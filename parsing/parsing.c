@@ -10,7 +10,7 @@ void	ft_parsenv(t_a *a)
 		if (ft_strncmp(a->env[i], "PWD=", 4) == 0)
 		{
 			ft_putstr_fd(a->env[i] + 4, 1);
-			break ;
+			return ;
 		}
 	}
 }
@@ -21,7 +21,6 @@ void	ft_parsing(t_a *a)
 	
 
 }
-
 
 /*
 	if (ft_strncmp(a->line, "^[[A", 4) == 0 && a->nav <= a->nline)
