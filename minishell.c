@@ -23,7 +23,6 @@ int		main(int ac, char **av, char **env)
 	ft_initstruct(&a);
 	ft_nav(&a);
 
-
 	while(1)
 	{
 		ft_title(&a);

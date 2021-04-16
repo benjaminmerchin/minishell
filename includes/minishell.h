@@ -9,6 +9,8 @@
 
 # include <curses.h>
 # include <term.h>
+# include <termios.h>
+
 
 typedef struct	s_raw {
 	int			type;
@@ -42,7 +44,7 @@ typedef struct	s_a {
 }				t_a;
 
 void	ft_putchar_fd(char c, int fd);
-void	ft_putchar(char c);
+int		ft_putchar(int c);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strdup(char *s);
 int		ft_strlen(char *s);

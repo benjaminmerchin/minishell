@@ -5,7 +5,8 @@ OBJDIR	=	object
 SRC		=	minishell.c \
 			utils/utils.c utils/gnl_utils.c utils/gnl.c utils/split.c \
 			utils/utils2.c \
-			parsing/parsing.c parsing/store_string.c parsing/nav.c
+			parsing/parsing.c parsing/store_string.c parsing/nav.c \
+			parsing/termcap.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 
