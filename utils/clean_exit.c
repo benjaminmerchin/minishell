@@ -20,6 +20,9 @@ void	ft_cleanstruct(t_a *a)
 	while (a->raw[++i].str)
 		free(a->raw[i].str);
 	free (a->raw);
+	if (a->line)
+		free(a->line);
+	a->line = NULL;
 	a->sep = SEPARATORS;
 }
 

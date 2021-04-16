@@ -9,6 +9,7 @@ void	ft_init_struct(t_a *a)
 	a->h = malloc(sizeof(char *) * 1000);
 //	a->term_type = getenv("TERM");
 	a->fd = 0;
+	a->line = NULL;
 }
 
 void	ft_putnbr_fd(int n, int fd)

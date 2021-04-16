@@ -2,4 +2,3 @@ object/*.o
 object/*/*.o
 minishell
 a.out
-.vscode

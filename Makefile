@@ -8,7 +8,7 @@ SRC		=	minishell.c \
 			parsing/parsing.c parsing/split.c \
 			parsing/termcap.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
-CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
 
 all: $(NAME)
 

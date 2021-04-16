@@ -18,13 +18,11 @@ void	ft_init_termcap(t_a *a)
 	char	*term_type;
 
 	term_type = getenv("TERM");
-
     if (term_type == NULL)
 		ft_exit_clean(a, "Error\nTERM must be set (see 'env').\n");
     i = tgetent(NULL, term_type);
 	if (i == -1 || i == 0)
         ft_exit_clean(a, "Error\nWe crashed the tgetent\n");
-
 	tcgetattr(STDIN_FILENO, &a->trms);
 	a->column_count = tgetnum("co");
 	a->line_count = tgetnum("li");
