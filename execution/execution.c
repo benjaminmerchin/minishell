@@ -130,6 +130,7 @@ void	ft_execution(t_a *a)
 
 	i = 0;
 	//first we want to link the correct fd so go through the list
+	//we also replace the $VAR by their values
 	//each token must have its correct fd
 
 	temporary_set_all_input_to_0_and_output_to_1(a);
@@ -174,3 +175,10 @@ void	ft_execution(t_a *a)
 	//echo (-n) cd pwd export unset env exit
 //"Chercher et lancer le bon executable (basé sur une variable d’environnement PATH ou en utilisant un path absolu), comme dans bash"
 	//this means being able to execute through a fork the commends that we will try to get in the path (ls, ...)
+
+//TODO DIVERS:
+//getcdw : pour obtenir le pwd a update a chaque mouvement
+//stat : donne toutes les infos d'un fichier comme un ls
+//lstat : same sauf que dans le cas d'un lien donne les infos sur le lien et pas le fichier pointé
+//ftat : donne toutes les infos sur un fichier comme un ls, mais cette fois on lui passe en argument le file descriptor
+//execve : exécuter un exécutable, avec ses arguments et l'environnement en paramètres
