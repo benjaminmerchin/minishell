@@ -19,8 +19,8 @@ void	temporary_set_all_input_to_0_and_output_to_2(t_a *a)
 	i = 0;
 	while (a->raw[i].str)
 	{
-		a->raw->fd_input = 0;
-		a->raw->fd_output = 1;
+		a->raw[i].fd_input = 0;
+		a->raw[i].fd_output = 1;
 		i++;
 	}
 }
@@ -31,12 +31,15 @@ void	ft_echo(t_a *a, int *i)
 	int	n_begin;
 
 	(*i)++;
+	//return ;
 	v_b_bn = 1;
 	n_begin = 0;
 	if (a->raw[*i].fd_output == 1 || a->raw[*i].fd_output == 2)
 		ft_putstr_fd("\n", a->raw[*i].fd_output);
+	write(1, "GGGGGGGGGG", 10);
 	while (a->raw[*i].str != '\0' && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 	{
+		write(1, "HHHHHHHHHH", 10);
 		if (ft_strncmp(a->raw[*i].str, "-n", 10) == 0 && n_begin == 0)
 			v_b_bn = 0;
 		else
@@ -44,10 +47,25 @@ void	ft_echo(t_a *a, int *i)
 			ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
 			n_begin = 1;
 		}
+		write(1, "WWWWWWWWWW", 10);
 		(*i)++;
 	}
 	if (v_b_bn == 1)
 		ft_putchar_fd('\n', a->raw[*i].fd_output);
+	write(1, "@@@@@@@@@@", 10);
+}
+
+void	ft_echo_debug(t_a *a, int *i)
+{
+	int	v_b_bn; //variable boolean to manage the -n flag
+	int	n_begin;
+
+	//(*i)++;
+	//return ;
+	v_b_bn = 1;
+	n_begin = 0;
+	if (a->raw[*i].fd_output == 1 || a->raw[*i].fd_output == 2)
+		;
 }
 
 void	ft_work_in_progress(t_a *a, int *i)
@@ -84,7 +102,7 @@ void	ft_execution(t_a *a)
 		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0) //20%
 			ft_exit_clean(a, "");
 		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //20%
-			ft_echo(a, &i);
+			ft_echo_debug(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0)
 			ft_work_in_progress(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0)
