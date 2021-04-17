@@ -76,4 +76,9 @@ void	ft_print_string(t_a *a);
 
 
 
+
+//benjamin
+void	set_backup_and_exit(t_a *a, char *str, int k);
+
+
 #endif

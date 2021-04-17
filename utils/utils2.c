@@ -36,7 +36,7 @@ void	ft_print_string(t_a *a)
 	int i;
 
 	i = 0;
-	ft_putchar_fd('\n', 1);
+	//ft_putchar_fd('\n', 1);
 	while (a->raw[i].str && !a->nav)
 	{
 		ft_putchar_fd('[', 1);

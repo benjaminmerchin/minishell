@@ -34,7 +34,7 @@ void	ft_split_sh(t_a *a)
 
 	i = 0;
 	k = 0;
-	a->raw = malloc(sizeof(*a->raw) * (1 + 1000)); //revenir dessus;
+	a->raw = malloc(sizeof(*a->raw) * (1 + 1000)); //revenir dessus avec la meme fonction ft_split_sh mais sans malloc pour obtenir k
 	if (!a->raw)
 		return ;
 	a->backup = a->line;
@@ -52,16 +52,14 @@ void	ft_split_sh(t_a *a)
 			a->raw[k].type = ' ';
 			if (a->line[0] == ' ')
 				(a->line)++;
+			if (a->line[0] == '\0') //si on fini par un espace on ne malloc rien
+				break ;
 			counter = 0;
 			while (!is_sep(a->line[counter], a) && a->line[counter] != '\0')
 				counter++;
 			a->raw[k].str = malloc(sizeof(char) * (counter + 1));
 			if (!a->raw[k].str)
-			{
-				ft_putstr_fd("Error\nMalloc Failed\n", 2);
-				a->line = a->backup;
-				exit (1); // fonction d'exit a coder
-			}
+				set_backup_and_exit(a, "Error\nMalloc Failed\n", k);
 			while (counter > 0)
 			{
 				a->raw[k].str[i] = a->line[0];
@@ -100,18 +98,10 @@ void	ft_split_sh(t_a *a)
 				while (a->line[counter] != '"' && a->line[counter] != '\0')
 					counter++;
 				if (a->line[counter] == '\0')
-				{
-					ft_putstr_fd("Error\nYour you are missing an ending quote\n", 2);
-					a->line = a->backup;
-					exit (1); // fonction d'exit a coder
-				}
+					set_backup_and_exit(a, "Error\nYour you are missing an ending quote\n", k);
 				a->raw[k].str = malloc(sizeof(char) * (counter + 1));
 				if (!a->raw[k].str)
-				{
-					ft_putstr_fd("Error\nMalloc Failed\n", 2);
-					a->line = a->backup;
-					exit (1); // fonction d'exit a coder
-				}
+					set_backup_and_exit(a, "Error\nMalloc Failed\n", k);
 				while (counter > 0)
 				{
 					a->raw[k].str[i] = a->line[0];
@@ -129,18 +119,10 @@ void	ft_split_sh(t_a *a)
 				while (a->line[counter] != '\'' && a->line[counter] != '\0')
 					counter++;
 				if (a->line[counter] == '\0')
-				{
-					ft_putstr_fd("Error\nYour you are missing an ending quote\n", 2);
-					a->line = a->backup;
-					exit (1); // fonction d'exit a coder
-				}
+					set_backup_and_exit(a, "Error\nYour you are missing an ending quote\n", k);
 				a->raw[k].str = malloc(sizeof(char) * (counter + 1));
 				if (!a->raw[k].str)
-				{
-					ft_putstr_fd("Error\nMalloc Failed\n", 2);
-					a->line = a->backup;
-					exit (1); // fonction d'exit a coder
-				}
+					set_backup_and_exit(a, "Error\nMalloc Failed\n", k);
 				while (counter > 0)
 				{
 					a->raw[k].str[i] = a->line[0];
