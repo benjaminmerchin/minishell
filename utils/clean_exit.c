@@ -28,24 +28,14 @@ void	ft_cleanstruct(t_a *a)
 
 void	ft_exit_clean(t_a *a, char *str)
 {
-	(void)a;
 	ft_putstr_fd(str, 2);
 	ft_cleanstruct(a);
 	//free everything
 	exit (0);
 }
 
-void	set_backup_and_exit(t_a *a, char *str, int k)
+void	set_backup_and_exit(t_a *a, char *str)
 {
-	int i;
-
-	i = 0;
-	while (i < k) //on free tout ce qui a ete malloc dans la struct
-	{
-		free(a->raw[i].str);
-		i++;
-	}
 	a->line = a->backup;
-	ft_putstr_fd(str, 2);
-	exit (1); // clean le reste de la structure a la suite
+	ft_exit_clean(a, str);
 }

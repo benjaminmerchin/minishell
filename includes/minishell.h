@@ -16,6 +16,8 @@
 typedef struct	s_raw {
 	int			type;
 	char		*str;
+	int			fd_input;
+	int			fd_output;
 }				t_raw;
 
 typedef struct	s_a {
@@ -78,7 +80,8 @@ void	ft_print_string(t_a *a);
 
 
 //benjamin
-void	set_backup_and_exit(t_a *a, char *str, int k);
+void	set_backup_and_exit(t_a *a, char *str);
+void	ft_execution(t_a *a);
 
 
 #endif

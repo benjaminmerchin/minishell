@@ -51,7 +51,7 @@ void	ft_get_keyboard_input(t_a *a)
 
 int		main(int ac, char **av, char **env)
 {
-	t_a		a;
+	t_a	a;
 
 	a.ac = ac;
 	a.av = av;
@@ -67,6 +67,7 @@ int		main(int ac, char **av, char **env)
 		ft_parsing(&a);
 		ft_split_sh(&a);
 		ft_print_string(&a); //remove at the end
+		ft_execution(&a); // execute the tokens
 		ft_cleanstruct(&a); //verifier quon 
 	}
 	return (0);

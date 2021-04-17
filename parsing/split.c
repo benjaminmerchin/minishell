@@ -38,6 +38,8 @@ void	ft_split_sh(t_a *a)
 	if (!a->raw)
 		return ;
 	a->backup = a->line;
+	a->raw[k].str = 0;
+	a->raw[k].type = 0;
 	while (a->line[i])
 	{
 		a->sep = a->backup_sep;
@@ -59,7 +61,7 @@ void	ft_split_sh(t_a *a)
 				counter++;
 			a->raw[k].str = malloc(sizeof(char) * (counter + 1));
 			if (!a->raw[k].str)
-				set_backup_and_exit(a, "Error\nMalloc Failed\n", k);
+				set_backup_and_exit(a, "Error\nMalloc Failed\n");
 			while (counter > 0)
 			{
 				a->raw[k].str[i] = a->line[0];
@@ -98,10 +100,10 @@ void	ft_split_sh(t_a *a)
 				while (a->line[counter] != '"' && a->line[counter] != '\0')
 					counter++;
 				if (a->line[counter] == '\0')
-					set_backup_and_exit(a, "Error\nYour you are missing an ending quote\n", k);
+					set_backup_and_exit(a, "Error\nEnding quote missing\n");
 				a->raw[k].str = malloc(sizeof(char) * (counter + 1));
 				if (!a->raw[k].str)
-					set_backup_and_exit(a, "Error\nMalloc Failed\n", k);
+					set_backup_and_exit(a, "Error\nMalloc Failed\n");
 				while (counter > 0)
 				{
 					a->raw[k].str[i] = a->line[0];
@@ -119,10 +121,10 @@ void	ft_split_sh(t_a *a)
 				while (a->line[counter] != '\'' && a->line[counter] != '\0')
 					counter++;
 				if (a->line[counter] == '\0')
-					set_backup_and_exit(a, "Error\nYour you are missing an ending quote\n", k);
+					set_backup_and_exit(a, "Error\nEnding quote missing\n");
 				a->raw[k].str = malloc(sizeof(char) * (counter + 1));
 				if (!a->raw[k].str)
-					set_backup_and_exit(a, "Error\nMalloc Failed\n", k);
+					set_backup_and_exit(a, "Error\nMalloc Failed\n");
 				while (counter > 0)
 				{
 					a->raw[k].str[i] = a->line[0];
@@ -137,11 +139,12 @@ void	ft_split_sh(t_a *a)
 		}
 		else
 		{
-			write(1, "@@@@@@@@@@", 10);
+			write(1, "@@@@@@@@@@", 10);//erreur si on imprime des @
 		}
 		k++;
+		a->raw[k].str = 0; //on termine toujours pas un 0 pour simplement free jusqu'au dernier 0
+		a->raw[k].type = 0;
 	}
-	a->raw[k].str = 0;
 	a->sep = a->backup_sep;
 	a->line = a->backup;
 }
