@@ -327,3 +327,5 @@ void	ft_execution(t_a *a)
 //ftat : donne toutes les infos sur un fichier comme un ls, mais cette fois on lui passe en argument le file descriptor
 //execve : exécuter un exécutable, avec ses arguments et l'environnement en paramètres
 // dans ;|0, mettre l'input et l'output de la section d'avant
+
+// a gerer : export avec "  " ou '      asd ', command not found avec un =
