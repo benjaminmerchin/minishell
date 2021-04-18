@@ -166,7 +166,8 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 	error = 0;
 	while (str[j] != '=' && str[j] != '\0')
 	{
-		if (!(ft_isalnum(str[j]) || str[j] == '_'))
+		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_'))
+		|| (j == 0 && !(ft_isalpha(str[j]) || str[j] == '_')))
 		{
 			error = 1;
 			break ;
@@ -187,11 +188,23 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 
 void		add_me_if_i_do_not_exist_yet(t_a *a, int *i, int ret)
 {
+	int	found;
 	t_list *lst;
-	(void)i;
-	(void)ret;
 
 	lst = a->lst_env;
+	found = 0;
+	while (lst && found == 0)
+	{
+		if  (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
+		{
+			free(lst->content);
+			lst->content = ft_strdup(a->raw[*i].str);
+			found = 1;
+		}
+		lst = lst->next;
+	}
+	if (found == 0)
+		ft_lstadd_back(&(a->lst_env), ft_lstnew(ft_strdup(a->raw[*i].str)));
 }
 
 void		ft_export(t_a *a, int *i)
@@ -206,7 +219,37 @@ void		ft_export(t_a *a, int *i)
 		ret = ft_verification_content(a->raw[*i].str, a, i);
 		if (ret > 0)
 			add_me_if_i_do_not_exist_yet(a, i, ret);
-		//on rajoute la value dans la liste
+		(*i)++;
+	}
+}
+
+void		remove_me_if_i_exist(t_a *a, int *i, int ret)
+{
+	t_list *lst;
+
+	lst = a->lst_env;
+	while (lst)
+	{
+		if  (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
+		{
+			free(lst->content);
+			lst->content = ft_strdup(a->raw[*i].str);
+			return ;
+		}
+		lst = lst->next;
+	}
+}
+
+void		ft_unset(t_a *a, int *i)
+{
+	int ret;
+	
+	(*i)++;
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+	{
+		ret = ft_verification_content(a->raw[*i].str, a, i);
+		if (ret > 0)
+			remove_me_if_i_exist(a, i, ret);;
 		(*i)++;
 	}
 }
@@ -249,12 +292,12 @@ void	ft_execution(t_a *a)
 			ft_echo(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) 
 			ft_work_in_progress(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //30%
+		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //30% //update avec le new parsenv
 			ft_pwd(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0) 
+		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0) //80%
 			ft_export(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "unset", 10) == 0)
-			ft_work_in_progress(a, &i);
+		else if (ft_strncmp(a->raw[i].str, "unset", 10) == 0) //80%
+			ft_unset(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "env", 10) == 0) //70%
 			ft_env(a, &i);
 		else
