@@ -12,6 +12,13 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
+# define MINISHELL_NAME "twentyfifth"
+
+typedef struct	s_list
+{
+	char			*content;
+	struct s_list	*next;
+}				t_list;
 
 typedef struct	s_raw {
 	int			type;
@@ -24,6 +31,7 @@ typedef struct	s_a {
 	int			ac;
 	char		**av;
 	char		**env; //on y cherche le path PWD
+	t_list		*lst_env;
 	char		*line;
 	char		*backup;
 	t_raw		*raw;
@@ -62,7 +70,9 @@ void	ft_cleanstruct(t_a *a);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putnbr(int n);
 int		ft_isprint(int c);
-
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
+int		ft_isalnum(int c);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
@@ -83,5 +93,12 @@ void	ft_print_string(t_a *a);
 void	set_backup_and_exit(t_a *a, char *str);
 void	ft_execution(t_a *a);
 
+//listes
+t_list	*ft_lstnew(char *content);
+void	ft_lstadd_back(t_list **alst, t_list *new);
+void	ft_lstiter(t_list *lst, void (*f)(void *));
+void	ft_lstclear(t_list **lst);
+void	ft_lstdelone(t_list *lst);
+int	ft_lstsize(t_list *lst);
 
 #endif

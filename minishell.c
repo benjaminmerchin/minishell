@@ -2,7 +2,8 @@
 
 void	ft_title(t_a *a)
 {
-	ft_putstr_fd("twentyfifth ", 1);
+	ft_putstr_fd(MINISHELL_NAME, 1);
+	ft_putstr_fd(" ", 1);
 	ft_parsenv(a);
 	ft_putstr_fd("> ", 1);
 }
@@ -32,6 +33,26 @@ void	ft_appendchar(t_a *a)
 	a->line = str;
 }
 
+void	ft_store_env_in_lst(t_a *a)
+{
+	int i;
+	t_list *lst;
+	t_list *temp;
+	char	*char_temp;
+	
+	i = 1;
+	char_temp = ft_strdup(a->env[0]);
+	lst = ft_lstnew(char_temp);
+	while (a->env[i - 1] && a->env[i])
+	{
+		char_temp = ft_strdup(a->env[i]);
+		temp = ft_lstnew(char_temp);
+		ft_lstadd_back(&lst, temp);
+		i++;
+	}
+	a->lst_env = lst;
+}
+
 void	ft_get_keyboard_input(t_a *a)
 {
 	int ret;
@@ -45,7 +66,6 @@ void	ft_get_keyboard_input(t_a *a)
 			ft_appendchar(a);
 		}
 			
-		
 	}
 }
 
@@ -58,6 +78,7 @@ int		main(int ac, char **av, char **env)
 	a.env = env;
 
 	ft_init_struct(&a);
+	ft_store_env_in_lst(&a);
 	//ft_init_termcap(&a);
 	while(1)
 	{

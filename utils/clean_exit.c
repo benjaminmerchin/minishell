@@ -30,6 +30,8 @@ void	ft_exit_clean(t_a *a, char *str)
 {
 	ft_putstr_fd(str, 2);
 	ft_cleanstruct(a);
+	//ft_putnbr(ft_lstsize(a->lst_env));
+	ft_lstclear(&(a->lst_env)); // free env list
 	//free everything
 	exit (0);
 }
