@@ -84,7 +84,8 @@ int		main(int ac, char **av, char **env)
 	{
 		//ft_putstr_fd("\nMAIN\n", 1);
 		ft_title(&a);
-		//ft_get_keyboard_input(&a);
+		if(TERMCAPS)
+			ft_get_keyboard_input(&a);
 		ft_parsing(&a);
 		ft_split_sh(&a);
 		ft_print_string(&a); //remove at the end

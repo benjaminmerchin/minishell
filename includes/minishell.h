@@ -13,6 +13,7 @@
 
 # define SEPARATORS " '\"|;><"
 # define MINISHELL_NAME "twentyfifth"
+# define TERMCAPS 1
 
 typedef struct	s_list
 {
