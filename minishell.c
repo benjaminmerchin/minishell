@@ -8,36 +8,29 @@ void	ft_title(t_a *a)
 	ft_putstr_fd("> ", 1);
 }
 
-void	ft_appendchar(t_a *a)
+void	ft_appendbuffer(t_a *a, int k)
 {
 	char	*str;
 	int		i;
-	int		k;
+	int		j;
 
-	k = 0;
-	while (ft_isprint(a->buff[k]))
-		k++;
-	/*if (!a->line || a->line[0] == 0)
-	{
-		a->line = malloc(sizeof(char) * 2);
-		a->line[0] = a->buff[0];
-		a->line[1] = 0;
-		return ;
-	}*/
 	str = malloc(sizeof(char) * (ft_strlen(a->line) + k + 1));
 	if (!str)
 		ft_exit_clean(a, "Error\nMalloc failed in appendchar\n");
-	i = -1;
-	while (a->line && a->line[++i])
-		str[i] = a->line[i];
-	k = 0;
-	while (a->buff[k])
+	i = 0;
+	while (a->line && a->line[i])
 	{
-		str[i] = a->buff[k];
+		str[i] = a->line[i];
 		i++;
-		k++;
 	}
-	str[i + 1] = 0;
+	j = 0;
+	while (j < k)
+	{
+		str[i] = a->buff[j];
+		i++;
+		j++;
+	}
+	str[i] = 0;
 	free(a->line);
 	a->line = str;
 }
@@ -62,22 +55,29 @@ void	ft_store_env_in_lst(t_a *a)
 	a->lst_env = lst;
 }
 
+void	ft_readnonprint(t_a *a)
+{
+	
+}
+
 void	ft_get_keyboard_input(t_a *a)
 {
 	int ret;
-	int	i;
+	//int	i;
 
 	while((ret = read(a->fd, a->buff, 4)))
 	{
-		i = -1;
-		while (ft_isprint(a->buff[++i]))
 		a->buff[ret] = 0;
-		if (ft_isprint(a->buff[0]))
-			ft_appendchar(a);
+		if (a->buff[0] == '\n')
+		{
+			//faire une fonction append à h, et les free
+			return ;
+		}
+		if (a->buff[1] != 0)
+			ft_readnonprint(a);
+		else
+			ft_appendbuffer(a, 1);
 	}
-	ft_putstr_fd("Here come the line:\n", 1);
-	ft_putstr_fd(a->line, 1);
-	ft_putchar_fd('\n', 1);
 }
 
 int		main(int ac, char **av, char **env)
@@ -97,7 +97,8 @@ int		main(int ac, char **av, char **env)
 		ft_title(&a);
 		if(TERMCAPS)
 			ft_get_keyboard_input(&a);
-		ft_parsing(&a);
+		else
+			ft_parsing(&a);
 		ft_split_sh(&a);
 		ft_print_string(&a); //remove at the end
 		ft_execution(&a); // execute the tokens
@@ -105,3 +106,28 @@ int		main(int ac, char **av, char **env)
 	}
 	return (0);
 }
+
+
+/*
+
+	int ret;
+	int	i;
+
+	while((ret = read(a->fd, a->buff, 4)))
+	{
+		i = 0;
+		while (ft_isprint(a->buff[i]) || a->buff[i] == '\n')
+		{
+			if (a->buff[i] == '\n')
+			{
+				ft_putstr_fd("---ON A UN NEWLINE---\n", 1);
+				ft_appendbuffer(a, i);
+				return ;
+			}
+		i++;
+		}
+		a->buff[i] = 0;
+		ft_appendbuffer(a, i);
+	}
+
+*/
