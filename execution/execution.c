@@ -56,16 +56,17 @@ void	ft_echo(t_a *a, int *i)
 
 void	ft_parsenv_fd(t_a *a, int fd)
 {
-	int i;
+	t_list *lst;
 
-	i = -1;
-	while (a->env[++i])
+	lst = a->lst_env;
+	while (lst)
 	{
-		if (ft_strncmp(a->env[i], "PWD=", 4) == 0)
+		if  (ft_strncmp("PWD=", lst->content, 4) == 0)
 		{
-			ft_putstr_fd(a->env[i] + 4, fd);
+			ft_putstr_fd(lst->content + 4, fd);
 			return ;
 		}
+		lst = lst->next;
 	}
 }
 

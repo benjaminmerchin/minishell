@@ -2,16 +2,17 @@
 
 void	ft_parsenv(t_a *a)
 {
-	int i;
+	t_list *lst;
 
-	i = -1;
-	while (a->env[++i])
+	lst = a->lst_env;
+	while (lst)
 	{
-		if (ft_strncmp(a->env[i], "PWD=", 4) == 0)
+		if  (ft_strncmp("PWD=", lst->content, 4) == 0)
 		{
-			ft_putstr_fd(a->env[i] + 4, 1);
+			ft_putstr_fd(lst->content + 4, 1); //attention fd = 1
 			return ;
 		}
+		lst = lst->next;
 	}
 }
 
