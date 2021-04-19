@@ -7,9 +7,8 @@ void	ft_raw_mode(t_a *a)
 	tcgetattr(STDIN_FILENO, &a->trms);
 	z = a->trms;
     z.c_lflag &= ~(ECHO | ICANON);
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &a->trms) == -1)
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &z) == -1)
         ft_exit_clean(a, "Error\nTermcap raw mode failed\n");
-
 }
 
 void	ft_init_termcap(t_a *a)
