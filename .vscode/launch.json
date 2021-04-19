@@ -8,14 +8,22 @@
 			"name": "clang - Générer et déboguer le fichier actif",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/minishell",
+			"program": "${fileDirname}/${fileBasenameNoExtension}",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
 			"MIMode": "lldb",
-			//"preLaunchTask": "C/C++: clang générer le fichier actif"
+			"setupCommands": [
+				{
+					"description": "Activer l'impression en mode Pretty pour gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			],
+			"preLaunchTask": "C/C++: clang générer le fichier actif",
+			"miDebuggerPath": "/usr/bin/lldb-mi"
 		}
 	]
 }

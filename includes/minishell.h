@@ -14,7 +14,7 @@
 # define SEPARATORS " '\"|;><"
 # define PRINT_TOKENS 1
 # define MINISHELL_NAME "Twentyfifth"
-# define TERMCAPS 1
+# define TERMCAPS 0
 
 typedef struct	s_struct
 {

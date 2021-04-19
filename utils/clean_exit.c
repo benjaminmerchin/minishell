@@ -26,12 +26,19 @@ void	ft_cleanstruct(t_a *a)
 	a->sep = SEPARATORS;
 }
 
+void	ft_cleantermcaps(t_a *a)
+{
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &a->trms);
+}
+
 void	ft_exit_clean(t_a *a, char *str)
 {
 	ft_putstr_fd(str, 2);
 	ft_cleanstruct(a);
 	//ft_putnbr(ft_lstsize(a->lst_env));
 	ft_lstclear(&(a->lst_env)); // free env list
+	if (TERMCAPS)
+		ft_cleantermcaps(a); //clairement ça ne clean pas encore tout
 	//free everything
 	exit (0);
 }

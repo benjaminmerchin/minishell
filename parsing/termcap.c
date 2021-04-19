@@ -22,7 +22,7 @@ void	ft_init_termcap(t_a *a)
     i = tgetent(NULL, term_type);
 	if (i == -1 || i == 0)
         ft_exit_clean(a, "Error\nWe crashed the tgetent\n");
-	tcgetattr(STDIN_FILENO, &a->trms);
+	//tcgetattr(STDIN_FILENO, &a->trms);
 	a->column_count = tgetnum("co");
 	a->line_count = tgetnum("li");
 	ft_raw_mode(a);

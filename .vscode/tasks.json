@@ -3,8 +3,13 @@
         {
             "type": "cppbuild",
             "label": "C/C++: clang générer le fichier actif",
-            "command": "make re",
-            "args": [],
+            "command": "/usr/bin/clang",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
             "options": {
                 "cwd": "${workspaceFolder}"
             },
