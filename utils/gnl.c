@@ -12,96 +12,110 @@
 
 #include "../includes/minishell.h"
 
-int		ft_hasnewline(char *str)
+int		ft_strlenn(char *str)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i])
-	{
-		if (str[i] == '\n')
-			return (1);
+	while (str[i] != '\0' && str[i] != '\n')
 		i++;
+	return (i);
+}
+
+char	*free_null(char *s1)
+{
+	free(s1);
+	return (NULL);
+}
+
+int		free_int(char **line)
+{
+	free(*line);
+	return (-1);
+}
+
+char	*ft_strjoin(char *s1, char *s2, t_struct *data)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	if (!(str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlenn(s2) + 1))))
+		return (free_null(s1));
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (s2[j] != '\n' && s2[j] != '\0')
+	{
+		str[i + j] = s2[j];
+		j++;
+		data->curs += 1;
+	}
+	str[i + j] = '\0';
+	free(s1);
+	return (str);
+}
+
+int		get_next_line2(int fd, char **line, t_struct *data)
+{
+	while (data->ret > 0)
+	{
+		if (ft_strlen(data->buff + data->curs) !=
+		ft_strlenn(data->buff + data->curs))
+		{
+			*line = ft_strjoin(*line, data->buff + data->curs, data);
+			if (*line == NULL)
+				return (-1);
+			data->curs += 1;
+			return (1);
+		}
+		if (data->curs < data->ret)
+		{
+			*line = ft_strjoin(*line, data->buff + data->curs, data);
+			if (*line == NULL)
+				return (-1);
+		}
+		data->ret = read(fd, data->buff, 4);
+		if (data->ret < 0)
+			return (free_int(line));
+		data->buff[data->ret] = '\0';
+		data->curs = 0;
 	}
 	return (0);
 }
 
-char	*ft_majtmp(char *tmp)
-{
-	int		i;
-	int		j;
-	char	*maj;
-
-	if (!tmp)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (tmp[i] != '\n' && tmp[i])
-		i++;
-	if (!tmp[i])
-	{
-		free(tmp);
-		return (0);
-	}
-	if (!(maj = malloc(sizeof(*maj) * (ft_strlen(tmp) - i + 1))))
-		return (0);
-	i++;
-	while (tmp[i])
-		maj[j++] = tmp[i++];
-	maj[j] = '\0';
-	free(tmp);
-	return (maj);
-}
-
-char	*ft_newline(char *tmp)
-{
-	char	*nl;
-	int		i;
-
-	if (!tmp)
-		return (0);
-	i = 0;
-	while (tmp[i] && tmp[i] != '\n')
-		i++;
-	if (!(nl = malloc(sizeof(*nl) * (i + 1))))
-		return (0);
-	i = 0;
-	while (tmp[i] && tmp[i] != '\n')
-	{
-		nl[i] = tmp[i];
-		i++;
-	}
-	nl[i] = '\0';
-	return (nl);
-}
-
 int		get_next_line(int fd, char **line)
 {
-	char		*lu;
-	static char	*tmp[256];
-	int			len;
+	static t_struct data;
 
-	if (fd < 0 || !line)
+	if (read(fd, data.buff, 0) < 0 || fd < 0 || fd > 10240 || line == NULL)
 		return (-1);
-	if (!(lu = malloc(sizeof(*lu) * (5))))
+	*line = (char *)malloc(sizeof(char));
+	if (!*line)
 		return (-1);
-	len = 1;
-	while (len != 0 && !(ft_hasnewline(tmp[fd])))
+	*line[0] = '\0';
+	if (ft_strlen(data.buff + data.curs) != ft_strlenn(data.buff + data.curs))
 	{
-		if ((len = read(fd, lu, 4)) == -1)
-		{
-			free(lu);
+		*line = ft_strjoin(*line, data.buff + data.curs, &data);
+		if (*line == NULL)
 			return (-1);
-		}
-		lu[len] = '\0';
-		tmp[fd] = ft_joinofgnl(tmp[fd], lu);
+		data.curs += 1;
+		return (1);
 	}
-	free(lu);
-	*line = ft_newline(tmp[fd]);
-	tmp[fd] = ft_majtmp(tmp[fd]);
-	if (len == 0)
-		return (0);
-	return (1);
+	if (data.ret == 0)
+	{
+		data.ret = read(fd, data.buff, 4);
+		if (data.ret < 0)
+			return (free_int(line));
+		data.buff[data.ret] = '\0';
+	}
+	return (get_next_line2(fd, line, &data));
 }

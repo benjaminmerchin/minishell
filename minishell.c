@@ -4,7 +4,7 @@ void	ft_title(t_a *a)
 {
 	ft_putstr_fd(MINISHELL_NAME, 1);
 	ft_putstr_fd(" ", 1);
-	ft_parsenv(a);
+	ft_parsenv(a); // output sur 1 tout le temps ?
 	ft_putstr_fd("> ", 1);
 }
 
