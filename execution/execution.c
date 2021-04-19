@@ -93,6 +93,7 @@ int content_have_value(char *str)
 	}
 	return (0);
 }
+
 void	ft_env(t_a *a, int *i)
 {
 	t_list *lst;
@@ -279,32 +280,60 @@ void		remove_me_if_i_exist(t_a *a, int *i, int ret)
 	}
 }
 
-void		ft_unset(t_a *a, int *i)
+void	ft_unset(t_a *a, int *i)
 {
 	int ret;
 	
 	(*i)++;
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+	if (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
 		if (ret > 0)
 			remove_me_if_i_exist(a, i, ret);;
 		(*i)++;
 	}
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+		(*i)++;
 }
 
-int		does_this_command_exist(t_a *a, int *i)
+void	find_home_and_replace_cd_with_home_path(t_a *a, int *i)
 {
-	(void)a;
-	(void)i;
-	return (0);
+	t_list *lst;
+
+	(*i)--;
+	lst = a->lst_env;
+	while (lst)
+	{
+		if  (ft_strncmp("HOME=", lst->content, 4) == 0)
+		{
+			free(a->raw[*i].str);
+			a->raw[*i].str = ft_strdup(lst->content + 5);
+			return ;
+		}
+		lst = lst->next;
+	}
 }
 
-void	dup_fork_wait_execute(t_a *a, int *i)
-{
-	(void)a;
-	(void)i;
-	return ;
+void	ft_cd(t_a *a, int *i) //bien update le pwd en sortie de fonction
+{	
+	int ret;
+
+	(*i)++;
+	if (a->raw[*i].str == 0 || a->raw[*i].type == '|' || a->raw[*i].type == ';')
+		find_home_and_replace_cd_with_home_path(a, i); //on l'emmene au repertoire HOME=
+	ret = chdir(a->raw[*i].str);
+	if (ret < 0)
+	{
+		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
+		ft_putstr_fd(": cd: ", a->raw[*i].fd_output);
+		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
+		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);		
+	}
+	//ft_putchar_fd('@', a->raw[*i].fd_output);
+	//ft_putnbr_fd(ret, a->raw[*i].fd_output);
+	//update_pwd(a, i);
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+		(*i)++;
 }
 
 void	ft_execution(t_a *a)
@@ -323,15 +352,15 @@ void	ft_execution(t_a *a)
 		//we dup, fork and execute for he others commands
 	while (a->raw[i].str)//on boucle entre | ou ;
 	{
-		if (a->raw[i].type == '|' || a->raw[i].type == ';')
+		if (a->raw[i].type == '|' || a->raw[i].type == ';') //faire l'expansion ici, juste les $ et les // ou ''""
 			i++;
 		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0) //70%
 			ft_exit_clean(a, "");
 		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //70%
 			ft_echo(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //utiliser chdir
-			ft_work_in_progress(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //30% //update avec le new parsenv //utiliser getpwd a chaque mouvement
+		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //utiliser chdir //utiliser getpwd a chaque mouvement sur PWD=
+			ft_cd(a, &i);
+		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //30% //utiliser getpwd a chaque mouvement
 			ft_pwd(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0) //80%
 			ft_export(a, &i);
@@ -341,7 +370,7 @@ void	ft_execution(t_a *a)
 			ft_env(a, &i);
 		else
 		{
-			if (does_this_command_exist(a, &i))
+			if (does_this_command_exist(a, &i)) //maybe combine there
 				dup_fork_wait_execute(a, &i); // here try to find the executables
 			else
 				add_env_or_command_not_found(a, &i);	//80%

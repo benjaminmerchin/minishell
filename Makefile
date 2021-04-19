@@ -10,7 +10,7 @@ SRC		=	minishell.c \
 			parsing/parsing.c parsing/split.c \
 			parsing/termcap.c \
 			\
-			execution/execution.c
+			execution/execution.c execution/dup_fork_wait_execute.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
 
