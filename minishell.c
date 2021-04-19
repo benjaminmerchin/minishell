@@ -57,7 +57,7 @@ void	ft_store_env_in_lst(t_a *a)
 
 void	ft_readnonprint(t_a *a)
 {
-	
+	(void)a;
 }
 
 void	ft_get_keyboard_input(t_a *a)

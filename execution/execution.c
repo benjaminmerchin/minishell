@@ -99,6 +99,17 @@ void	ft_env(t_a *a, int *i)
 	t_list *lst;
 
 	lst = a->lst_env;
+	while (a->raw[*i + 1].str && ft_strncmp(a->raw[*i].str, a->raw[*i + 1].str, 10) == 0 && ft_strlen(a->raw[*i + 1].str) == 3)
+		(*i)++;
+	if (!(a->raw[*i + 1].str == 0 || a->raw[*i + 1].type == '|' || a->raw[*i + 1].type == ';'))
+	{
+		ft_putstr_fd("env: ", a->raw[*i].fd_output);
+		ft_putstr_fd(a->raw[*i + 1].str, a->raw[*i].fd_output);
+		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);
+		while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+			(*i)++;
+		return ;
+	}
 	while (lst)
 	{
 		if (content_have_value(lst->content))
@@ -108,8 +119,7 @@ void	ft_env(t_a *a, int *i)
 		}
 		lst = lst->next;
 	}
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-		(*i)++;
+	(*i)++;
 }
 
 void	ft_work_in_progress(t_a *a, int *i)
