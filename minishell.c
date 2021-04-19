@@ -8,25 +8,31 @@ void	ft_title(t_a *a)
 	ft_putstr_fd("> ", 1);
 }
 
-void	ft_appendchar(char c, t_a *a)
+void	ft_appendchar(t_a *a)
 {
 	char	*str;
 	int		i;
+	int		k;
 
-	if (!a->line || a->line[0] == 0)
+	k = 0;
+	while (ft_isprint(a->buff[k]))
+		k++;
+	/*if (!a->line || a->line[0] == 0)
 	{
 		a->line = malloc(sizeof(char) * 2);
 		a->line[0] = a->buff[0];
 		a->line[1] = 0;
 		return ;
-	}
-	str = malloc(sizeof(char) * (ft_strlen(a->line) + 2));
+	}*/
+	str = malloc(sizeof(char) * (ft_strlen(a->line) + k + 1));
 	if (!str)
 		ft_exit_clean(a, "Error\nMalloc failed in appendchar\n");
 	i = -1;
-	while (a->line[++i])
+	while (a->line && a->line[++i])
 		str[i] = a->line[i];
-	str[i] = c;
+	k = -1;
+	while (a->buff[++k])
+		str[++i] = a->buff[k];
 	str[i + 1] = 0;
 	free(a->line);
 	a->line = str;
