@@ -24,6 +24,12 @@ char	*ft_strdup(char *s)
 	int		len;
 
 	i = 0;
+	if (!s)
+	{
+		res = malloc(sizeof(char) * 1);
+		res[0] = 0;
+		return (res);
+	}
 	len = ft_strlen(s) + 1;
 	if (!(res = malloc(sizeof(char) * len)))
 		return (NULL);
