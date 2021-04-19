@@ -12,22 +12,27 @@ void	ft_appendchar(t_a *a)
 {
 	char	*str;
 	int		i;
+	int		k;
 
-	if (a->line[0] == 0)
+	k = 0;
+	while (ft_isprint(a->buff[k]))
+		k++;
+	/*if (!a->line || a->line[0] == 0)
 	{
 		a->line = malloc(sizeof(char) * 2);
 		a->line[0] = a->buff[0];
 		a->line[1] = 0;
 		return ;
-	}
-	str = malloc(sizeof(char) * (ft_strlen(a->line) + 2));
+	}*/
+	str = malloc(sizeof(char) * (ft_strlen(a->line) + k + 1));
 	if (!str)
-		//ft_exit_clean(a, "Error\nMalloc failed in appendchar\n");
-		;
+		ft_exit_clean(a, "Error\nMalloc failed in appendchar\n");
 	i = -1;
-	while (a->line[++i])
+	while (a->line && a->line[++i])
 		str[i] = a->line[i];
-	str[i] = a->buff[0];
+	k = -1;
+	while (a->buff[++k])
+		str[++i] = a->buff[k];
 	str[i + 1] = 0;
 	free(a->line);
 	a->line = str;
@@ -35,9 +40,9 @@ void	ft_appendchar(t_a *a)
 
 void	ft_store_env_in_lst(t_a *a)
 {
-	int i;
-	t_list *lst;
-	t_list *temp;
+	int		i;
+	t_list	*lst;
+	t_list	*temp;
 	char	*char_temp;
 	
 	i = 1;
@@ -56,17 +61,19 @@ void	ft_store_env_in_lst(t_a *a)
 void	ft_get_keyboard_input(t_a *a)
 {
 	int ret;
+	int	i;
 
 	while((ret = read(a->fd, a->buff, 4)))
 	{
+		i = -1;
+		while (ft_isprint(a->buff[++i]))
 		a->buff[ret] = 0;
 		if (ft_isprint(a->buff[0]))
-		{
-			ft_putchar_fd(a->buff[0], 1);
 			ft_appendchar(a);
-		}
-			
 	}
+	ft_putstr_fd("Here come the line:\n", 1);
+	ft_putstr_fd(a->line, 1);
+	ft_putchar_fd('\n', 1);
 }
 
 int		main(int ac, char **av, char **env)
@@ -79,10 +86,10 @@ int		main(int ac, char **av, char **env)
 
 	ft_init_struct(&a);
 	ft_store_env_in_lst(&a);
-	//ft_init_termcap(&a);
+	if (TERMCAPS)
+		ft_init_termcap(&a);
 	while(1)
 	{
-		//ft_putstr_fd("\nMAIN\n", 1);
 		ft_title(&a);
 		if(TERMCAPS)
 			ft_get_keyboard_input(&a);
