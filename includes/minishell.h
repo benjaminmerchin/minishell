@@ -16,6 +16,13 @@
 # define MINISHELL_NAME "twentyfifth"
 # define TERMCAPS 0
 
+typedef struct	s_struct
+{
+	char	buff[4 + 1];
+	int		ret;
+	int		curs;
+}				t_struct;
+
 typedef struct	s_list
 {
 	char			*content;

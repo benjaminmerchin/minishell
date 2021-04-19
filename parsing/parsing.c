@@ -19,8 +19,6 @@ void	ft_parsenv(t_a *a)
 void	ft_parsing(t_a *a)
 {
 	get_next_line(0, &a->line);
-	
-
 }
 
 /*
