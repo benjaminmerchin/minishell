@@ -56,16 +56,17 @@ void	ft_echo(t_a *a, int *i)
 
 void	ft_parsenv_fd(t_a *a, int fd)
 {
-	int i;
+	t_list *lst;
 
-	i = -1;
-	while (a->env[++i])
+	lst = a->lst_env;
+	while (lst)
 	{
-		if (ft_strncmp(a->env[i], "PWD=", 4) == 0)
+		if  (ft_strncmp("PWD=", lst->content, 4) == 0)
 		{
-			ft_putstr_fd(a->env[i] + 4, fd);
+			ft_putstr_fd(lst->content + 4, fd);
 			return ;
 		}
+		lst = lst->next;
 	}
 }
 
@@ -117,10 +118,70 @@ void	ft_work_in_progress(t_a *a, int *i)
 	ft_putstr_fd("Work in progress for this command\n", 1);
 }
 
+int		ft_verification_content(char *str, t_a *a, int *i)
+{
+	int j;
+	int error;
+
+	j = 0;
+	error = 0;
+	while (str[j] != '=' && str[j] != '\0')
+	{
+		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_'))
+		|| (j == 0 && !(ft_isalpha(str[j]) || str[j] == '_')))
+		{
+			error = 1;
+			break ;
+		}
+		j++;
+	}
+	j++;
+	if (j == 0 || error == 1)
+	{
+		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
+		ft_putstr_fd(": export: `", a->raw[*i].fd_output);
+		ft_putstr_fd(str, a->raw[*i].fd_output);
+		ft_putstr_fd("': not a valid identifier\n", a->raw[*i].fd_output);
+		return(-1);
+	}
+	return (j);
+}
+
+void	command_not_found(t_a *a, int *i)
+{
+	ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
+	ft_putstr_fd(": ", a->raw[*i].fd_output);
+	ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
+	ft_putstr_fd(": command not found\n", a->raw[*i].fd_output);
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+		(*i)++;
+}
+
 void	add_env(t_a *a, int *i)
 {
-	(void)a;
-	(void)i;
+	int ret;
+	t_list *lst;
+
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+	{
+		ret = ft_verification_content(a->raw[*i].str, a, i);
+		if (ret > 0)
+		{
+			lst = a->lst_env;
+			while (lst)
+			{
+				if  (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
+				{
+					free(lst->content);
+					lst->content = ft_strdup(a->raw[*i].str);
+				}
+				lst = lst->next;
+			}
+			(*i)++;
+		}
+		else
+			command_not_found(a, i);
+	}
 }
 
 void	add_env_or_command_not_found(t_a *a, int *i)
@@ -130,17 +191,10 @@ void	add_env_or_command_not_found(t_a *a, int *i)
 	j = 0;
 	while (a->raw[*i].str[j] != '\0' && a->raw[*i].str[j] != '=')
 		j++;
-	if (a->raw[*i].str[j] != '=')
+	if (a->raw[*i].str[j] == '=' && j != 0)
 		add_env(a, i);
 	else
-	{
-		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
-		ft_putstr_fd(": ", a->raw[*i].fd_output);
-		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
-		ft_putstr_fd(": command not found\n", a->raw[*i].fd_output);
-		while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-			(*i)++;
-	}
+		command_not_found(a, i);
 }
 
 void	ft_declare_print_export(t_a *a, int *i)
@@ -169,35 +223,6 @@ void	ft_declare_print_export(t_a *a, int *i)
 		ft_putstr_fd("\n", a->raw[*i - 1].fd_output);
 		lst = lst->next;
 	}
-}
-
-int		ft_verification_content(char *str, t_a *a, int *i)
-{
-	int j;
-	int error;
-
-	j = 0;
-	error = 0;
-	while (str[j] != '=' && str[j] != '\0')
-	{
-		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_'))
-		|| (j == 0 && !(ft_isalpha(str[j]) || str[j] == '_')))
-		{
-			error = 1;
-			break ;
-		}
-		j++;
-	}
-	j++;
-	if (j == 0 || error == 1)
-	{
-		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
-		ft_putstr_fd(": export: `", a->raw[*i].fd_output);
-		ft_putstr_fd(str, a->raw[*i].fd_output);
-		ft_putstr_fd("': not a valid identifier\n", a->raw[*i].fd_output);
-		return(-1);
-	}
-	return (j);
 }
 
 void		add_me_if_i_do_not_exist_yet(t_a *a, int *i, int ret)
@@ -319,7 +344,7 @@ void	ft_execution(t_a *a)
 			if (does_this_command_exist(a, &i))
 				dup_fork_wait_execute(a, &i); // here try to find the executables
 			else
-				add_env_or_command_not_found(a, &i);	//80% //except if there is an =, it changes env value
+				add_env_or_command_not_found(a, &i);	//80%
 		}
 	}
 }
