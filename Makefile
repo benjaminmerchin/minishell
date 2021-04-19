@@ -12,7 +12,7 @@ SRC		=	minishell.c \
 			\
 			execution/execution.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
-CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
 
 all: $(NAME)
 
@@ -20,7 +20,7 @@ bonus: all
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -lncurses -ltermcap $(OBJ) -o $(NAME)
-#	@echo 'Checker Compilation OK'
+	@echo 'Checker Compilation OK'
 
 $(OBJDIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
