@@ -7,3 +7,5 @@ April 18th: Progress: 1310/3300 lines: 40%
 Deadline : April 25th  
 
 <!--- echo 'scale=3; 1250/3300' | bc --->
+<!-- minishell git:(master) ✗ valgrind --leak-check=full --show-leak-kinds=all ./minishell -->
+    

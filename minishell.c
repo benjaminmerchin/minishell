@@ -30,9 +30,13 @@ void	ft_appendchar(t_a *a)
 	i = -1;
 	while (a->line && a->line[++i])
 		str[i] = a->line[i];
-	k = -1;
-	while (a->buff[++k])
-		str[++i] = a->buff[k];
+	k = 0;
+	while (a->buff[k])
+	{
+		str[i] = a->buff[k];
+		i++;
+		k++;
+	}
 	str[i + 1] = 0;
 	free(a->line);
 	a->line = str;
