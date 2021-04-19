@@ -30,11 +30,7 @@ void	ft_appendbuffer(t_a *a, int k)
 		i++;
 		j++;
 	}
-	ft_putstr_fd("La line est propre?\n", 1);
-	ft_putstr_fd(a->line, 1);
-	ft_putstr_fd("\n", 1);
 	str[i] = 0;
-	ft_putstr_fd(str, 1);
 	free(a->line);
 	a->line = str;
 }
@@ -59,6 +55,11 @@ void	ft_store_env_in_lst(t_a *a)
 	a->lst_env = lst;
 }
 
+void	ft_readnonprint(t_a *a)
+{
+	
+}
+
 void	ft_get_keyboard_input(t_a *a)
 {
 	int ret;
@@ -73,7 +74,7 @@ void	ft_get_keyboard_input(t_a *a)
 			return ;
 		}
 		if (a->buff[1] != 0)
-			ft_putchar_fd(a->buff[1], 1);
+			ft_readnonprint(a);
 		else
 			ft_appendbuffer(a, 1);
 	}
@@ -96,9 +97,7 @@ int		main(int ac, char **av, char **env)
 		ft_title(&a);
 		if(TERMCAPS)
 			ft_get_keyboard_input(&a);
-		ft_putstr_fd("On get les inputs ?\n", 1);
-		ft_putstr_fd(a.line, 1);
-		if(TERMCAPS == 0)
+		else
 			ft_parsing(&a);
 		ft_split_sh(&a);
 		ft_print_string(&a); //remove at the end
