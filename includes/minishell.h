@@ -88,7 +88,6 @@ void	ft_save_hist(t_a *a, char *line);
 
 void	ft_parsing(t_a *a);
 int		get_next_line(int fd, char **line);
-char	*ft_joinofgnl(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, int n);
 
 void	ft_init_termcap(t_a *a);
@@ -101,6 +100,10 @@ void	ft_print_string(t_a *a);
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
 void	ft_execution(t_a *a);
+int		does_this_command_exist(t_a *a, int *i);
+void	dup_fork_wait_execute(t_a *a, int *i);
+
+
 
 //listes
 t_list	*ft_lstnew(char *content);

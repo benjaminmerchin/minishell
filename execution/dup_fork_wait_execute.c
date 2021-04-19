@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gnl_utils.c                                        :+:      :+:    :+:   */
+/*   dup_fork_wait_execute.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/02 00:50:26 by user42            #+#    #+#             */
-/*   Updated: 2021/03/02 00:50:28 by user42           ###   ########.fr       */
+/*   Created: 2021/03/18 19:00:55 by user42            #+#    #+#             */
+/*   Updated: 2021/03/18 19:04:02 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		ft_strlen(char *s)
+int		does_this_command_exist(t_a *a, int *i)
 {
-	unsigned int i;
+	(void)a;
+	(void)i;
+	return (0);
+}
 
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
+void	dup_fork_wait_execute(t_a *a, int *i)
+{
+	(void)a;
+	(void)i;
+	return ;
 }
