@@ -20,7 +20,7 @@ bonus: all
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -lncurses -ltermcap $(OBJ) -o $(NAME)
-	@echo 'Checker Compilation OK'
+	@echo 'Compilation Done'
 
 $(OBJDIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
