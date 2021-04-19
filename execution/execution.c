@@ -117,16 +117,30 @@ void	ft_work_in_progress(t_a *a, int *i)
 	ft_putstr_fd("Work in progress for this command\n", 1);
 }
 
-void	command_not_found(t_a *a, int *i)
+void	add_env(t_a *a, int *i)
 {
-	/*if (a->raw[*i].fd_output == 1 || a->raw[*i].fd_output == 2)
-		ft_putstr_fd("\n", a->raw[*i].fd_output);*/
-	ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
-	ft_putstr_fd(": ", a->raw[*i].fd_output);
-	ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
-	ft_putstr_fd(": command not found\n", a->raw[*i].fd_output);
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-		(*i)++;
+	(void)a;
+	(void)i;
+}
+
+void	add_env_or_command_not_found(t_a *a, int *i)
+{
+	int j;
+
+	j = 0;
+	while (a->raw[*i].str[j] != '\0' && a->raw[*i].str[j] != '=')
+		j++;
+	if (a->raw[*i].str[j] != '=')
+		add_env(a, i);
+	else
+	{
+		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
+		ft_putstr_fd(": ", a->raw[*i].fd_output);
+		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
+		ft_putstr_fd(": command not found\n", a->raw[*i].fd_output);
+		while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+			(*i)++;
+	}
 }
 
 void	ft_declare_print_export(t_a *a, int *i)
@@ -290,9 +304,9 @@ void	ft_execution(t_a *a)
 			ft_exit_clean(a, "");
 		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //70%
 			ft_echo(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) 
+		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //utiliser chdir
 			ft_work_in_progress(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //30% //update avec le new parsenv
+		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //30% //update avec le new parsenv //utiliser getpwd a chaque mouvement
 			ft_pwd(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0) //80%
 			ft_export(a, &i);
@@ -305,7 +319,7 @@ void	ft_execution(t_a *a)
 			if (does_this_command_exist(a, &i))
 				dup_fork_wait_execute(a, &i); // here try to find the executables
 			else
-				command_not_found(a, &i);	//80% //except if there is an =, it changes env value
+				add_env_or_command_not_found(a, &i);	//80% //except if there is an =, it changes env value
 		}
 	}
 }
