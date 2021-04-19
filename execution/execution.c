@@ -27,11 +27,33 @@ void	temporary_set_all_input_to_0_and_output_to_1(t_a *a)
 	a->raw[i].fd_output = 1;
 }
 
+void	update_pwd(t_a *a, int *i)
+{
+	t_list *lst;
+	char	buff[10000];
+	char	*ptr;
+
+	(void)i;
+	lst = a->lst_env;
+	ptr = getcwd(buff, 10000);
+	if (!ptr)
+		return ;
+	while (lst)
+	{
+		if  (ft_strncmp("PWD=", lst->content, 4) == 0)
+		{
+			free(lst->content);
+			lst->content = ft_strjoin_libft("PWD=", ptr);
+			return ;
+		}
+		lst = lst->next;
+	}
+}
+
 void	ft_echo(t_a *a, int *i)
 {
 	int	v_b_bn; //variable boolean to manage the -n flag
 	int	n_begin; //-n flag only accepted at the beginning
-	(void)a;
 
 	(*i)++;
 	v_b_bn = 1;
@@ -72,6 +94,7 @@ void	ft_parsenv_fd(t_a *a, int fd)
 
 void	ft_pwd(t_a *a, int *i)
 {	
+	update_pwd(a, i);
 	ft_parsenv_fd(a, a->raw[*i].fd_output);
 	ft_putchar_fd('\n', a->raw[*i].fd_output);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
@@ -99,6 +122,7 @@ void	ft_env(t_a *a, int *i)
 	t_list *lst;
 
 	lst = a->lst_env;
+	update_pwd(a, i);
 	while (a->raw[*i + 1].str && ft_strncmp(a->raw[*i].str, a->raw[*i + 1].str, 10) == 0 && ft_strlen(a->raw[*i + 1].str) == 3)
 		(*i)++;
 	if (!(a->raw[*i + 1].str == 0 || a->raw[*i + 1].type == '|' || a->raw[*i + 1].type == ';'))
@@ -262,6 +286,7 @@ void		ft_export(t_a *a, int *i)
 	int	ret;
 
 	(*i)++;
+	update_pwd(a, i);
 	if (a->raw[*i].str == 0 || a->raw[*i].type == '|' || a->raw[*i].type == ';')
 		ft_declare_print_export(a, i);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')

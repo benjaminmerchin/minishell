@@ -82,6 +82,7 @@ int		ft_isprint(int c);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
+char	*ft_strjoin_libft(char *s1, char *s2);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
