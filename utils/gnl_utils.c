@@ -12,14 +12,26 @@
 
 #include "../includes/minishell.h"
 
-int		ft_strlen(char *s)
+int		ft_strlenn(char *str)
 {
-	unsigned int i;
+	int i;
 
 	i = 0;
-	if (!s)
+	if (!str)
 		return (0);
-	while (s[i])
+	while (str[i] != '\0' && str[i] != '\n')
 		i++;
 	return (i);
+}
+
+char	*free_null(char *s1)
+{
+	free(s1);
+	return (NULL);
+}
+
+int		free_int(char **line)
+{
+	free(*line);
+	return (-1);
 }

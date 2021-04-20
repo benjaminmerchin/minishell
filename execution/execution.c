@@ -339,7 +339,7 @@ void	find_home_and_replace_cd_with_home_path(t_a *a, int *i)
 	lst = a->lst_env;
 	while (lst)
 	{
-		if  (ft_strncmp("HOME=", lst->content, 4) == 0)
+		if  (ft_strncmp("HOME=", lst->content, 5) == 0)
 		{
 			free(a->raw[*i].str);
 			a->raw[*i].str = ft_strdup(lst->content + 5);

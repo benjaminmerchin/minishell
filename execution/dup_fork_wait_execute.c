@@ -61,8 +61,48 @@ char	**put_aenv_into_an_array(t_a *a, int *i)
 	return (table);
 }
 
-//mettre les env en tab
-//utiliser waitpid
+char	*return_str_from_env(t_a *a, char *str)
+{
+	t_list *lst;
+
+	lst = a->lst_env;
+	while (lst)
+	{
+		if  (ft_strncmp(str, lst->content, ft_strlen(str)) == 0)
+		{
+			return (lst->content + ft_strlen(str));
+		}
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+void	ft_free_table(char **table)
+{
+	int i;
+
+	i = 0;
+	while (table[i])
+	{
+		free(table[i]);
+		i++;
+	}
+	free(table);
+	return ;
+}
+
+void	does_this_function_exist(t_a *a, int *i)
+{
+	(void)i;
+	char	**temp;
+	char	*path;
+
+	path = return_str_from_env(a, "PATH=");
+	temp = ft_split(path, ':');
+
+
+	ft_free_table(temp);
+}
 
 void	dup_fork_wait_execute(t_a *a, int *i)
 {
@@ -77,9 +117,9 @@ void	dup_fork_wait_execute(t_a *a, int *i)
 		(*i)++;
 	return ;
 
-	pid = fork();
 	argv = put_args_into_an_array(a, i);
 	aenv = put_aenv_into_an_array(a, i);
+	pid = fork();
 	//path = does_this_function_exist(a, i);
 	// checker si la fonction en chemin absolu ou relatif existe
 	// si elle existe pas 
@@ -90,6 +130,7 @@ void	dup_fork_wait_execute(t_a *a, int *i)
 			perror("temporaire"); //remplace perror with strerrer & errno
 		//ft_exit_clean(a, "Error:\nFork failed\n");
 		add_env_or_command_not_found(a, i);	//80%
+
 	}
 	else if (pid < 0)
 		ft_exit_clean(a, "Error:\nFork failed\n");
@@ -107,35 +148,3 @@ void	dup_fork_wait_execute(t_a *a, int *i)
 	free (aenv);
 	return ;
 }
-
-/*int lsh_launch(char **args)
-{
-	pid_t pid;
-	int status;
-
- 	 pid = fork();
-  	if (pid == 0) 
-  	{
-    // Child process
-   		if (execvp(args[0], args) == -1) 
-		{
-    		perror("lsh");
-		}
-    	exit(EXIT_FAILURE);
- 	} 
-  	else if (pid < 0)
-	{
-    // Error forking
-  		perror("lsh");
- 	} 
-	else 
-	{
-    // Parent process
-		do 
-		{
-			waitpid(pid, &status, WUNTRACED);
-		}
-		while (!WIFEXITED(status) && !WIFSIGNALED(status));
-  	}
-  	return 1;
-}*/

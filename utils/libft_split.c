@@ -12,17 +12,17 @@
 
 #include "../includes/minishell.h"
 
-static char	**ft_free(char **tab, int nbr)
+static char	**ft_free(char **ttt, int nbr)
 {
 	int i;
 
 	i = 0;
 	while (i < nbr)
 	{
-		free(tab[i]);
+		free(ttt[i]);
 		i++;
 	}
-	free(tab);
+	free(ttt);
 	return (NULL);
 }
 
@@ -60,7 +60,7 @@ static int	ft_len_str(int i, char *s, char c)
 	return (counter);
 }
 
-static char	**ft_split2(char **tab, char const *s, char c, int nbr_str)
+static char	**ft_split2(char **ttt, char const *s, char c, int nbr_str)
 {
 	int len_str;
 	int cursor;
@@ -75,29 +75,29 @@ static char	**ft_split2(char **tab, char const *s, char c, int nbr_str)
 		while (s[cursor] == c)
 			cursor++;
 		len_str = ft_len_str(cursor, (char *)s, c);
-		if (!(tab[i] = malloc(sizeof(char) * (len_str + 1))))
-			return (ft_free(tab, i));
+		if (!(ttt[i] = malloc(sizeof(char) * (len_str + 1))))
+			return (ft_free(ttt, i));
 		while (s[cursor] != c && s[cursor] != '\0')
 		{
-			tab[i][j] = s[cursor];
+			ttt[i][j] = s[cursor];
 			cursor++;
 			j++;
 		}
-		tab[i++][j] = '\0';
+		ttt[i++][j] = '\0';
 	}
-	tab[nbr_str] = 0;
-	return (tab);
+	ttt[nbr_str] = 0;
+	return (ttt);
 }
 
 char		**ft_split(char const *s, char c)
 {
 	int		nbr_str;
-	char	**tab;
+	char	**ttt;
 
 	if (!s)
 		return (NULL);
 	nbr_str = ft_nbr_str((char *)s, c);
-	if (!(tab = malloc(sizeof(char *) * (nbr_str + 1))))
+	if (!(ttt = malloc(sizeof(char *) * (nbr_str + 1))))
 		return (0);
-	return (ft_split2(tab, s, c, nbr_str));
+	return (ft_split2(ttt, s, c, nbr_str));
 }

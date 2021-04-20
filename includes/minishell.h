@@ -13,7 +13,7 @@
 
 # define SEPARATORS " '\"|;><"
 # define PRINT_TOKENS 1
-# define MINISHELL_NAME "Musk est le messie"
+# define MINISHELL_NAME "musk_stonks"
 # define TERMCAPS 0
 
 typedef struct	s_struct
@@ -106,6 +106,9 @@ void	ft_execution(t_a *a);
 void	add_env_or_command_not_found(t_a *a, int *i);
 void	dup_fork_wait_execute(t_a *a, int *i);
 
+int		ft_strlenn(char *str);
+char	*free_null(char *s1);
+int		free_int(char **line);
 
 
 //listes
@@ -114,6 +117,6 @@ void	ft_lstadd_back(t_list **alst, t_list *new);
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 void	ft_lstclear(t_list **lst);
 void	ft_lstdelone(t_list *lst);
-int	ft_lstsize(t_list *lst);
+int		ft_lstsize(t_list *lst);
 
 #endif

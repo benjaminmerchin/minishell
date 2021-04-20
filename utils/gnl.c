@@ -12,30 +12,6 @@
 
 #include "../includes/minishell.h"
 
-int		ft_strlenn(char *str)
-{
-	int i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != '\0' && str[i] != '\n')
-		i++;
-	return (i);
-}
-
-char	*free_null(char *s1)
-{
-	free(s1);
-	return (NULL);
-}
-
-int		free_int(char **line)
-{
-	free(*line);
-	return (-1);
-}
-
 char	*ft_strjoin(char *s1, char *s2, t_struct *data)
 {
 	int		i;
