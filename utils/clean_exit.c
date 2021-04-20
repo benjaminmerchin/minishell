@@ -33,13 +33,20 @@ void	ft_cleantermcaps(t_a *a)
 
 void	ft_exit_clean(t_a *a, char *str)
 {
+	int	i;
+	
 	ft_putstr_fd(str, 2);
 	ft_cleanstruct(a);
 	//ft_putnbr(ft_lstsize(a->lst_env));
 	ft_lstclear(&(a->lst_env)); // free env list
 	if (TERMCAPS)
+	{
+		i = -1;
+		while (a->h[++i])
+			free(a->h[i]);
+		free(a->h);
 		ft_cleantermcaps(a); //clairement ça ne clean pas encore tout
-	//free everything
+	}
 	exit (0);
 }
 

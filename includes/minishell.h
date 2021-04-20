@@ -13,7 +13,7 @@
 
 # define SEPARATORS " '\"|;><"
 # define PRINT_TOKENS 1
-# define MINISHELL_NAME "Twentyfifth"
+# define MINISHELL_NAME "Musk est le messie"
 # define TERMCAPS 0
 
 typedef struct	s_struct
