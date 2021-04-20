@@ -34,12 +34,13 @@ typedef struct	s_raw {
 	char		*str;
 	int			fd_input;
 	int			fd_output;
+	int			zero_before; //1 si 0 avant le token, 0 sinon
 }				t_raw;
 
 typedef struct	s_a {
 	int			ac;
 	char		**av;
-	char		**env; //on y cherche le path PWD
+	char		**env;
 	t_list		*lst_env;
 	char		*line;
 	char		*backup;
@@ -83,6 +84,7 @@ int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 char	*ft_strjoin_libft(char *s1, char *s2);
+char	**ft_split(char const *s, char c);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
@@ -101,7 +103,7 @@ void	ft_print_string(t_a *a);
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
 void	ft_execution(t_a *a);
-int		does_this_command_exist(t_a *a, int *i);
+void	add_env_or_command_not_found(t_a *a, int *i);
 void	dup_fork_wait_execute(t_a *a, int *i);
 
 
