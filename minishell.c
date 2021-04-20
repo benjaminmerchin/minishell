@@ -147,7 +147,7 @@ int		main(int ac, char **av, char **env)
 	ft_store_env_in_lst(&a);
 	if (TERMCAPS)
 		ft_init_termcap(&a);
-	while(1)
+	while (1)
 	{
 		ft_title(&a);
 		if(TERMCAPS)

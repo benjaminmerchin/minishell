@@ -91,17 +91,47 @@ void	ft_free_table(char **table)
 	return ;
 }
 
-void	does_this_function_exist(t_a *a, int *i)
+char	*triple_strjoin(char *s1, char *s2, char *s3)
 {
+	char *temp;
+	char *ret;
+
+	temp = ft_strjoin_libft(s1, s2);
+	ret = ft_strjoin_libft(temp, s3);
+	free(temp);
+	return (ret);
+}
+
+char	*does_this_function_exist(t_a *a, int *i) //we want to dup and return the correct path.
+{	//test on the current repo and on the path repo
 	(void)i;
 	char	**temp;
 	char	*path;
+	struct stat	buffer;
+	int		j;
+	char	*str;
 
+	if (stat(a->raw[*i].str, &buffer) == 0)//first we try to execute the command locally
+		return (ft_strdup(a->raw[*i].str));
+	j = 0;
 	path = return_str_from_env(a, "PATH=");
 	temp = ft_split(path, ':');
-
-
+	while (temp[j])
+	{
+		//write(1, "WWWWWWWWWW", 10);
+		path = triple_strjoin(temp[j], "/", a->raw[*i].str);
+		if (stat(path, &buffer) == 0)
+		{
+			str = ft_strdup(path);
+			free(path);
+			ft_free_table(temp);
+			return (str);
+		}
+		free(path);
+		j++;
+	}
 	ft_free_table(temp);
+	return (NULL);
 }
 
 void	dup_fork_wait_execute(t_a *a, int *i)
@@ -110,35 +140,38 @@ void	dup_fork_wait_execute(t_a *a, int *i)
 	int		status;
 	char	**argv;
 	char	**aenv;
-	//char	*path;
+	char	*path;
 
-	add_env_or_command_not_found(a, i); //pour georges
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-		(*i)++;
-	return ;
+	path = does_this_function_exist(a, i);
+	//ft_putstr_fd(path, 1);
+	if (path == NULL)
+		add_env_or_command_not_found(a, i); 
+	/*while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+		(*i)++; //activer cette partie pour permettre a georges d'avoir un env stable pour tester
+	free(path);
+	return ;*/
 
 	argv = put_args_into_an_array(a, i);
 	aenv = put_aenv_into_an_array(a, i);
 	pid = fork();
-	//path = does_this_function_exist(a, i);
 	// checker si la fonction en chemin absolu ou relatif existe
 	// si elle existe pas 
-	if (pid == 0)
+	if (pid == 0) //we are in the child if pid = 0
 	{
-		write(1, "@@@@@@@@@@", 10);
-		if (execve(a->av[0], argv, aenv) == -1) //a->raw[*i].str //exiter le chemin de av[0]
-			perror("temporaire"); //remplace perror with strerrer & errno
+		//write(1, "@@@@@@@@@@", 10);
+		if (execve(path, argv, aenv) == -1) //a->raw[*i].str //exiter le chemin de av[0]
+			exit (0); //remplace with strerrer & errno
 		//ft_exit_clean(a, "Error:\nFork failed\n");
-		add_env_or_command_not_found(a, i);	//80%
-
+		//free(path);
+		exit (0); //on kill syst // on doit exit clean ?
 	}
-	else if (pid < 0)
+	else if (pid < 0) //in case of fail
 		ft_exit_clean(a, "Error:\nFork failed\n");
-	else
+	else //parent, if the pid value is not 0
 	{
-		write(1, "##########", 10);
+		//write(1, "##########", 10);
 		do
-		{
+		{ 
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
@@ -146,5 +179,6 @@ void	dup_fork_wait_execute(t_a *a, int *i)
 		(*i)++;
 	free (argv);
 	free (aenv);
+	free (path);
 	return ;
 }
