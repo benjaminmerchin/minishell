@@ -354,6 +354,7 @@ void	ft_cd(t_a *a, int *i) //bien update le pwd en sortie de fonction
 	int ret;
 
 	(*i)++;
+	update_pwd(a, i);
 	if (a->raw[*i].str == 0 || a->raw[*i].type == '|' || a->raw[*i].type == ';')
 		find_home_and_replace_cd_with_home_path(a, i); //on l'emmene au repertoire HOME=
 	ret = chdir(a->raw[*i].str);
@@ -366,7 +367,7 @@ void	ft_cd(t_a *a, int *i) //bien update le pwd en sortie de fonction
 	}
 	//ft_putchar_fd('@', a->raw[*i].fd_output);
 	//ft_putnbr_fd(ret, a->raw[*i].fd_output);
-	//update_pwd(a, i);
+	update_pwd(a, i);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
 }
@@ -393,7 +394,7 @@ void	ft_execution(t_a *a)
 			ft_exit_clean(a, "");
 		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //70%
 			ft_echo(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //utiliser chdir //utiliser getpwd a chaque mouvement sur PWD=
+		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //80% //utiliser getpwd a chaque mouvement sur PWD=
 			ft_cd(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //80% //utiliser getpwd a chaque mouvement
 			ft_pwd(a, &i);
@@ -408,7 +409,6 @@ void	ft_execution(t_a *a)
 	}
 }
 
-
 //dulpicate fd before fork in order to be able to restore them
 //https://youtu.be/ceNaZzEoUhk watch this video for pipes
 
@@ -419,11 +419,9 @@ void	ft_execution(t_a *a)
 	//this means being able to execute through a fork the commends that we will try to get in the path (ls, ...)
 
 //TODO DIVERS:
-//getcdw : pour obtenir le pwd a update a chaque mouvement, update le PWD a chaque changement
-//stat : donne toutes les infos d'un fichier comme un ls
-//lstat : same sauf que dans le cas d'un lien donne les infos sur le lien et pas le fichier pointé
-//ftat : donne toutes les infos sur un fichier comme un ls, mais cette fois on lui passe en argument le file descriptor
-//execve : exécuter un exécutable, avec ses arguments et l'environnement en paramètres
-// dans ;|0, mettre l'input et l'output de la section d'avant
-
-// a gerer : export avec "  " ou '      asd ', command not found avec un =
+// dup & | & fd
+// management of the \' or \" or \\\' etc
+// $?
+// error management in the fork part
+// a gerer : export avec "  " ou '      asd ', (zapper ?)
+// la variable globale signal

@@ -170,10 +170,9 @@ void	dup_fork_wait_execute(t_a *a, int *i)
 	else //parent, if the pid value is not 0
 	{
 		//write(1, "##########", 10);
-		do
-		{ 
+		waitpid(pid, &status, WUNTRACED);
+		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
