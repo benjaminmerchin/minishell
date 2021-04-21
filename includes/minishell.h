@@ -13,9 +13,9 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
-# define PRINT_TOKENS 1
 # define MINISHELL_NAME "musk_stonks"
-# define TERMCAPS 1
+# define PRINT_TOKENS 1
+# define TERMCAPS 0
 # define VERBOSE 0
 
 typedef struct	s_struct
@@ -36,7 +36,7 @@ typedef struct	s_raw {
 	char		*str;
 	int			fd_input;
 	int			fd_output;
-	int			zero_before; //1 si 0 avant le token, 0 sinon
+	int			space_before; //1 si ' ' entre le token et celui d'avant, 0 sinon
 }				t_raw;
 
 typedef struct	s_a {
@@ -80,7 +80,7 @@ typedef struct	s_a {
 	char		*backup_sep; //sep mais on y touche pas
 	char		last_sep;
 
-	int			vb_ap;
+	int			v_fd; // -1 if everything is normal
 }				t_a;
 
 //En gros la libft

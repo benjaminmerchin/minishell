@@ -40,11 +40,14 @@ void	ft_split_sh(t_a *a)
 	a->backup = a->line;
 	a->raw[k].str = 0;
 	a->raw[k].type = 0;
+	a->raw[k].space_before = 0;
 	while (a->line[i])
 	{
+		a->raw[k].space_before = 0;
 		a->sep = a->backup_sep;
 		if (a->line[i] == ' ')
 		{
+			a->raw[k].space_before = 1;
 			while (is_sep(a->line[i + 1], a) && a->line[i] == ' ') //on avance sur ' ' et on stop au sep diff de ' ' ou au dernier ' '
 				(a->line)++;
 		} 
@@ -53,7 +56,10 @@ void	ft_split_sh(t_a *a)
 		{
 			a->raw[k].type = ' ';
 			if (a->line[0] == ' ')
+			{
 				(a->line)++;
+				a->raw[k].space_before = 1;
+			}
 			if (a->line[0] == '\0') //si on fini par un espace on ne malloc rien
 				break ;
 			counter = 0;

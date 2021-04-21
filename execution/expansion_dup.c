@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_wait_execute.c                            :+:      :+:    :+:   */
+/*   fork_wait_execute.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,14 +16,17 @@ void	expansion_dup(t_a *a, int *i)
 {
 	(void)i;
 	(void)a;
-	int save_stdin;
+	int		pipefd[2];
 
-	save_stdin = dup(1);
-	
+
+
+	//first of all I will try >
+
+	a->v_fd = dup(1);
+	(void)pipefd;
 }
 
 /*
-
 dup(1) = 3
 open("test") = 4
 dup2(4, 1)
@@ -31,5 +34,14 @@ close(4)
 // execution des commandes
 dup2(3, 1)
 close(3)
-
 */
+
+// TO MANAGE HERE
+// dans un premier temps
+	// > ecrit dans le fichier a droite , possible re rediriger le numero de sortie juste avant le > si il est colle
+	// >> idem mais ecrit a la suite
+	// < lit depuis le fichier a droite
+// dans un second temps, en amont des guillemets
+	// | les pipes
+// quand j'ai le temps
+	// $env $replace

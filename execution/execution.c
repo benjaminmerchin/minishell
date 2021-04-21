@@ -60,7 +60,7 @@ void	ft_echo(t_a *a, int *i)
 	n_begin = 0;
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 	{
-		if (n_begin == 1)
+		if (n_begin == 1 && a->raw[*i].space_before == 1)
 			ft_putstr_fd(" ", a->raw[*i].fd_output);
 		if (ft_strncmp(a->raw[*i].str, "-n", 10) == 0 && n_begin == 0)
 			v_b_bn = 0;
@@ -420,9 +420,9 @@ void	ft_execution(t_a *a)
 	//this means being able to execute through a fork the commends that we will try to get in the path (ls, ...)
 
 //TODO DIVERS:
-// dup & | & fd
+// dup & | & fd < >> >
+// $env $replace
 // management of the \' or \" or \\\' etc
 // $?
 // error management in the fork part
-// a gerer : export avec "  " ou '      asd ', (zapper ?)
 // la variable globale signal

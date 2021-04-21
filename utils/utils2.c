@@ -12,6 +12,7 @@ void	ft_init_struct(t_a *a)
 	}
 	a->fd = 0;
 	a->line = NULL;
+	a->v_fd = -1;
 }
 
 void	ft_putnbr_fd(int n, int fd)
@@ -46,9 +47,10 @@ void	ft_print_string(t_a *a)
 		ft_putchar_fd('[', 1);
 		ft_putchar_fd(a->raw[i].type, 1);
 		ft_putchar_fd(']', 1);
-//		ft_putnbr_fd(ft_strlen(a->sep), 1);
 		ft_putchar_fd(' ', 1);
 		ft_putchar_fd('[', 1);
+		if (a->raw[i].space_before == 1)
+			ft_putchar_fd(' ', 1);
 		ft_putstr_fd(a->raw[i].str, 1);
 		ft_putchar_fd(']', 1);
 		write(1, "\n", 1);
