@@ -51,8 +51,14 @@ typedef struct	s_a {
 	int			fd;
 
 //Section termcap
-	int			column_count;
-	int			line_count;
+	int			column_term;
+	int			line_term;
+	char		*me;
+	char		*cm;
+	char		*sc;
+	char		*rc;
+	char		*cd;
+
 	char		*term_type;
 	char		*str_tcapped;
 
@@ -86,6 +92,10 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 char	*ft_strjoin_libft(char *s1, char *s2);
 char	**ft_split(char const *s, char c);
+
+//print screens
+void	ft_screen(t_a *a);
+void	ft_init_screen(t_a *a);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
