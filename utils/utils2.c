@@ -10,7 +10,6 @@ void	ft_init_struct(t_a *a)
 	{	a->h = malloc(sizeof(char *) * 1000);
 		a->h[0] = NULL;
 	}
-//	a->term_type = getenv("TERM");
 	a->fd = 0;
 	a->line = NULL;
 }
@@ -42,7 +41,7 @@ void	ft_print_string(t_a *a)
 	//ft_putchar_fd('\n', 1);
 	if (PRINT_TOKENS == 0)
 		return ;
-	while (a->raw[i].str && !a->nav)
+	while (a->raw[i].str)
 	{
 		ft_putchar_fd('[', 1);
 		ft_putchar_fd(a->raw[i].type, 1);

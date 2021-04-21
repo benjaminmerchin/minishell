@@ -26,7 +26,7 @@ char	*ft_strdup(char *s)
 	i = 0;
 	if (!s)
 	{
-		res = malloc(sizeof(char) * 1);
+		res = malloc(sizeof(char));
 		res[0] = 0;
 		return (res);
 	}
@@ -45,6 +45,8 @@ int		ft_strncmp(char *s1, char *s2, int n)
 {
 	int i;
 
+	if (!s1)
+		return (-1000);
 	if (n == 0)
 		return (0);
 	i = 0;

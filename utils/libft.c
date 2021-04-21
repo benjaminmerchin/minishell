@@ -26,6 +26,7 @@ void	ft_putstr(char *s)
 
 int	ft_isprint(int c)
 {
+	//voir comment gérer les caractères spéciaux
 	return (c >= ' ' && c <= '~');
 }
 
