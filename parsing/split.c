@@ -76,6 +76,8 @@ void	ft_split_sh(t_a *a)
 		{
 			a->raw[k].type = '#';
 			a->raw[k].str = malloc(sizeof(char) * 3);
+			if (!a->raw[k].str)
+				set_backup_and_exit(a, "Error\nMalloc Failed\n");
 			a->raw[k].str[0] = '>';
 			a->raw[k].str[1] = '>';
 			a->raw[k].str[2] = 0;
@@ -86,6 +88,8 @@ void	ft_split_sh(t_a *a)
 		{
 			a->raw[k].type = a->line[i];
 			a->raw[k].str = malloc(sizeof(char) * 2);
+			if (!a->raw[k].str)
+				set_backup_and_exit(a, "Error\nMalloc Failed\n");
 			a->raw[k].str[0] = a->line[i];
 			a->raw[k].str[1] = 0;
 			(a->line)++;

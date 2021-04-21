@@ -2,3 +2,4 @@ object/*.o
 object/*/*.o
 minishell
 a.out
+test.txt
