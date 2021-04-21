@@ -28,8 +28,13 @@ void	ft_init_termcap(t_a *a)
 	a->me = tgetstr("me", NULL);
 	a->cm = tgetstr("cm", NULL);
 	a->sc = tgetstr("sc", NULL);
+	a->sf = tgetstr("sf", NULL);
 	a->rc = tgetstr("rc", NULL);
 	a->cd = tgetstr("cd", NULL);
+	a->cl = tgetstr("cl", NULL);
+	a->up = tgetstr("up", NULL);
+	a->dw = tgetstr("do", NULL);
+	tputs(a->cl, 1, ft_putchar);
 	ft_raw_mode(a);
 }
 
