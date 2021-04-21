@@ -7,7 +7,9 @@ void	ft_init_struct(t_a *a)
 	a->nline = 0;
 	a->backup_sep = a->sep;
 	if (TERMCAPS)
-		a->h = malloc(sizeof(char *) * 1000);
+	{	a->h = malloc(sizeof(char *) * 1000);
+		a->h[0] = NULL;
+	}
 //	a->term_type = getenv("TERM");
 	a->fd = 0;
 	a->line = NULL;
