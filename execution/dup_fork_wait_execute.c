@@ -171,8 +171,8 @@ void	dup_fork_wait_execute(t_a *a, int *i)
 	{
 		//write(1, "##########", 10);
 		waitpid(pid, &status, WUNTRACED);
-			waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
+			waitpid(pid, &status, WUNTRACED);
 	}
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
