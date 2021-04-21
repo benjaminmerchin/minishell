@@ -69,3 +69,15 @@ char	*ft_strjoin_libft(char *s1, char *s2)
 	str[i + j] = '\0';
 	return (str);
 }
+
+int		ft_strlen(char *s)
+{
+	unsigned int i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+		i++;
+	return (i);
+}

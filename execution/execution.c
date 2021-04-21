@@ -339,7 +339,7 @@ void	find_home_and_replace_cd_with_home_path(t_a *a, int *i)
 	lst = a->lst_env;
 	while (lst)
 	{
-		if  (ft_strncmp("HOME=", lst->content, 4) == 0)
+		if  (ft_strncmp("HOME=", lst->content, 5) == 0)
 		{
 			free(a->raw[*i].str);
 			a->raw[*i].str = ft_strdup(lst->content + 5);
@@ -395,7 +395,7 @@ void	ft_execution(t_a *a)
 			ft_echo(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //utiliser chdir //utiliser getpwd a chaque mouvement sur PWD=
 			ft_cd(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //30% //utiliser getpwd a chaque mouvement
+		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //80% //utiliser getpwd a chaque mouvement
 			ft_pwd(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0) //80%
 			ft_export(a, &i);
@@ -404,12 +404,7 @@ void	ft_execution(t_a *a)
 		else if (ft_strncmp(a->raw[i].str, "env", 10) == 0) //70%
 			ft_env(a, &i);
 		else
-		{
-			if (does_this_command_exist(a, &i)) //maybe combine there
-				dup_fork_wait_execute(a, &i); // here try to find the executables
-			else
-				add_env_or_command_not_found(a, &i);	//80%
-		}
+			dup_fork_wait_execute(a, &i); // here try to find the executables
 	}
 }
 

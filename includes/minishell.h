@@ -4,6 +4,7 @@
 # include <unistd.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <stdlib.h>
 # include <stdio.h>
 
@@ -13,8 +14,8 @@
 
 # define SEPARATORS " '\"|;><"
 # define PRINT_TOKENS 1
-# define MINISHELL_NAME "Musk est un naze"
-# define TERMCAPS 1
+# define MINISHELL_NAME "musk_stonks"
+# define TERMCAPS 0
 
 typedef struct	s_struct
 {
@@ -34,12 +35,13 @@ typedef struct	s_raw {
 	char		*str;
 	int			fd_input;
 	int			fd_output;
+	int			zero_before; //1 si 0 avant le token, 0 sinon
 }				t_raw;
 
 typedef struct	s_a {
 	int			ac;
 	char		**av;
-	char		**env; //on y cherche le path PWD
+	char		**env;
 	t_list		*lst_env;
 	char		*line;
 	char		*backup;
@@ -83,6 +85,7 @@ int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 char	*ft_strjoin_libft(char *s1, char *s2);
+char	**ft_split(char const *s, char c);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
@@ -101,9 +104,13 @@ void	ft_print_string(t_a *a);
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
 void	ft_execution(t_a *a);
-int		does_this_command_exist(t_a *a, int *i);
+void	add_env_or_command_not_found(t_a *a, int *i);
 void	dup_fork_wait_execute(t_a *a, int *i);
+void	update_pwd(t_a *a, int *i);
 
+int		ft_strlenn(char *str);
+char	*free_null(char *s1);
+int		free_int(char **line);
 
 
 //listes
@@ -112,6 +119,6 @@ void	ft_lstadd_back(t_list **alst, t_list *new);
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 void	ft_lstclear(t_list **lst);
 void	ft_lstdelone(t_list *lst);
-int	ft_lstsize(t_list *lst);
+int		ft_lstsize(t_list *lst);
 
 #endif
