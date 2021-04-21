@@ -388,24 +388,25 @@ void	ft_execution(t_a *a)
 		//we dup, fork and execute for he others commands
 	while (a->raw[i].str)//on boucle entre | ou ;
 	{
+		expansion_dup(a, &i); // besoin de reset les fd en fin d'appel 
 		if (a->raw[i].type == '|' || a->raw[i].type == ';') //faire l'expansion ici, juste les $ et les // ou ''""
 			i++;
-		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0) //70%
+		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0) //80%
 			ft_exit_clean(a, "");
 		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //70%
 			ft_echo(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //80% //utiliser getpwd a chaque mouvement sur PWD=
+		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //80%
 			ft_cd(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //80% //utiliser getpwd a chaque mouvement
+		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //80%
 			ft_pwd(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0) //80%
 			ft_export(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "unset", 10) == 0) //80%
 			ft_unset(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "env", 10) == 0) //70%
+		else if (ft_strncmp(a->raw[i].str, "env", 10) == 0) //80%
 			ft_env(a, &i);
 		else
-			dup_fork_wait_execute(a, &i); // here try to find the executables
+			fork_wait_execute(a, &i); // here try to find the executables
 	}
 }
 

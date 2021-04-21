@@ -109,15 +109,13 @@ void	ft_exit_clean(t_a *a, char *str);
 void	ft_print_string(t_a *a);
 
 
-
-
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
 void	ft_execution(t_a *a);
 void	add_env_or_command_not_found(t_a *a, int *i);
-void	dup_fork_wait_execute(t_a *a, int *i);
+void	fork_wait_execute(t_a *a, int *i);
 void	update_pwd(t_a *a, int *i);
-
+void	expansion_dup(t_a *a, int *i);
 int		ft_strlenn(char *str);
 char	*free_null(char *s1);
 int		free_int(char **line);
