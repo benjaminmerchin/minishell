@@ -22,9 +22,14 @@ void	ft_init_termcap(t_a *a)
 	i = tgetent(NULL, term_type);
 	if (i == -1 || i == 0)
         ft_exit_clean(a, "Error\nWe crashed the tgetent\n");
-	//tcgetattr(STDIN_FILENO, &a->trms);
-	a->column_count = tgetnum("co");
-	a->line_count = tgetnum("li");
+	a->column_term = tgetnum("co");
+	a->line_term = tgetnum("li");
+	//printf("Line of terminal : %d\nCol of terminal : %d\n", a->line_term, a->column_term);
+	a->me = tgetstr("me", NULL);
+	a->cm = tgetstr("cm", NULL);
+	a->sc = tgetstr("sc", NULL);
+	a->rc = tgetstr("rc", NULL);
+	a->cd = tgetstr("cd", NULL);
 	ft_raw_mode(a);
 }
 

@@ -123,11 +123,11 @@ void	ft_get_keyboard_input(t_a *a)
 {
 	int 	ret;
 
-	ft_putstr_fd("\n***On commence l'input***\n", 1);
 	a->nline++;
 	a->nav = a->nline - 1;
 	a->h[a->nav] = malloc(sizeof(char));
 	a->h[a->nav][0] = 0;
+	ft_init_screen(a);
 	/*ft_putnbr_fd(a->nline, 1);
 	ft_putstr_fd("   ", 1);
 	ft_putnbr_fd(a->nav, 1);
@@ -149,10 +149,11 @@ void	ft_get_keyboard_input(t_a *a)
 			if (TERMCAPS)
 			{
 				ft_putstr_fd("\n****On sort de keyboard input après \\n****\n", 1);
-
 			}
 			return ;
 		}
+		else if (a->buff[0] == 12)
+			;//penser à gérer ici les ctrl+D,...
 		else if (a->buff[0] == 127 && ft_strlen(a->h[a->nav]) > 0)
 			a->h[a->nav][ft_strlen(a->h[a->nav]) - 1] = 0;
 		else if (a->buff[0] == 27 && a->buff[1] == '[')
@@ -161,8 +162,7 @@ void	ft_get_keyboard_input(t_a *a)
 			ft_appendbuffer(a, ft_strlen(a->buff));
 			//je n'ai pas encore trouvé de 
 			//caractères imprimables de plus de 1 mais on ne sait jamais
-		//ft_putstr_fd("\n****a->h[a->nav]****\n", 1);
-		//ft_putstr_fd(a->h[a->nav], 1);
+		ft_screen(a);
 	}
 }
 
