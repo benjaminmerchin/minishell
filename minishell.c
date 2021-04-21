@@ -2,6 +2,7 @@
 
 void	ft_title(t_a *a)
 {
+	a->len_head = ft_strlen(MINISHELL_NAME) + 1;
 	ft_putstr_fd(MINISHELL_NAME, 1);
 	ft_putstr_fd(" ", 1);
 	ft_parsenv(a); // output sur 1 tout le temps ?
@@ -128,27 +129,16 @@ void	ft_get_keyboard_input(t_a *a)
 	a->h[a->nav] = malloc(sizeof(char));
 	a->h[a->nav][0] = 0;
 	ft_init_screen(a);
-	/*ft_putnbr_fd(a->nline, 1);
-	ft_putstr_fd("   ", 1);
-	ft_putnbr_fd(a->nav, 1);
-	ft_putstr_fd("\nnline   nav\n", 1);*/
+	ft_getcursorline(a);
 	while((ret = read(a->fd, a->buff, 4)))
 	{
 		a->buff[ret] = 0;
 		if (a->buff[0] == '\n')
 		{
 			ft_newline(a);
-			/*int i = 0;
-			ft_putstr_fd("\n***Voici h***\n", 1);
-			while (i < a->nline)
+			if (VERBOSE)
 			{
-				ft_putstr_fd(a->h[i], 1);
-				ft_putstr_fd(" <- c'est dans hist\n", 1);
-				i++;
-			}*/
-			if (TERMCAPS)
-			{
-				ft_putstr_fd("\n****On sort de keyboard input après \\n****\n", 1);
+				ft_putstr_fd("****On sort de keyboard input après \\n****\n", 1);
 			}
 			return ;
 		}

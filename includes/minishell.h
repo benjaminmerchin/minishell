@@ -16,6 +16,7 @@
 # define PRINT_TOKENS 1
 # define MINISHELL_NAME "musk_stonks"
 # define TERMCAPS 1
+# define VERBOSE 0
 
 typedef struct	s_struct
 {
@@ -56,8 +57,12 @@ typedef struct	s_a {
 	char		*me;
 	char		*cm;
 	char		*sc;
+	char		*sf;
 	char		*rc;
-	char		*cd;
+	char		*cd;	
+	char		*cl;
+	char		*up;
+	char		*dw;
 
 	char		*term_type;
 	char		*str_tcapped;
@@ -66,6 +71,10 @@ typedef struct	s_a {
 	int			nav;
 	int			nline;
 	char		**h;
+//section bas de page
+	int			current_line;
+	int			len_head;
+
 //section utile pour split
 	char 		*sep; //a->sep = " '\"|;><";
 	char		*backup_sep; //sep mais on y touche pas
@@ -74,6 +83,7 @@ typedef struct	s_a {
 	int			vb_ap;
 }				t_a;
 
+//En gros la libft
 void	ft_putchar_fd(char c, int fd);
 int		ft_putchar(int c);
 void	ft_putstr_fd(char *s, int fd);
@@ -92,10 +102,13 @@ int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 char	*ft_strjoin_libft(char *s1, char *s2);
 char	**ft_split(char const *s, char c);
+int		ft_atoi(const char *nptr);
 
 //print screens
 void	ft_screen(t_a *a);
 void	ft_init_screen(t_a *a);
+void	ft_getcursorline(t_a *a);
+void	ft_title(t_a *a);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
