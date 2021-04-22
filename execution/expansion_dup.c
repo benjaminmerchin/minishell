@@ -18,7 +18,8 @@ void	expansion_dup(t_a *a, int *i)
 	(void)a;
 	int		pipefd[2];
 
-
+	//si on essaye d'ecrire sur un repertoire ou un fichier ou on a pas les droits, gerrer les erreurs
+	// creation avec les bon droits 0644 pour un fichier
 
 	//first of all I will try >
 
