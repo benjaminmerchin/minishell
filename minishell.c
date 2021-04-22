@@ -64,7 +64,8 @@ void	ft_dedoublonne(t_a *a)
 	if (ft_strncmp(a->h[a->nline - 1], a->h[a->nline - 2],
 	ft_strlen(a->h[a->nline - 1])) == 0)
 	{
-		ft_putstr_fd("\nOn a un doublon sur les deux derniers\n", 1);
+		if (VERBOSE)
+			ft_putstr_fd("\nOn a un doublon sur les deux derniers\n", 1);
 		if (a->h[a->nline - 1])
 		{
 			a->h[a->nline - 1][0] = 0;
@@ -137,9 +138,9 @@ void	ft_get_keyboard_input(t_a *a)
 		{
 			ft_newline(a);
 			if (VERBOSE)
-			{
 				ft_putstr_fd("****On sort de keyboard input après \\n****\n", 1);
-			}
+			else
+				ft_putstr_fd("\n", 1);
 			return ;
 		}
 		else if (a->buff[0] == 12)
