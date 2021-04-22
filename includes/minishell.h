@@ -13,7 +13,7 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
-# define MINISHELL_NAME "musk_stonks"
+# define MINISHELL_NAME "grademe_100"
 # define PRINT_TOKENS 1
 # define TERMCAPS 1
 # define VERBOSE 0
@@ -81,6 +81,7 @@ typedef struct	s_a {
 	char		last_sep;
 
 	int			v_fd; // -1 if everything is normal
+	int			ret;
 }				t_a;
 
 //En gros la libft

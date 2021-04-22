@@ -14,13 +14,21 @@ SRC		=	minishell.c \
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
 
+ifneq (,$(findstring xterm,${TERM}))
+	GREEN := $(shell tput -Txterm setaf 2)
+	RESET := $(shell tput -Txterm sgr0)
+else
+	GREEN := ""
+	RESET := ""
+endif
+
 all: $(NAME)
 
 bonus: all
 
 $(NAME): $(OBJ)
 	@$(CC) $(CFLAGS) -lncurses -ltermcap $(OBJ) -o $(NAME)
-	@echo 'Compilation Done'
+	@echo "${GREEN}Compilation Done${RESET}"
 
 $(OBJDIR)/%.o: %.c
 	@$(CC) $(CFLAGS) -c $< -o $@
