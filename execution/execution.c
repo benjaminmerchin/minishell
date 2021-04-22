@@ -393,7 +393,7 @@ void	ft_execution(t_a *a)
 			i++;
 		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0) //80%
 			ft_exit_clean(a, "");
-		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //70%
+		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //80%
 			ft_echo(a, &i);
 		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //80%
 			ft_cd(a, &i);
