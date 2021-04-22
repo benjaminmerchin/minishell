@@ -18,6 +18,8 @@
 # define TERMCAPS 1
 # define VERBOSE 0
 
+int		g_fantaisie;
+
 typedef struct	s_struct
 {
 	char	buff[4 + 1];
@@ -50,6 +52,7 @@ typedef struct	s_a {
 	struct termios	trms;
 	char		buff[5];
 	int			fd;
+	int			exit_status;
 
 //Section termcap
 	int			column_term;
@@ -84,6 +87,8 @@ typedef struct	s_a {
 	int			ret;
 }				t_a;
 
+int		main(int ac, char **av, char **env);
+
 //En gros la libft
 void	ft_putchar_fd(char c, int fd);
 int		ft_putchar(int c);
@@ -110,6 +115,12 @@ void	ft_screen(t_a *a);
 void	ft_init_screen(t_a *a);
 void	ft_getcursorline(t_a *a);
 void	ft_title(t_a *a);
+void	ft_get_keyboard_input(t_a *a);
+void	ft_appendexit(t_a *a);
+void	ft_store_env_in_lst(t_a *a);
+
+//signals
+void	ft_stayinalive(int c);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);

@@ -121,6 +121,16 @@ void	ft_updown(t_a *a)
 
 }
 
+void	ft_appendexit(t_a *a)
+{
+	if (a->h[a->nav])
+		free(a->h[a->nav]);
+	if (a->buff[0] == 4 | a->buff[0] == 3)
+		a->h[a->nav] = ft_strdup("exit");
+	a->buff[0] = '\n';
+	ft_screen(a);
+}
+
 void	ft_get_keyboard_input(t_a *a)
 {
 	int 	ret;
@@ -134,6 +144,8 @@ void	ft_get_keyboard_input(t_a *a)
 	while((ret = read(a->fd, a->buff, 4)))
 	{
 		a->buff[ret] = 0;
+		if (a->buff[0] == 4 | a->buff[0] == 3)
+			ft_appendexit(a);
 		if (a->buff[0] == '\n')
 		{
 			ft_newline(a);
@@ -143,32 +155,30 @@ void	ft_get_keyboard_input(t_a *a)
 				ft_putstr_fd("\n", 1);
 			return ;
 		}
-		else if (a->buff[0] == 12)
-			;//penser à gérer ici les ctrl+D,...
 		else if (a->buff[0] == 127 && ft_strlen(a->h[a->nav]) > 0)
 			a->h[a->nav][ft_strlen(a->h[a->nav]) - 1] = 0;
 		else if (a->buff[0] == 27 && a->buff[1] == '[')
 			ft_updown(a);
 		else
 			ft_appendbuffer(a, ft_strlen(a->buff));
-			//je n'ai pas encore trouvé de 
-			//caractères imprimables de plus de 1 mais on ne sait jamais
 		ft_screen(a);
 	}
 }
 
 int		main(int ac, char **av, char **env)
 {
-	t_a	a;
+	t_a		a;
 
 	a.ac = ac;
 	a.av = av;
 	a.env = env;
+	g_fantaisie = 1;
 
 	ft_init_struct(&a);
 	ft_store_env_in_lst(&a);
 	if (TERMCAPS)
 		ft_init_termcap(&a);
+	signal(SIGINT, ft_stayinalive);
 	while (1)
 	{
 		ft_title(&a);
@@ -179,7 +189,7 @@ int		main(int ac, char **av, char **env)
 		ft_split_sh(&a);
 		ft_print_string(&a); //remove at the end
 		ft_execution(&a); // execute the tokens
-		ft_cleanstruct(&a); //verifier quon 
+		ft_cleanstruct(&a); //verifier quon
 	}
 	return (0);
 }
