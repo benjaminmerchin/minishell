@@ -17,7 +17,6 @@
 # define PRINT_TOKENS 1
 # define TERMCAPS 1
 # define VERBOSE 0
-
 int		g_fantaisie;
 
 typedef struct	s_struct
