@@ -146,7 +146,8 @@ void	replace_var_env_until_next_separator(t_a *a, int *i)
 	j = *i;
 	while (a->raw[j].str != 0 && a->raw[j].type != '|' && a->raw[j].type != ';')
 	{
-		try_to_replace_token_with_env(a, j);
+		if (a->raw[j].type != '\'')
+			try_to_replace_token_with_env(a, j);
 		j++;
 	}
 }

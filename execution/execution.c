@@ -169,7 +169,6 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 		}
 		j++;
 	}
-	j++;
 	if (j == 0 || error == 1)
 	{
 		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
@@ -178,6 +177,7 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 		ft_putstr_fd("': not a valid identifier\n", a->raw[*i].fd_output);
 		return(-1);
 	}
+	j++;
 	return (j);
 }
 
