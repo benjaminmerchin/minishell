@@ -13,7 +13,7 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
-# define MINISHELL_NAME "romani-shell"
+# define MINISHELL_NAME "(╯°□°)╯︵ ┻━┻"
 # define PRINT_TOKENS 1
 # define TERMCAPS 0
 # define VERBOSE 0
