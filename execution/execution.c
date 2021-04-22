@@ -73,7 +73,6 @@ void	ft_echo(t_a *a, int *i)
 	}
 	if (v_b_bn == 1)
 		ft_putchar_fd('\n', a->raw[*i - 1].fd_output);
-	//write(1, "@@@@@@@@@@", 10);
 }
 
 void	ft_parsenv_fd(t_a *a, int fd)
@@ -349,14 +348,14 @@ void	find_home_and_replace_cd_with_home_path(t_a *a, int *i)
 	}
 }
 
-void	ft_cd(t_a *a, int *i) //bien update le pwd en sortie de fonction
+void	ft_cd(t_a *a, int *i)
 {	
 	int ret;
 
 	(*i)++;
 	update_pwd(a, i);
 	if (a->raw[*i].str == 0 || a->raw[*i].type == '|' || a->raw[*i].type == ';')
-		find_home_and_replace_cd_with_home_path(a, i); //on l'emmene au repertoire HOME=
+		find_home_and_replace_cd_with_home_path(a, i);
 	ret = chdir(a->raw[*i].str);
 	if (ret < 0)
 	{
@@ -365,8 +364,6 @@ void	ft_cd(t_a *a, int *i) //bien update le pwd en sortie de fonction
 		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
 		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);		
 	}
-	//ft_putchar_fd('@', a->raw[*i].fd_output);
-	//ft_putnbr_fd(ret, a->raw[*i].fd_output);
 	update_pwd(a, i);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
@@ -419,10 +416,10 @@ void	ft_execution(t_a *a)
 //"Chercher et lancer le bon executable (basé sur une variable d’environnement PATH ou en utilisant un path absolu), comme dans bash"
 	//this means being able to execute through a fork the commends that we will try to get in the path (ls, ...)
 
-//TODO DIVERS:
+// TODO DIVERS:
 // dup & | & fd < >> >
 // $env $replace
 // management of the \' or \" or \\\' etc
-// $?
-// error management in the fork part
-// la variable globale signal
+// $? error management in the fork part
+// ctrl + / ou D ou C (la variable globale signal)
+// norme
