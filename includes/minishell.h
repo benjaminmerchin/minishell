@@ -13,11 +13,10 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
-# define MINISHELL_NAME "grademe_100"
+# define MINISHELL_NAME "romani-shell"
 # define PRINT_TOKENS 1
 # define TERMCAPS 0
 # define VERBOSE 0
-
 int		g_fantaisie;
 
 typedef struct	s_struct
@@ -83,6 +82,9 @@ typedef struct	s_a {
 	char		*backup_sep; //sep mais on y touche pas
 	char		last_sep;
 
+
+//$?
+	int			dollarquestion;
 	int			v_fd; // -1 if everything is normal
 	int			ret;
 }				t_a;
@@ -121,6 +123,7 @@ void	ft_store_env_in_lst(t_a *a);
 
 //signals
 void	ft_stayinalive(int c);
+void	ft_ctrlantislash(int useless);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
