@@ -15,7 +15,7 @@
 # define SEPARATORS " '\"|;><"
 # define MINISHELL_NAME "grademe_100"
 # define PRINT_TOKENS 1
-# define TERMCAPS 1
+# define TERMCAPS 0
 # define VERBOSE 0
 
 int		g_fantaisie;

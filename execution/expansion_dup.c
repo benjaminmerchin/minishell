@@ -67,12 +67,30 @@ void	remove_token_from_content(t_a *a, int j, int k)
 	a->raw[j].str = temp;
 }
 
-void	join_before_env_after(t_a *a, int j, int k)
+void	join_before_env_after(t_a *a, int j, int k, char *src)
 {
-	(void)a;
-	(void)j;
-	(void)k;
-	write(1, "@@@@@@@@@@", 10);
+	int m;
+	int n;
+	int o;
+	char *temp;
+
+	m = -1;
+	n = 0;
+	temp = malloc(sizeof(char) * (ft_strlen(a->raw[j].str) - a->ret + 1 + ft_strlen(src)));
+	while (++m < k)
+		temp[m] = a->raw[j].str[m];
+	o = m;
+	while (n < ft_strlen(src))
+		temp[m++] = src[n++];
+	while (a->raw[j].str[o + a->ret])
+	{
+		temp[m] = a->raw[j].str[o + a->ret];
+		m++;
+		o++;
+	}
+	temp[m] = '\0';
+	free(a->raw[j].str);
+	a->raw[j].str = temp;
 }
 
 void	replace_me_if_you_find_me(t_a *a, int j, int k)
@@ -87,9 +105,12 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 		l = 0;
 		while (lst->content[l] == a->raw[j].str[l + k] && a->raw[j].str[l + k] && lst->content[l] && l < a->ret)
 			l++;
-		if (lst->content[l] == '=' && (a->raw[j].str[l + k] == '$' || a->raw[j].str[l + k] == '\0') && l > 0)
+		//ft_putnbr(l);
+		//if (l > 2)
+		//	write(1, "MMMMMMMMMM", 10);
+		if (lst->content[l] == '=' && (a->raw[j].str[l + k] == '\0' || (ft_isprint(a->raw[j].str[l + k]) && (!ft_isalnum(a->raw[j].str[l + k]) &&  a->raw[j].str[l + k] != '_'))) && l > 0)
 		{
-			join_before_env_after(a, j, k - 1);
+			join_before_env_after(a, j, k - 1, lst->content + l + 1);
 			return ;
 		}
 		lst = lst->next;
