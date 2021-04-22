@@ -13,6 +13,7 @@ void	ft_init_struct(t_a *a)
 	a->fd = 0;
 	a->line = NULL;
 	a->v_fd = -1;
+	a->dollarquestion = 0;
 }
 
 void	ft_putnbr_fd(int n, int fd)
