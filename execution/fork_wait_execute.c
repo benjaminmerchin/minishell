@@ -154,7 +154,7 @@ void	fork_wait_execute(t_a *a, int *i)
 	argv = put_args_into_an_array(a, i);
 	aenv = put_aenv_into_an_array(a, i);
 	pid = fork();
-	if (pid == 0) //we are in the child if pid = 0
+	if (pid == 0 && g_fantaisie != 130) //we are in the child if pid = 0
 	{
 		//write(1, "@@@@@@@@@@", 10);
 		if (execve(path, argv, aenv) == -1) //a->raw[*i].str //exiter le chemin de av[0]

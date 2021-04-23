@@ -55,6 +55,7 @@ void	ft_echo(t_a *a, int *i)
 	int	v_b_bn; //variable boolean to manage the -n flag
 	int	n_begin; //-n flag only accepted at the beginning
 
+	a->dollarquestion = 0; //Cette fonction ne doit pas pouvoir planter :-D
 	(*i)++;
 	v_b_bn = 1;
 	n_begin = 0;
@@ -93,6 +94,7 @@ void	ft_parsenv_fd(t_a *a, int fd)
 
 void	ft_pwd(t_a *a, int *i)
 {	
+	a->dollarquestion = 0; //Cette fonction ne doit pas pouvoir planter :-D
 	update_pwd(a, i);
 	ft_parsenv_fd(a, a->raw[*i].fd_output);
 	ft_putchar_fd('\n', a->raw[*i].fd_output);
@@ -120,12 +122,14 @@ void	ft_env(t_a *a, int *i)
 {
 	t_list *lst;
 
+	a->dollarquestion = 0; //Cette fonction ne doit pas pouvoir planter :-D
 	lst = a->lst_env;
 	update_pwd(a, i);
 	while (a->raw[*i + 1].str && ft_strncmp(a->raw[*i].str, a->raw[*i + 1].str, 10) == 0 && ft_strlen(a->raw[*i + 1].str) == 3)
 		(*i)++;
 	if (!(a->raw[*i + 1].str == 0 || a->raw[*i + 1].type == '|' || a->raw[*i + 1].type == ';'))
 	{
+		a->dollarquestion = 1; //Voici l'erreur ?
 		ft_putstr_fd("env: ", a->raw[*i].fd_output);
 		ft_putstr_fd(a->raw[*i + 1].str, a->raw[*i].fd_output);
 		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);
@@ -171,10 +175,14 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 	}
 	if (j == 0 || error == 1)
 	{
+		a->dollarquestion = 1; //Là on doit avoir 1
+
+		ft_putstr_fd("\033[033m", 1);
 		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
 		ft_putstr_fd(": export: `", a->raw[*i].fd_output);
 		ft_putstr_fd(str, a->raw[*i].fd_output);
 		ft_putstr_fd("': not a valid identifier\n", a->raw[*i].fd_output);
+		ft_putstr_fd("\033[0m", 1);
 		return(-1);
 	}
 	j++;
@@ -183,12 +191,16 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 
 void	command_not_found(t_a *a, int *i)
 {
+	a->dollarquestion = 1; //Là on doit avoir 1
+
+	ft_putstr_fd("\033[031m", 1);
 	ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
 	ft_putstr_fd(": ", a->raw[*i].fd_output);
 	ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
 	ft_putstr_fd(": command not found\n", a->raw[*i].fd_output);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
+	ft_putstr_fd("\033[0m", 1);
 }
 
 void	add_env(t_a *a, int *i)
@@ -196,6 +208,7 @@ void	add_env(t_a *a, int *i)
 	int ret;
 	t_list *lst;
 
+	a->dollarquestion = 0; // on initialise à 0
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
@@ -359,10 +372,11 @@ void	ft_cd(t_a *a, int *i)
 	ret = chdir(a->raw[*i].str);
 	if (ret < 0)
 	{
+		ft_putstr_fd("\033[031m", a->raw[*i].fd_output);
 		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
 		ft_putstr_fd(": cd: ", a->raw[*i].fd_output);
 		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
-		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);
+		ft_putstr_fd(": No such file or directory\033\n", a->raw[*i].fd_output);
 		a->dollarquestion = 127;		
 	}
 	update_pwd(a, i);

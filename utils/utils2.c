@@ -10,6 +10,7 @@ void	ft_init_struct(t_a *a)
 	{	a->h = malloc(sizeof(char *) * 1000);
 		a->h[0] = NULL;
 	}
+	a->len_head = ft_strlen(MINISHELL_NAME) + 1;
 	a->fd = 0;
 	a->line = NULL;
 	a->v_fd = -1;

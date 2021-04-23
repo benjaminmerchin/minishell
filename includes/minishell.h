@@ -15,7 +15,7 @@
 # define SEPARATORS " '\"|;><"
 # define MINISHELL_NAME "(╯°□°)╯︵ ┻━┻"
 # define PRINT_TOKENS 1
-# define TERMCAPS 0
+# define TERMCAPS 1
 # define VERBOSE 0
 int		g_fantaisie;
 
@@ -61,7 +61,7 @@ typedef struct	s_a {
 	char		*sc;
 	char		*sf;
 	char		*rc;
-	char		*cd;	
+	char		*cd;
 	char		*cl;
 	char		*up;
 	char		*dw;
@@ -85,6 +85,7 @@ typedef struct	s_a {
 
 //$?
 	int			dollarquestion;
+
 	int			v_fd; // -1 if everything is normal
 	int			ret;
 }				t_a;
@@ -111,12 +112,13 @@ int		ft_isalnum(int c);
 char	*ft_strjoin_libft(char *s1, char *s2);
 char	**ft_split(char const *s, char c);
 int		ft_atoi(const char *nptr);
+char	*ft_itoa(int n);
 
 //print screens
 void	ft_screen(t_a *a);
 void	ft_init_screen(t_a *a);
 void	ft_getcursorline(t_a *a);
-void	ft_title(t_a *a);
+void	ft_title(void);
 void	ft_get_keyboard_input(t_a *a);
 void	ft_appendexit(t_a *a);
 void	ft_store_env_in_lst(t_a *a);

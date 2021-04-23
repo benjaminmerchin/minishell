@@ -1,12 +1,16 @@
 #include "./includes/minishell.h"
 
-void	ft_title(t_a *a)
+void	ft_title(void)
 {
-	a->len_head = ft_strlen(MINISHELL_NAME) + 1;
+	char	pwdname[1024];
+
+	ft_putstr_fd("\033[035m", 1);
 	ft_putstr_fd(MINISHELL_NAME, 1);
-	ft_putstr_fd(" ", 1);
-	ft_parsenv(a); // output sur 1 tout le temps ?
-	ft_putstr_fd("> ", 1);
+	ft_putstr_fd("\033[036m ", 1);
+	if (getcwd(pwdname, sizeof(pwdname)) == NULL)
+		return ;
+	ft_putstr_fd(pwdname, 1);
+	ft_putstr_fd("> \033[0m", 1);
 }
 
 void	ft_appendbuffer(t_a *a, int k)
@@ -125,7 +129,7 @@ void	ft_appendexit(t_a *a)
 {
 	if (a->h[a->nav])
 		free(a->h[a->nav]);
-	if (a->buff[0] == 4 | a->buff[0] == 3)
+	if (a->buff[0] == 4)
 		a->h[a->nav] = ft_strdup("exit");
 	a->buff[0] = '\n';
 	ft_screen(a);
@@ -144,7 +148,7 @@ void	ft_get_keyboard_input(t_a *a)
 	while((ret = read(a->fd, a->buff, 4)))
 	{
 		a->buff[ret] = 0;
-		if (a->buff[0] == 4 | a->buff[0] == 3)
+		if (a->buff[0] == 4)
 			ft_appendexit(a);
 		if (a->buff[0] == '\n')
 		{
@@ -173,7 +177,6 @@ int		main(int ac, char **av, char **env)
 	a.av = av;
 	a.env = env;
 	g_fantaisie = 1;
-
 	ft_init_struct(&a);
 	ft_store_env_in_lst(&a);
 	if (TERMCAPS)
@@ -182,7 +185,7 @@ int		main(int ac, char **av, char **env)
 	signal(SIGQUIT, ft_ctrlantislash);
 	while (1)
 	{
-		ft_title(&a);
+		ft_title();
 		if(TERMCAPS)
 			ft_get_keyboard_input(&a);
 		else

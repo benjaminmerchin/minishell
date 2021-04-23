@@ -120,14 +120,25 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 
 void	try_to_replace_token_with_env(t_a *a, int j)
 {
-	(void)j;
-	(void)a;
+	(void)j; // POURQUOI ??
+	(void)a; // POURQUOI ?
 	int k;
 
 	k = 0;
 	while (a->raw[j].str[k])
 	{
-		if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] != '\0')
+		if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] == '?' )
+		{
+			join_before_env_after(a, j, k, ft_itoa(a->dollarquestion));
+			remove_token_from_content(a, j, k);
+			/*
+			Si j'ai bien compris la logique de ta fonction, ça doit ressembler à ça :-D
+			...
+
+			Je n'ai pas bien compris la logique de ta fonction
+			*/
+		}
+		else if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] != '\0')
 		{
 			a->ret = verification_content_env(a->raw[j].str + k + 1); // renvoie la longueur positive si on a un str valide
 			if (a->ret > 0)

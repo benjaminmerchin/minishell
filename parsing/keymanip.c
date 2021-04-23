@@ -31,7 +31,7 @@ void	ft_do_we_jump(t_a *a)
 	if (nl > a->line_term - a->current_line)
 	{
 		tputs(tgoto(a->cm, 0, 0), 1 , ft_putchar);
-		ft_title(a);
+		ft_title();
 		tputs(a->sc, 1, ft_putchar); //J'enregistre la nouvelle position
 		a->current_line = 0;
 	}
