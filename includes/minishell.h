@@ -13,9 +13,9 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
-# define MINISHELL_NAME "(╯°□°)╯︵ ┻━┻"
+# define MINISHELL_NAME "insert_title" //(╯°□°)╯︵ ┻━┻
 # define PRINT_TOKENS 1
-# define TERMCAPS 1
+# define TERMCAPS 0
 # define VERBOSE 0
 int		g_fantaisie;
 
@@ -84,7 +84,8 @@ typedef struct	s_a {
 
 
 //$?
-	int			dollarquestion;
+	int			dollar_question;
+	int			there_is_dollar_question;
 
 	int			v_fd; // -1 if everything is normal
 	int			ret;

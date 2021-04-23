@@ -55,7 +55,7 @@ void	ft_echo(t_a *a, int *i)
 	int	v_b_bn; //variable boolean to manage the -n flag
 	int	n_begin; //-n flag only accepted at the beginning
 
-	a->dollarquestion = 0; //Cette fonction ne doit pas pouvoir planter :-D
+	a->dollar_question = 0;
 	(*i)++;
 	v_b_bn = 1;
 	n_begin = 0;
@@ -94,7 +94,7 @@ void	ft_parsenv_fd(t_a *a, int fd)
 
 void	ft_pwd(t_a *a, int *i)
 {	
-	a->dollarquestion = 0; //Cette fonction ne doit pas pouvoir planter :-D
+	a->dollar_question = 0;
 	update_pwd(a, i);
 	ft_parsenv_fd(a, a->raw[*i].fd_output);
 	ft_putchar_fd('\n', a->raw[*i].fd_output);
@@ -122,14 +122,14 @@ void	ft_env(t_a *a, int *i)
 {
 	t_list *lst;
 
-	a->dollarquestion = 0; //Cette fonction ne doit pas pouvoir planter :-D
+	a->dollar_question = 0;
 	lst = a->lst_env;
 	update_pwd(a, i);
 	while (a->raw[*i + 1].str && ft_strncmp(a->raw[*i].str, a->raw[*i + 1].str, 10) == 0 && ft_strlen(a->raw[*i + 1].str) == 3)
 		(*i)++;
 	if (!(a->raw[*i + 1].str == 0 || a->raw[*i + 1].type == '|' || a->raw[*i + 1].type == ';'))
 	{
-		a->dollarquestion = 1; //Voici l'erreur ?
+		a->dollar_question = 1;
 		ft_putstr_fd("env: ", a->raw[*i].fd_output);
 		ft_putstr_fd(a->raw[*i + 1].str, a->raw[*i].fd_output);
 		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);
@@ -137,6 +137,8 @@ void	ft_env(t_a *a, int *i)
 			(*i)++;
 		return ;
 	}
+	else
+		a->dollar_question = 0;
 	while (lst)
 	{
 		if (content_have_value(lst->content))
@@ -175,8 +177,7 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 	}
 	if (j == 0 || error == 1)
 	{
-		a->dollarquestion = 1; //Là on doit avoir 1
-
+		a->dollar_question = 1;
 		ft_putstr_fd("\033[033m", 1);
 		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
 		ft_putstr_fd(": export: `", a->raw[*i].fd_output);
@@ -191,8 +192,7 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 
 void	command_not_found(t_a *a, int *i)
 {
-	a->dollarquestion = 1; //Là on doit avoir 1
-
+	a->dollar_question = 127;
 	ft_putstr_fd("\033[031m", 1);
 	ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
 	ft_putstr_fd(": ", a->raw[*i].fd_output);
@@ -208,7 +208,7 @@ void	add_env(t_a *a, int *i)
 	int ret;
 	t_list *lst;
 
-	a->dollarquestion = 0; // on initialise à 0
+	a->dollar_question = 0;
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
@@ -299,6 +299,7 @@ void		ft_export(t_a *a, int *i)
 
 	(*i)++;
 	update_pwd(a, i);
+	a->dollar_question = 0;
 	if (a->raw[*i].str == 0 || a->raw[*i].type == '|' || a->raw[*i].type == ';')
 		ft_declare_print_export(a, i);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
@@ -332,6 +333,7 @@ void	ft_unset(t_a *a, int *i)
 	int ret;
 	
 	(*i)++;
+	a->dollar_question = 0;
 	if (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
@@ -377,8 +379,10 @@ void	ft_cd(t_a *a, int *i)
 		ft_putstr_fd(": cd: ", a->raw[*i].fd_output);
 		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
 		ft_putstr_fd(": No such file or directory\033\n", a->raw[*i].fd_output);
-		a->dollarquestion = 127;		
+		a->dollar_question = 127;		
 	}
+	else
+		a->dollar_question = 0;
 	update_pwd(a, i);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
@@ -401,7 +405,7 @@ void	ft_execution(t_a *a)
 	while (a->raw[i].str)//on boucle entre | ou ;
 	{
 		expansion_dup(a, &i); // besoin de reset les fd en fin d'appel 
-		if (a->raw[i].type == '|' || a->raw[i].type == ';') //faire l'expansion ici, juste les $ et les // ou ''""
+		if (a->raw[i].type == '|' || a->raw[i].type == ';')
 			i++;
 		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0) //80%
 			ft_exit_clean(a, "");
@@ -433,7 +437,6 @@ void	ft_execution(t_a *a)
 
 // TODO DIVERS:
 // dup & | & fd < >> >
-// $env $replace
 // management of the \' or \" or \\\' etc
 // $? error management in the fork part
 // ctrl + / ou D ou C (la variable globale signal)

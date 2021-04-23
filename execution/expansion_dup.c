@@ -12,13 +12,18 @@
 
 #include "../includes/minishell.h"
 
-int		verification_content_env(char *str)
+int		verification_content_env(char *str, t_a *a)
 {
 	int j;
 	int error;
 
 	j = 0;
 	error = 0;
+	if (str[0] == '?')
+	{
+		a->there_is_dollar_question = 1;
+		return 2;
+	}
 	while (str[j] != '$' && str[j] != '\0' && (ft_isalnum(str[j]) || str[j] == '_'))
 	{
 		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_'))
@@ -97,17 +102,23 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 {
 	t_list	*lst;
 	int		l;
+	char *temp;
 
 	k++; //to pass the $
 	lst = a->lst_env;
+	if (a->there_is_dollar_question == 1)
+	{
+		temp = ft_itoa(a->dollar_question);
+		a->ret = ft_strlen(temp) + 1;
+		join_before_env_after(a, j, k - 1, temp);
+		free(temp);
+		return ;
+	}
 	while(lst)
 	{
 		l = 0;
 		while (lst->content[l] == a->raw[j].str[l + k] && a->raw[j].str[l + k] && lst->content[l] && l < a->ret)
 			l++;
-		//ft_putnbr(l);
-		//if (l > 2)
-		//	write(1, "MMMMMMMMMM", 10);
 		if (lst->content[l] == '=' && (a->raw[j].str[l + k] == '\0' || (ft_isprint(a->raw[j].str[l + k]) && (!ft_isalnum(a->raw[j].str[l + k]) &&  a->raw[j].str[l + k] != '_'))) && l > 0)
 		{
 			join_before_env_after(a, j, k - 1, lst->content + l + 1);
@@ -120,27 +131,15 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 
 void	try_to_replace_token_with_env(t_a *a, int j)
 {
-	(void)j; // POURQUOI ??
-	(void)a; // POURQUOI ?
 	int k;
 
 	k = 0;
 	while (a->raw[j].str[k])
 	{
-		if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] == '?' )
+		if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] != '\0')
 		{
-			join_before_env_after(a, j, k, ft_itoa(a->dollarquestion));
-			remove_token_from_content(a, j, k);
-			/*
-			Si j'ai bien compris la logique de ta fonction, ça doit ressembler à ça :-D
-			...
-
-			Je n'ai pas bien compris la logique de ta fonction
-			*/
-		}
-		else if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] != '\0')
-		{
-			a->ret = verification_content_env(a->raw[j].str + k + 1); // renvoie la longueur positive si on a un str valide
+			a->there_is_dollar_question = 0;
+			a->ret = verification_content_env(a->raw[j].str + k + 1, a); // renvoie la longueur positive si on a un str valide
 			if (a->ret > 0)
 				replace_me_if_you_find_me(a, j, k); //remplace par du vide si il ne trouve pas
 			else
@@ -197,5 +196,3 @@ close(3)
 	// < lit depuis le fichier a droite
 // dans un second temps, en amont des guillemets
 	// | les pipes
-// quand j'ai le temps
-	// $env $replace
