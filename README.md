@@ -7,7 +7,8 @@ April 19th: Progress: 1510/3300 lines: 46%
 April 20th: Progress: 1700/3300 lines: 51%  
 April 21st: Progress: 1910/3300 lines: 58%  
 April 22nd: Progress: 2130/3300 lines: 64%  
-April 23nd: Progress: 2200/3300 lines: 67%  
+April 23ed: Progress: 2275/3300 lines: 69%  
+April 24th: Progress: ____/3300 lines: __%  
 Deadline : April 25th  
 
 <!-- echo 'scale=3; 2200/3300' | bc -->

@@ -407,19 +407,19 @@ void	ft_execution(t_a *a)
 		expansion_dup(a, &i); // besoin de reset les fd en fin d'appel 
 		if (a->raw[i].type == '|' || a->raw[i].type == ';')
 			i++;
-		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0) //80%
+		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0)
 			ft_exit_clean(a, "");
-		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0) //80%
+		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0)
 			ft_echo(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0) //80%
+		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0)
 			ft_cd(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0) //80%
+		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0)
 			ft_pwd(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0) //80%
+		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0)
 			ft_export(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "unset", 10) == 0) //80%
+		else if (ft_strncmp(a->raw[i].str, "unset", 10) == 0)
 			ft_unset(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "env", 10) == 0) //80%
+		else if (ft_strncmp(a->raw[i].str, "env", 10) == 0)
 			ft_env(a, &i);
 		else
 			fork_wait_execute(a, &i); // here try to find the executables
@@ -437,7 +437,5 @@ void	ft_execution(t_a *a)
 
 // TODO DIVERS:
 // dup & | & fd < >> >
-// management of the \' or \" or \\\' etc
-// $? error management in the fork part
 // ctrl + / ou D ou C (la variable globale signal)
 // norme

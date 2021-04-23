@@ -26,18 +26,47 @@ int		is_sep(char c, t_a *a)
 	return (0);
 }
 
-void	replace_antislash_and_content_by_value(t_a *a) //a->sep = " '\"|;><";
+void	replace_and_shift(char *temp, int i, char c)
+{
+	temp[i] = c;
+	i++;
+	while (temp[i])
+	{
+		temp[i] = temp[i + 1];
+		i++;
+	}
+}
+
+void	replace_antislash_and_content_by_value(t_a *a)
 { //the idea is to replace temporarily for example ' by an int value of 2 if we don't want to consider it as a '
 	int i;
-	int j;
 	char *temp;
 
 	i = 0;
 	temp = a->line;
 	while (temp[i])
 	{
-		j = 0;
-		//if ...
+		if (temp[i] == '\\')
+		{
+			if (temp[i + 1] == ' ')
+				replace_and_shift(temp, i, 1);
+			else if (temp[i + 1] == '\'')
+				replace_and_shift(temp, i, 2);
+			else if (temp[i + 1] == '\\')
+				replace_and_shift(temp, i, 3);
+			else if (temp[i + 1] == '"')
+				replace_and_shift(temp, i, 4);
+			else if (temp[i + 1] == '|')
+				replace_and_shift(temp, i, 5);
+			else if (temp[i + 1] == ';')
+				replace_and_shift(temp, i, 6);
+			else if (temp[i + 1] == '<')
+				replace_and_shift(temp, i, 7);
+			else if (temp[i + 1] == '>')
+				replace_and_shift(temp, i, 8);
+			else if (temp[i + 1] == '\0')
+				replace_and_shift(temp, i, '\\');
+		}
 		i++;
 	}
 }
@@ -55,7 +84,29 @@ void	replace_antislash_and_content_by_value(t_a *a) //a->sep = " '\"|;><";
 
 void	replace_value_by_content(char *str)
 {
-	(void)str;
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 1)
+			str[i] = ' ';
+		else if (str[i] == 2)
+			str[i] = '\'';
+		else if (str[i] == 3)
+			str[i] = '\\';
+		else if (str[i] == 4)
+			str[i] = '"';
+		else if (str[i] == 5)
+			str[i] = '|';
+		else if (str[i] == 6)
+			str[i] = ';';
+		else if (str[i] == 7)
+			str[i] = '<';
+		else if (str[i] == 8)
+			str[i] = '>';
+		i++;
+	}
 }
 
 void	ft_split_sh(t_a *a)
