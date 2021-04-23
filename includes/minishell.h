@@ -79,7 +79,6 @@ typedef struct	s_a {
 
 //section utile pour split
 	char 		*sep; //a->sep = " '\"|;><";
-	char		*backup_sep; //sep mais on y touche pas
 	char		last_sep;
 
 

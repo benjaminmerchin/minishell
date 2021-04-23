@@ -5,7 +5,6 @@ void	ft_init_struct(t_a *a)
 	a->sep = SEPARATORS;
 	a->nav = 0;
 	a->nline = 0;
-	a->backup_sep = a->sep;
 	if (TERMCAPS)
 	{	a->h = malloc(sizeof(char *) * 1000);
 		a->h[0] = NULL;

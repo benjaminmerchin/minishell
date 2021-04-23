@@ -26,6 +26,38 @@ int		is_sep(char c, t_a *a)
 	return (0);
 }
 
+void	replace_antislash_and_content_by_value(t_a *a) //a->sep = " '\"|;><";
+{ //the idea is to replace temporarily for example ' by an int value of 2 if we don't want to consider it as a '
+	int i;
+	int j;
+	char *temp;
+
+	i = 0;
+	temp = a->line;
+	while (temp[i])
+	{
+		j = 0;
+		//if ...
+		i++;
+	}
+}
+
+/*
+** ' ' = 1
+** ''' = 2
+** '\' = 3
+** '"' = 4
+** '|' = 5
+** ';' = 6
+** '<' = 7
+** '>' = 8
+*/
+
+void	replace_value_by_content(char *str)
+{
+	(void)str;
+}
+
 void	ft_split_sh(t_a *a)
 {
 	int		i;
@@ -36,7 +68,8 @@ void	ft_split_sh(t_a *a)
 	k = 0;
 	a->raw = malloc(sizeof(*a->raw) * (1 + 1000)); //revenir dessus avec la meme fonction ft_split_sh mais sans malloc pour obtenir k
 	if (!a->raw)
-		return ;
+		ft_exit_clean(a, "Error\nMalloc Failed\n");
+	replace_antislash_and_content_by_value(a);
 	a->backup = a->line;
 	a->raw[k].str = 0;
 	a->raw[k].type = 0;
@@ -44,7 +77,6 @@ void	ft_split_sh(t_a *a)
 	while (a->line[i])
 	{
 		a->raw[k].space_before = 0;
-		a->sep = a->backup_sep;
 		if (a->line[i] == ' ')
 		{
 			a->raw[k].space_before = 1;
@@ -148,13 +180,11 @@ void	ft_split_sh(t_a *a)
 			(a->line)++; //on depasse la deuxieme quote
 		}
 		else
-		{
 			write(1, "@@@@@@@@@@", 10);//erreur si on imprime des @
-		}
+		replace_value_by_content(a->raw[k].str);
 		k++;
 		a->raw[k].str = 0; //on termine toujours pas un 0 pour simplement free jusqu'au dernier 0
 		a->raw[k].type = 0;
 	}
-	a->sep = a->backup_sep;
 	a->line = a->backup;
 }
