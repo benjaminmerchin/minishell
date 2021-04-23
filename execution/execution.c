@@ -362,7 +362,8 @@ void	ft_cd(t_a *a, int *i)
 		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
 		ft_putstr_fd(": cd: ", a->raw[*i].fd_output);
 		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
-		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);		
+		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);
+		a->dollarquestion = 127;		
 	}
 	update_pwd(a, i);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
