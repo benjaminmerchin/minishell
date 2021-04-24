@@ -62,14 +62,21 @@ void	remove_token_from_content(t_a *a, int j, int k)
 		temp[m] = a->raw[j].str[m];
 		m++;
 	}
+	//write(1, "AAAAAAAAAA", 10);
 	while (a->raw[j].str[m + a->ret])
 	{
 		temp[m] = a->raw[j].str[m + a->ret];
 		m++;
 	}
+	//write(1, "BBBBBBBBBB", 10);
 	temp[m] = '\0';
+	ft_putnbr(ft_strlen(a->raw[j].str) - a->ret + 1);
+	ft_putchar(' ');
 	free(a->raw[j].str);
 	a->raw[j].str = temp;
+	ft_putnbr(m);
+	ft_putchar(' ');
+	ft_putnbr(a->ret);
 }
 
 void	join_before_env_after(t_a *a, int j, int k, char *src)
@@ -134,8 +141,14 @@ void	try_to_replace_token_with_env(t_a *a, int j)
 	int k;
 
 	k = 0;
+
+	if (a->raw[j].str[k] == 'e')
+		return ;
+	ft_putchar('&');
+
 	while (a->raw[j].str[k])
 	{
+		ft_putchar('%');
 		if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] != '\0')
 		{
 			a->there_is_dollar_question = 0;
@@ -144,6 +157,8 @@ void	try_to_replace_token_with_env(t_a *a, int j)
 				replace_me_if_you_find_me(a, j, k); //remplace par du vide si il ne trouve pas
 			else
 				remove_token_from_content(a, j, k);
+			ft_putnbr(a->ret);
+			write(1, "@@@@@@@@@@", 10);
 		}
 		k++;
 	}
@@ -168,7 +183,7 @@ void	expansion_dup(t_a *a, int *i)
 	(void)a;
 	int	pipefd[2];
 
-	replace_var_env_until_next_separator(a, i);
+	//replace_var_env_until_next_separator(a, i);
 
 	//si on essaye d'ecrire sur un repertoire ou un fichier ou on a pas les droits, gerrer les erreurs
 	// creation avec les bon droits 0644 pour un fichier

@@ -51,3 +51,9 @@ void	calcul_k_5(t_a *a, int *i, int *counter)
 		calcul_k_6(a, i, counter);
 	(a->line)++;
 }
+
+void	calcul_k_4(t_a *a)
+{
+	(a->line)++;
+	(a->line)++;
+}

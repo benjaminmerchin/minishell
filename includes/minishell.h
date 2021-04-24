@@ -165,6 +165,16 @@ void	calcul_k_3(t_a *a, int *i, int *counter);
 void	calcul_k_4(t_a *a);
 void	calcul_k_5(t_a *a, int *i, int *counter);
 void	calcul_k_6(t_a *a, int *i, int *counter);
+void	calcul_init_backup(t_a *a, int *i, int *k);
+
+void	init_split_and_backup(t_a *a, int *i, int *k);
+void	increase_k_and_set_type_str_to_0(t_a *a, int *k);
+void	skip_spaces(t_a *a, int *i, int *k);
+void	manage_quotes(t_a *a, int *i, int *k, int *counter);
+void	manage_simple_quote(t_a *a, int *i, int *k, int *counter);
+void	manage_some_tokens(t_a *a, int *i, int *k);
+void	manage_double_greater_than_sign(t_a *a, int *k);
+void	manage_text(t_a *a, int *i, int *k, int *counter);
 
 //listes
 t_list	*ft_lstnew(char *content);
