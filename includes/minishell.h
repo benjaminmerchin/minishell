@@ -17,6 +17,9 @@
 # define PRINT_TOKENS 1
 # define TERMCAPS 0
 # define VERBOSE 0
+# define DEBUG 0
+# define LINE_CONTENT "echo $USER"
+
 int		g_fantaisie;
 
 typedef struct	s_struct
