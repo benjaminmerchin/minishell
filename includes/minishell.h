@@ -47,6 +47,7 @@ typedef struct	s_a {
 	t_list		*lst_env;
 	char		*line;
 	char		*backup;
+	char		*backup_backup;
 	t_raw		*raw;
 	struct termios	trms;
 	char		buff[5];
@@ -80,6 +81,7 @@ typedef struct	s_a {
 //section utile pour split
 	char 		*sep; //a->sep = " '\"|;><";
 	char		last_sep;
+	int			lock_quote;
 
 
 //$?
@@ -150,6 +152,19 @@ int		ft_strlenn(char *str);
 char	*free_null(char *s1);
 int		free_int(char **line);
 
+//benjamin parsing
+void	replace_value_by_content(char *str);
+void	replace_antislash_and_content_by_value(t_a *a);
+void	replace_antislash_and_content_by_value2(int i, char *temp);
+void	replace_and_shift(char *temp, int i, char c);
+int		is_sep(char c, t_a *a);
+
+int		calcul_k(t_a *a);
+void	calcul_k_2(t_a *a, int i);
+void	calcul_k_3(t_a *a, int *i, int *counter);
+void	calcul_k_4(t_a *a);
+void	calcul_k_5(t_a *a, int *i, int *counter);
+void	calcul_k_6(t_a *a, int *i, int *counter);
 
 //listes
 t_list	*ft_lstnew(char *content);

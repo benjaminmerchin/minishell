@@ -9,12 +9,13 @@ SRC		=	minishell.c \
 			utils/libft_itoa.c \
 			\
 			parsing/parsing.c parsing/split.c parsing/keymanip.c \
-			parsing/termcap.c \
+			parsing/termcap.c parsing/manage_antislash_parsing.c \
+			parsing/calcul_nbr_token.c parsing/calcul_nbr_token_2.c \
 			\
 			execution/execution.c execution/fork_wait_execute.c execution/expansion_dup.c \
 			execution/signals.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
-CFLAGS	=	-Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g -fsanitize=address
 
 ifneq (,$(findstring xterm,${TERM}))
 	GREEN := $(shell tput -Txterm setaf 2)

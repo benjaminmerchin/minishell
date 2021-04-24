@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   calcul_nbr_token_2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,24 +12,42 @@
 
 #include "../includes/minishell.h"
 
-void	ft_parsenv(t_a *a)
+void	calcul_k_6(t_a *a, int *i, int *counter)
 {
-	t_list *lst;
-
-	lst = a->lst_env;
-	while (lst)
+	(a->line)++;
+	*counter = 0;
+	while (a->line[*counter] != '\'' && a->line[*counter] != '\0')
+		(*counter)++;
+	if (a->line[*counter] == '\0')
+		set_backup_and_exit(a, "Error\nEnding quote missing\n");
+	while (*counter > 0)
 	{
-		if (ft_strncmp("PWD=", lst->content, 4) == 0)
-		{
-			ft_putstr_fd(lst->content + 4, 1);
-			a->len_head += ft_strlen(lst->content);
-			return ;
-		}
-		lst = lst->next;
+		(*i)++;
+		(*counter)--;
+		(a->line)++;
 	}
+	*i = 0;
 }
 
-void	ft_parsing(t_a *a)
+void	calcul_k_5(t_a *a, int *i, int *counter)
 {
-	get_next_line(0, &a->line);
+	if (a->line[*i] == '"')
+	{
+		(a->line)++;
+		*counter = 0;
+		while (a->line[*counter] != '"' && a->line[*counter] != '\0')
+			(*counter)++;
+		if (a->line[*counter] == '\0')
+			set_backup_and_exit(a, "Error\nEnding quote missing\n");
+		while (*counter > 0)
+		{
+			(*i)++;
+			(*counter)--;
+			(a->line)++;
+		}
+		*i = 0;
+	}
+	else
+		calcul_k_6(a, i, counter);
+	(a->line)++;
 }
