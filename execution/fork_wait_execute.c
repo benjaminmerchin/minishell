@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_wait_execute.c                            :+:      :+:    :+:   */
+/*   fork_wait_execute.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -119,7 +119,6 @@ char	*does_this_function_exist(t_a *a, int *i) //we want to dup and return the c
 	temp = ft_split(path, ':');
 	while (temp[j])
 	{
-		//write(1, "WWWWWWWWWW", 10);
 		path = triple_strjoin(temp[j], "/", a->raw[*i].str);
 		if (stat(path, &buffer) == 0)
 		{
@@ -145,12 +144,7 @@ void	fork_wait_execute(t_a *a, int *i)
 
 	path = does_this_function_exist(a, i);
 	if (path == NULL)
-		add_env_or_command_not_found(a, i); 
-	/*while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-		(*i)++; //activer cette partie pour permettre a georges d'avoir un env stable pour tester
-	free(path);
-	return ;*/
-
+		add_env_or_command_not_found(a, i);
 	argv = put_args_into_an_array(a, i);
 	aenv = put_aenv_into_an_array(a, i);
 	pid = fork();

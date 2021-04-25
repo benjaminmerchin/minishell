@@ -82,7 +82,7 @@ void	ft_dedoublonne(t_a *a)
 
 void	ft_newline(t_a *a)
 {
-	if (a->line)
+	if (a->line && !DEBUG)
 		free(a->line);
 	a->line = ft_strdup(a->h[a->nav]); //j'envoie la ligne sur laquelle je suis dans le reste
 	if (!a->h[a->nav][0])
@@ -194,6 +194,8 @@ int		main(int ac, char **av, char **env)
 		ft_print_string(&a); //remove at the end
 		ft_execution(&a); // execute the tokens
 		ft_cleanstruct(&a); //verifier quon
+		if (DEBUG)
+			exit (0);
 	}
 	return (0);
 }

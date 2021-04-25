@@ -5,7 +5,6 @@ void	ft_init_struct(t_a *a)
 	a->sep = SEPARATORS;
 	a->nav = 0;
 	a->nline = 0;
-	a->backup_sep = a->sep;
 	if (TERMCAPS)
 	{	a->h = malloc(sizeof(char *) * 1000);
 		a->h[0] = NULL;
@@ -14,7 +13,7 @@ void	ft_init_struct(t_a *a)
 	a->fd = 0;
 	a->line = NULL;
 	a->v_fd = -1;
-	a->dollarquestion = 0;
+	a->dollar_question = 0;
 }
 
 void	ft_putnbr_fd(int n, int fd)
