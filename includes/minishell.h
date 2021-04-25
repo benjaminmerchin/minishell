@@ -82,10 +82,8 @@ typedef struct	s_a {
 	char		*backup_sep; //sep mais on y touche pas
 	char		last_sep;
 
-
 //$?
 	int			dollarquestion;
-
 	int			v_fd; // -1 if everything is normal
 	int			ret;
 }				t_a;
