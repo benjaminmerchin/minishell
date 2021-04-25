@@ -18,7 +18,7 @@
 # define TERMCAPS 0
 # define VERBOSE 0
 # define DEBUG 0
-# define LINE_CONTENT "echo $USER"
+# define LINE_CONTENT "echo $USERa"
 
 int		g_fantaisie;
 

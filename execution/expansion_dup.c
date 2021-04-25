@@ -42,49 +42,33 @@ int		verification_content_env(char *str, t_a *a)
 
 void	remove_token_from_content(t_a *a, int j, int k)
 {
-	(void)k;
-	int m;
+	int		m;
+	char	*temp;
 	//on souhaite malloc sur le nouveau content la longueur avant le $ et celle apres la fin du dernier ft_isalnum
-	char *temp;
+	(void)k;
 	m = 0;
-	/*write(1, "@@@@@@@@@@", 10);
-	ft_putnbr(ft_strlen(a->raw[j].str) - a->ret + 1);
-	ft_putstr("    ");
-	ft_putnbr(a->ret);
-	ft_putstr("    ");
-	ft_putnbr(j);
-	ft_putstr("    ");
-	ft_putnbr(k);
-	ft_putstr("    ");*/
 	temp = malloc(sizeof(char) * (ft_strlen(a->raw[j].str) - a->ret + 1));
 	while (m < k)
 	{
 		temp[m] = a->raw[j].str[m];
 		m++;
 	}
-	//write(1, "AAAAAAAAAA", 10);
 	while (a->raw[j].str[m + a->ret])
 	{
 		temp[m] = a->raw[j].str[m + a->ret];
 		m++;
 	}
-	//write(1, "BBBBBBBBBB", 10);
 	temp[m] = '\0';
-	ft_putnbr(ft_strlen(a->raw[j].str) - a->ret + 1);
-	ft_putchar(' ');
 	free(a->raw[j].str);
 	a->raw[j].str = temp;
-	ft_putnbr(m);
-	ft_putchar(' ');
-	ft_putnbr(a->ret);
 }
 
 void	join_before_env_after(t_a *a, int j, int k, char *src)
 {
-	int m;
-	int n;
-	int o;
-	char *temp;
+	int		m;
+	int		n;
+	int		o;
+	char	*temp;
 
 	m = -1;
 	n = 0;
@@ -109,7 +93,7 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 {
 	t_list	*lst;
 	int		l;
-	char *temp;
+	char	*temp;
 
 	k++; //to pass the $
 	lst = a->lst_env;
@@ -141,14 +125,8 @@ void	try_to_replace_token_with_env(t_a *a, int j)
 	int k;
 
 	k = 0;
-
-	if (a->raw[j].str[k] == 'e')
-		return ;
-	ft_putchar('&');
-
 	while (a->raw[j].str[k])
 	{
-		ft_putchar('%');
 		if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] != '\0')
 		{
 			a->there_is_dollar_question = 0;
@@ -157,9 +135,9 @@ void	try_to_replace_token_with_env(t_a *a, int j)
 				replace_me_if_you_find_me(a, j, k); //remplace par du vide si il ne trouve pas
 			else
 				remove_token_from_content(a, j, k);
-			ft_putnbr(a->ret);
-			write(1, "@@@@@@@@@@", 10);
 		}
+		if (a->raw[j].str[k] == '\0')
+			return ;
 		k++;
 	}
 }
