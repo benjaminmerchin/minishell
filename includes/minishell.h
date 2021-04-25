@@ -179,6 +179,15 @@ void	manage_some_tokens(t_a *a, int *i, int *k);
 void	manage_double_greater_than_sign(t_a *a, int *k);
 void	manage_text(t_a *a, int *i, int *k, int *counter);
 
+//benjamin execution
+void	replace_var_env_until_next_separator(t_a *a, int *i);
+void	try_to_replace_token_with_env(t_a *a, int j);
+void	replace_me_if_you_find_me(t_a *a, int j, int k);
+void	replace_dollar_question(t_a *a, char *temp, int j, int k);
+void	join_before_env_after(t_a *a, int j, int k, char *src);
+void	remove_token_from_content(t_a *a, int j, int k);
+int		verification_content_env(char *str, t_a *a);
+
 //listes
 t_list	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_list **alst, t_list *new);

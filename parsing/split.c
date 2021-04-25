@@ -87,7 +87,7 @@ void	ft_split_sh(t_a *a)
 	int		k;
 	int		counter;
 
-	if (!(a->raw = malloc(sizeof(*a->raw) * (1 + /*calcul_k(a)*/1000))))
+	if (!(a->raw = malloc(sizeof(*a->raw) * (1 + calcul_k(a)))))
 		ft_exit_clean(a, "Error\nMalloc Failed\n");
 	replace_antislash_and_content_by_value(a);
 	init_split_and_backup(a, &i, &k);

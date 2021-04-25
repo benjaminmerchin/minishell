@@ -9,7 +9,8 @@ April 21st: Progress: 1910/3300 lines: 58%
 April 22nd: Progress: 2130/3300 lines: 64%  
 April 23rd: Progress: 2275/3300 lines: 69%  
 April 24th: Progress: 2460/3300 lines: 75%  
+April 25th: Progress: 2520/3300 lines: 76%  
 Deadline : April 25th  
 
-<!-- echo 'scale=3; 2200/3300' | bc -->
+<!-- echo 'scale=3; 2520/3300' | bc -->
 <!-- valgrind --leak-check=full --show-leak-kinds=all ./minishell -->
