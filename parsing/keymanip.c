@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keymanip.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/25 18:38:17 by user42            #+#    #+#             */
+/*   Updated: 2021/04/25 18:38:20 by user42           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-void	ft_init_screen(t_a *a)
+void		ft_init_screen(t_a *a)
 {
 	tputs(a->sc, 1, ft_putchar);
 }
@@ -23,16 +35,16 @@ void		ft_getcursorline(t_a *a)
 	a->current_line = ft_atoi(&buff[i]);
 }
 
-void	ft_do_we_jump(t_a *a)
+void		ft_do_we_jump(t_a *a)
 {
 	int	nl;
 
 	nl = (ft_strlen(a->h[a->nav]) + a->len_head) / a->column_term;
 	if (nl > a->line_term - a->current_line)
 	{
-		tputs(tgoto(a->cm, 0, 0), 1 , ft_putchar);
+		tputs(tgoto(a->cm, 0, 0), 1, ft_putchar);
 		ft_title();
-		tputs(a->sc, 1, ft_putchar); //J'enregistre la nouvelle position
+		tputs(a->sc, 1, ft_putchar);
 		a->current_line = 0;
 	}
 }
@@ -41,6 +53,6 @@ void	ft_screen(t_a *a)
 {
 	tputs(a->rc, 1, ft_putchar);
 	ft_do_we_jump(a);
-	tputs(a->cd, 1, ft_putchar); //je nettoie le bas de page
-	ft_putstr_fd(a->h[a->nav], 1); //j'affiche la string dans son état actuel
+	tputs(a->cd, 1, ft_putchar);
+	ft_putstr_fd(a->h[a->nav], 1);
 }
