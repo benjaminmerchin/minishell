@@ -3,10 +3,15 @@
 void	ft_stayinalive(int useless)
 {
 	(void)useless;
+
+	if (g_fantaisie == 0)
+	{
+		ft_putstr_fd("^C\n", 1);
+		ft_title();
+		tputs(tgetstr("sc", NULL), 1, ft_putchar);
+	}
 	g_fantaisie = 130;
-	ft_putstr_fd("^C\n", 1);
-	ft_title();
-	tputs(tgetstr("sc", NULL), 1, ft_putchar);
+	exit(0);
 }
 
 void	ft_ctrlantislash(int useless)

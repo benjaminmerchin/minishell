@@ -388,7 +388,107 @@ void	ft_cd(t_a *a, int *i)
 		(*i)++;
 }
 
+void	ft_func(t_a *a)
+{
+	ft_putstr_fd(a->raw[a->i].str, 1);
+	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
+		ft_exit_clean(a, "");
+	else if (ft_strncmp(a->raw[a->i].str, "echo", 10) == 0)
+		ft_echo(a, &a->i);
+	else if (ft_strncmp(a->raw[a->i].str, "cd", 10) == 0)
+		ft_cd(a, &a->i);
+	else if (ft_strncmp(a->raw[a->i].str, "pwd", 10) == 0)
+		ft_pwd(a, &a->i);
+	else if (ft_strncmp(a->raw[a->i].str, "export", 10) == 0)
+		ft_export(a, &a->i);
+	else if (ft_strncmp(a->raw[a->i].str, "unset", 10) == 0)
+		ft_unset(a, &a->i);
+	else if (ft_strncmp(a->raw[a->i].str, "env", 10) == 0)
+		ft_env(a, &a->i);
+	else
+		fork_wait_execute(a, &a->i); // here try to find the executables
+}
+
+int		ft_dist_to_pipe(t_a *a)
+{
+	int	k;
+
+	k = 0;
+	while (a->raw[a->i + k].str && a->raw[a->i + k].type != '|')
+		k++;
+	if (a->raw[a->i + k].type == '|')
+		return (k);
+	else
+		return (-1);	
+}
+
 void	ft_execution(t_a *a)
+{
+	int status;
+	int k;
+
+	a->i = 0;
+	//first we want to link the correct fd so go through the list
+	//we also replace the $VAR by their values
+	//each token must have its correct fd
+	temporary_set_all_input_to_0_and_output_to_1(a);
+	while (a->raw[a->i].str)//on boucle entre | ou ;
+	{
+		k = 0;
+		expansion_dup(a, &a->i); // besoin de reset les fd en fin d'appel 
+		if (a->raw[a->i].type == '|' || a->raw[a->i].type == ';')
+		{
+			//ft_pipemanager(a);
+			a->i++;
+		}
+		else
+		{
+			g_fantaisie = fork();
+			k = a->i;
+			if (g_fantaisie == 0)
+			{
+				ft_func(a);
+				exit (a->exit_status);
+			}
+			else if (g_fantaisie < 0)
+				ft_exit_clean(a, "Error:\nFork failed\n");
+			else
+			{
+				if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
+					exit(0);
+				while (!WIFEXITED(status) && !WIFSIGNALED(status))
+					waitpid(g_fantaisie, &status, WUNTRACED);
+				a->i = k;
+				k = ft_dist_to_pipe(a);
+				ft_putstr_fd("On a attendu\n", 1);
+				if (k != -1)
+				{
+					a->i = a->i + k;
+				}
+				a->i++;
+			}
+		}
+	}
+}
+
+
+//dulpicate fd before fork in order to be able to restore them
+//https://youtu.be/ceNaZzEoUhk watch this video for pipes
+
+//Command list:
+//Implementer des builtins
+	//echo (-n) cd pwd export unset env exit
+//"Chercher et lancer le bon executable (basé sur une variable d’environnement PATH ou en utilisant un path absolu), comme dans bash"
+	//this means being able to execute through a fork the commends that we will try to get in the path (ls, ...)
+
+// TODO DIVERS:
+// dup & | & fd < >> >
+// ctrl + / ou D ou C (la variable globale signal)
+// norme
+
+
+/*
+void	ft_execution_backup(t_a *a)
 {
 	int i;
 
@@ -406,7 +506,10 @@ void	ft_execution(t_a *a)
 	{
 		expansion_dup(a, &i); // besoin de reset les fd en fin d'appel 
 		if (a->raw[i].type == '|' || a->raw[i].type == ';')
+		{
+			//pipemanager(a);
 			i++;
+		}
 		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0)
 			ft_exit_clean(a, "");
 		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0)
@@ -425,17 +528,4 @@ void	ft_execution(t_a *a)
 			fork_wait_execute(a, &i); // here try to find the executables
 	}
 }
-
-//dulpicate fd before fork in order to be able to restore them
-//https://youtu.be/ceNaZzEoUhk watch this video for pipes
-
-//Command list:
-//Implementer des builtins
-	//echo (-n) cd pwd export unset env exit
-//"Chercher et lancer le bon executable (basé sur une variable d’environnement PATH ou en utilisant un path absolu), comme dans bash"
-	//this means being able to execute through a fork the commends that we will try to get in the path (ls, ...)
-
-// TODO DIVERS:
-// dup & | & fd < >> >
-// ctrl + / ou D ou C (la variable globale signal)
-// norme
+*/

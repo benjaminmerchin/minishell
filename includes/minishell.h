@@ -7,6 +7,7 @@
 # include <sys/stat.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
 
 # include <curses.h>
 # include <term.h>
@@ -56,6 +57,8 @@ typedef struct	s_a {
 	char		buff[5];
 	int			fd;
 	int			exit_status;
+	int			i;
+	int			funcpos;
 
 //Section termcap
 	int			column_term;
@@ -133,15 +136,14 @@ void	ft_ctrlantislash(int useless);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
-
 void	ft_parsing(t_a *a);
 int		get_next_line(int fd, char **line);
 int		ft_strncmp(char *s1, char *s2, int n);
-
 void	ft_init_termcap(t_a *a);
 void	ft_exit_clean(t_a *a, char *str);
 void	ft_print_string(t_a *a);
 
+//redirections
 
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
