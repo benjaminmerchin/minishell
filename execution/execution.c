@@ -388,9 +388,9 @@ void	ft_cd(t_a *a, int *i)
 		(*i)++;
 }
 
-void	ft_func(t_a *a)
+void	ft_execution_function(t_a *a)
 {
-	ft_putstr_fd(a->raw[a->i].str, 1);
+	//ft_putstr_fd(a->raw[a->i].str, 1);
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 		ft_exit_clean(a, "");
 	else if (ft_strncmp(a->raw[a->i].str, "echo", 10) == 0)
@@ -422,7 +422,7 @@ int		ft_dist_to_pipe(t_a *a)
 		return (-1);	
 }
 
-void	ft_execution(t_a *a)
+void	ft_execution_backup(t_a *a)
 {
 	int status;
 	int k;
@@ -447,7 +447,7 @@ void	ft_execution(t_a *a)
 			k = a->i;
 			if (g_fantaisie == 0)
 			{
-				ft_func(a);
+				ft_execution_function(a);
 				exit (a->exit_status);
 			}
 			else if (g_fantaisie < 0)
@@ -529,3 +529,58 @@ void	ft_execution_backup(t_a *a)
 	}
 }
 */
+
+
+void    ft_execution(t_a *a)
+{
+    int 	status;
+    //int k;
+
+    a->i = 0;
+    //first we want to link the correct fd so go through the list
+    //we also replace the $VAR by their values
+    //each token must have its correct fd
+    //int    fd[2];
+
+    temporary_set_all_input_to_0_and_output_to_1(a);
+    while (a->raw[a->i].str)//on boucle entre | ou ;
+    {
+        int	fd[2];
+		pipe(fd);
+		g_fantaisie = fork();
+		if (g_fantaisie == 0)
+		{
+			//on est dans gauche
+			ft_putstr_fd("gauche  g_fantaisie ", 1);
+			ft_putnbr(g_fantaisie);
+			ft_putstr_fd("\n", 1);
+			close(fd[1]);
+			dup2(fd[0], 1);
+			ft_execution_function(a);
+			exit (a->exit_status);
+		}
+		else if (g_fantaisie > 0)
+		{
+			//on est dans droite
+			waitpid(g_fantaisie, &status, WUNTRACED);
+			while (!WIFEXITED(status) && !WIFSIGNALED(status))
+				waitpid(g_fantaisie, &status, WUNTRACED);
+			ft_putstr_fd("Parent  gfantaisie  ", 1);
+			ft_putnbr(g_fantaisie);
+			ft_putstr_fd("\n", 1);
+			close(fd[0]);
+			dup2(fd[1], 0);
+			a->i += 3;
+			ft_execution_function(a);
+		}
+		else
+		{
+			exit(0);
+		}
+		close(fd[0]);
+		close(fd[1]);
+		exit(0);
+		//ft_putstr_fd("AAAAAAAAA\n", 1);
+        a->i++;
+    }
+}
