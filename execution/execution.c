@@ -390,7 +390,8 @@ void	ft_cd(t_a *a, int *i)
 
 void	ft_execution_function(t_a *a)
 {
-	//ft_putstr_fd(a->raw[a->i].str, 1);
+	//redirection: open le fichier et dup2(1 ou 0, fd), raccourcir la chaine, 
+	//verifier qu'il n'y a pas de space before
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 		ft_exit_clean(a, "");
 	else if (ft_strncmp(a->raw[a->i].str, "echo", 10) == 0)
@@ -407,6 +408,7 @@ void	ft_execution_function(t_a *a)
 		ft_env(a, &a->i);
 	else
 		fork_wait_execute(a, &a->i); // here try to find the executables
+	//ici on close et on remet les fd
 }
 
 int		ft_dist_to_pipe(t_a *a)
@@ -486,50 +488,6 @@ void	ft_execution_backup(t_a *a)
 // dup & | & fd < >> >
 // ctrl + / ou D ou C (la variable globale signal)
 // norme
-
-
-/*
-void	ft_execution_backup(t_a *a)
-{
-	int i;
-
-	i = 0;
-	//first we want to link the correct fd so go through the list
-	//we also replace the $VAR by their values
-	//each token must have its correct fd
-
-	temporary_set_all_input_to_0_and_output_to_1(a);
-
-	//we loop through the commands
-		//we execute the build in commands if we can
-		//we dup, fork and execute for he others commands
-	while (a->raw[i].str)//on boucle entre | ou ;
-	{
-		expansion_dup(a, &i); // besoin de reset les fd en fin d'appel 
-		if (a->raw[i].type == '|' || a->raw[i].type == ';')
-		{
-			//pipemanager(a);
-			i++;
-		}
-		else if (ft_strncmp(a->raw[i].str, "exit", 10) == 0)
-			ft_exit_clean(a, "");
-		else if (ft_strncmp(a->raw[i].str, "echo", 10) == 0)
-			ft_echo(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "cd", 10) == 0)
-			ft_cd(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "pwd", 10) == 0)
-			ft_pwd(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "export", 10) == 0)
-			ft_export(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "unset", 10) == 0)
-			ft_unset(a, &i);
-		else if (ft_strncmp(a->raw[i].str, "env", 10) == 0)
-			ft_env(a, &i);
-		else
-			fork_wait_execute(a, &i); // here try to find the executables
-	}
-}
-*/
 
 void	ft_pipe_manager(t_a *a)
 {

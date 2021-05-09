@@ -16,11 +16,12 @@ void	ft_between_semicolon(t_a *a, int *i)
 {
 
 	replace_var_env_until_next_separator(a, i);
-
-	//si on essaye d'ecrire sur un repertoire ou un fichier ou on a pas les droits, gerrer les erreurs
+	
+	//faire les open des > >> <
+	// penser a a->len_raw --
 	// creation avec les bon droits 0644 pour un fichier
+		//verifier qu'il n'y a pas de space before
 
-	//first of all I will try >
 
 }
 
