@@ -551,6 +551,7 @@ void	ft_pipe_manager(t_a *a)
 	else if (g_fantaisie > 0)
 	{
 		//on est dans droite
+		ft_putstr_fd("on y rentre ?\n", 1);
 		if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 			exit(0);
 		waitpid(g_fantaisie, &status, WUNTRACED);
@@ -566,10 +567,6 @@ void	ft_pipe_manager(t_a *a)
 	{
 		exit(0);
 	}
-	close(fd[0]);
-	close(fd[1]);
-	exit(0);
-	a->i++;
 }
 
 void    ft_execution(t_a *a)
@@ -577,6 +574,7 @@ void    ft_execution(t_a *a)
 	temporary_set_all_input_to_0_and_output_to_1(a);
 	while (a->raw[a->i].str)//on boucle entre | ou ;
 	{
+		//replace_var_env_until_next_separator(a, &a->i);
 		if (ft_dist_to_pipe(a) != -1)
 		{
 			ft_pipe_manager(a);
@@ -585,6 +583,9 @@ void    ft_execution(t_a *a)
 		{
 			ft_execution_function(a);
 		}
-		
+		if (a->raw[a->i].type != 0)
+			(a->i)++;
+		else
+			break;
     }
 }

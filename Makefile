@@ -15,7 +15,7 @@ SRC		=	minishell.c \
 			execution/execution.c execution/fork_wait_execute.c execution/expansion_dup.c \
 			execution/signals.c execution/var_env_replacement.c execution/var_env_replacement_2.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
-CFLAGS	=	-Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -g3 -fsanitize=address
 
 ifneq (,$(findstring xterm,${TERM}))
 	GREEN := $(shell tput -Txterm setaf 2)
