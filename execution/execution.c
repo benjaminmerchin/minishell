@@ -436,7 +436,7 @@ void	ft_execution_backup(t_a *a)
 	while (a->raw[a->i].str)//on boucle entre | ou ;
 	{
 		k = 0;
-		expansion_dup(a, &a->i); // besoin de reset les fd en fin d'appel 
+		ft_between_semicolon(a, &a->i); // besoin de reset les fd en fin d'appel 
 		if (a->raw[a->i].type == '|' || a->raw[a->i].type == ';')
 		{
 			//ft_pipemanager(a);
@@ -571,10 +571,11 @@ void	ft_pipe_manager(t_a *a)
 
 void    ft_execution(t_a *a)
 {
+	a->i = 0;
 	temporary_set_all_input_to_0_and_output_to_1(a);
-	while (a->raw[a->i].str)//on boucle entre | ou ;
+	ft_between_semicolon(a, &a->i);
+	while (a->i < a->len_raw)//on boucle entre | ou ;
 	{
-		//replace_var_env_until_next_separator(a, &a->i);
 		if (ft_dist_to_pipe(a) != -1)
 		{
 			ft_pipe_manager(a);
@@ -583,9 +584,8 @@ void    ft_execution(t_a *a)
 		{
 			ft_execution_function(a);
 		}
-		if (a->raw[a->i].type != 0)
-			(a->i)++;
-		else
-			break;
+		(a->i)++;
+		if (a->raw[a->i - 1].type == ';')
+			ft_between_semicolon(a, &a->i);
     }
 }

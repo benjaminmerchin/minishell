@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	expansion_dup(t_a *a, int *i)
+/*void	expansion_dup(t_a *a, int *i)
 {
 	int	pipefd[2];
 	(void)pipefd;
@@ -18,7 +18,7 @@ void	expansion_dup(t_a *a, int *i)
 	//first of all I will try >
 
 	a->v_fd = dup(1);
-}
+}*/
 
 void	ft_attributefd(t_a *a, int *i, int in_or_out)
 {

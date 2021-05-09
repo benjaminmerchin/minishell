@@ -108,4 +108,5 @@ void	ft_split_sh(t_a *a)
 		increase_k_and_set_type_str_to_0(a, &k);
 	}
 	a->line = a->backup;
+	a->len_raw = k;
 }

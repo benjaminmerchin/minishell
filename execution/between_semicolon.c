@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_wait_execute.c                                :+:      :+:    :+:   */
+/*   between_semicolon.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: user42 <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,9 +12,8 @@
 
 #include "../includes/minishell.h"
 
-void	expansion_dup(t_a *a, int *i)
+void	ft_between_semicolon(t_a *a, int *i)
 {
-	int	pipefd[2];
 
 	replace_var_env_until_next_separator(a, i);
 
@@ -23,8 +22,6 @@ void	expansion_dup(t_a *a, int *i)
 
 	//first of all I will try >
 
-	a->v_fd = dup(1);
-	(void)pipefd;
 }
 
 /*
