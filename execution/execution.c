@@ -414,7 +414,8 @@ int		ft_dist_to_pipe(t_a *a)
 	int	k;
 
 	k = 0;
-	while (a->raw[a->i + k].str && a->raw[a->i + k].type != '|')
+	while (a->raw[a->i + k].str && a->raw[a->i + k].type != '|'
+	&& a->raw[a->i + k].type != ';')
 		k++;
 	if (a->raw[a->i + k].type == '|')
 		return (k);
@@ -427,7 +428,7 @@ void	ft_execution_backup(t_a *a)
 	int status;
 	int k;
 
-	a->i = 0;
+
 	//first we want to link the correct fd so go through the list
 	//we also replace the $VAR by their values
 	//each token must have its correct fd
@@ -530,57 +531,60 @@ void	ft_execution_backup(t_a *a)
 }
 */
 
+void	ft_pipe_manager(t_a *a)
+{
+	int 	status;
+	int		fd[2];
+
+	pipe(fd);
+	g_fantaisie = fork();
+	if (g_fantaisie == 0)
+	{
+		//on est dans gauche
+		close(fd[0]);
+		dup2(fd[1], 1);
+		close(fd[1]);
+		//afficher tous les fd ouverts
+		ft_execution_function(a);
+		exit (a->exit_status);
+	}                     
+	else if (g_fantaisie > 0)
+	{
+		//on est dans droite
+		if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
+			exit(0);
+		waitpid(g_fantaisie, &status, WUNTRACED);
+		while (!WIFEXITED(status) && !WIFSIGNALED(status))
+			waitpid(g_fantaisie, &status, WUNTRACED);
+		close(fd[1]);
+		dup2(fd[0], 0);
+		close(fd[0]);
+		a->i += ft_dist_to_pipe(a) + 1;
+		ft_execution(a);
+	}
+	else
+	{
+		exit(0);
+	}
+	close(fd[0]);
+	close(fd[1]);
+	exit(0);
+	a->i++;
+}
 
 void    ft_execution(t_a *a)
 {
-    int 	status;
-    //int k;
-
-    a->i = 0;
-    //first we want to link the correct fd so go through the list
-    //we also replace the $VAR by their values
-    //each token must have its correct fd
-    //int    fd[2];
-
-    temporary_set_all_input_to_0_and_output_to_1(a);
-    while (a->raw[a->i].str)//on boucle entre | ou ;
-    {
-        int	fd[2];
-		pipe(fd);
-		g_fantaisie = fork();
-		if (g_fantaisie == 0)
+	temporary_set_all_input_to_0_and_output_to_1(a);
+	while (a->raw[a->i].str)//on boucle entre | ou ;
+	{
+		if (ft_dist_to_pipe(a) != -1)
 		{
-			//on est dans gauche
-			ft_putstr_fd("gauche  g_fantaisie ", 1);
-			ft_putnbr(g_fantaisie);
-			ft_putstr_fd("\n", 1);
-			close(fd[1]);
-			dup2(fd[0], 1);
-			ft_execution_function(a);
-			exit (a->exit_status);
-		}
-		else if (g_fantaisie > 0)
-		{
-			//on est dans droite
-			waitpid(g_fantaisie, &status, WUNTRACED);
-			while (!WIFEXITED(status) && !WIFSIGNALED(status))
-				waitpid(g_fantaisie, &status, WUNTRACED);
-			ft_putstr_fd("Parent  gfantaisie  ", 1);
-			ft_putnbr(g_fantaisie);
-			ft_putstr_fd("\n", 1);
-			close(fd[0]);
-			dup2(fd[1], 0);
-			a->i += 3;
-			ft_execution_function(a);
+			ft_pipe_manager(a);
 		}
 		else
 		{
-			exit(0);
+			ft_execution_function(a);
 		}
-		close(fd[0]);
-		close(fd[1]);
-		exit(0);
-		//ft_putstr_fd("AAAAAAAAA\n", 1);
-        a->i++;
+		
     }
 }
