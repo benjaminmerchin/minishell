@@ -14,15 +14,26 @@
 
 void	ft_between_semicolon(t_a *a, int *i)
 {
-
 	replace_var_env_until_next_separator(a, i);
-	
+	if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '<')
+	{
+		ft_putstr(">>>>>We found an < arrow<<<<\n");
+		ft_attributefd(a, i, 0);
+	}
+	else if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '>')
+	{
+		ft_putstr(">>>>>We found an > arrow<<<<\n");
+		ft_attributefd(a, i, 1);
+	}
+	else if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '#')
+	{
+		ft_putstr(">>>>>We found an >> arrow<<<<\n");
+		ft_attributefd(a, i, 2);
+	}
 	//faire les open des > >> <
 	// penser a a->len_raw --
 	// creation avec les bon droits 0644 pour un fichier
 		//verifier qu'il n'y a pas de space before
-
-
 }
 
 /*

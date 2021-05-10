@@ -392,6 +392,7 @@ void	ft_execution_function(t_a *a)
 {
 	//redirection: open le fichier et dup2(1 ou 0, fd), raccourcir la chaine, 
 	//verifier qu'il n'y a pas de space before
+	ft_redirection(a);
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 		ft_exit_clean(a, "");
 	else if (ft_strncmp(a->raw[a->i].str, "echo", 10) == 0)
@@ -425,6 +426,7 @@ int		ft_dist_to_pipe(t_a *a)
 		return (-1);	
 }
 
+/*
 void	ft_execution_backup(t_a *a)
 {
 	int status;
@@ -473,7 +475,7 @@ void	ft_execution_backup(t_a *a)
 		}
 	}
 }
-
+*/
 
 //dulpicate fd before fork in order to be able to restore them
 //https://youtu.be/ceNaZzEoUhk watch this video for pipes
@@ -499,10 +501,12 @@ void	ft_pipe_manager(t_a *a)
 	if (g_fantaisie == 0)
 	{
 		//on est dans gauche
-		close(fd[0]);
-		dup2(fd[1], 1);
-		close(fd[1]);
-		//afficher tous les fd ouverts
+		if (a->fd_output == 0)
+		{
+			close(fd[0]);
+			dup2(fd[1], 1);
+			close(fd[1]);
+		}
 		ft_execution_function(a);
 		exit (a->exit_status);
 	}                     
@@ -515,9 +519,12 @@ void	ft_pipe_manager(t_a *a)
 		waitpid(g_fantaisie, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(g_fantaisie, &status, WUNTRACED);
-		close(fd[1]);
-		dup2(fd[0], 0);
-		close(fd[0]);
+		if (a->fd_input == 0)
+		{
+			close(fd[1]);
+			dup2(fd[0], 0);
+			close(fd[0]);
+		}
 		a->i += ft_dist_to_pipe(a) + 1;
 		ft_execution(a);
 	}

@@ -59,7 +59,9 @@ typedef struct	s_a {
 	int			fd;
 	int			exit_status;
 	int			i;
-	int			funcpos;
+// Je pense qu'on va pouvoir nettoyer les fd_input et output de a->raw
+	int			fd_input;
+	int			fd_output;
 
 //Section termcap
 	int			column_term;
@@ -145,6 +147,9 @@ void	ft_exit_clean(t_a *a, char *str);
 void	ft_print_string(t_a *a);
 
 //redirections
+void	ft_redirection(t_a *a);
+void	ft_attributefd(t_a *a, int *i, int in_or_out);
+void	ft_between_semicolon(t_a *a, int *i);
 
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
@@ -152,7 +157,6 @@ void	ft_execution(t_a *a);
 void	add_env_or_command_not_found(t_a *a, int *i);
 void	fork_wait_execute(t_a *a, int *i);
 void	update_pwd(t_a *a, int *i);
-void	ft_between_semicolon(t_a *a, int *i);
 int		ft_strlenn(char *str);
 char	*free_null(char *s1);
 int		free_int(char **line);

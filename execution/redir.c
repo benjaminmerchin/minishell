@@ -1,5 +1,79 @@
 #include "../includes/minishell.h"
 
+void	remove_token_from_list(t_a *a, int i)
+{
+	int j;
+
+	j = 0;
+	free(a->raw[i].str);
+	while (a->raw[i + j + 1].type)
+	{
+		a->raw[i + j].type = a->raw[i + j + 1].type;
+		a->raw[i + j].str = a->raw[i + j + 1].str;
+		a->raw[i + j].space_before = a->raw[i + j + 1].space_before;
+		a->raw[i + j].fd_input = a->raw[i + j + 1].fd_input;
+		a->raw[i + j].fd_output = a->raw[i + j + 1].fd_output;
+		j++;
+	}
+	(a->len_raw)--;
+	a->raw[i + j].str = 0; //il y a un leak ici que je ne parviens pas à gérer
+}
+
+void	ft_redirection(t_a *a)
+{
+	int	k;
+	int	fd;
+
+	k = a->i;
+	a->fd_input = 0;
+	a->fd_output = 0;
+	while (a->raw[k].type && a->raw[k].type != ';' && a->raw[k].type != '|')
+	{
+		if (a->raw[k].type == '>')
+		{
+			fd = open(a->raw[k + 1].str, O_RDONLY, 0644);
+			if (fd <= 0)
+				ft_exit_clean(a, "EXIT: Invalid source for < \n");
+			dup2(fd, 0);
+			a->fd_input = 1;
+			close(fd);
+			ft_putstr(a->raw[k].str);
+			remove_token_from_list(a, k);
+			ft_putstr(a->raw[k].str);
+			remove_token_from_list(a, k);
+		}
+		else if (a->raw[k].type == '<')
+		{
+			fd = open(a->raw[k + 1].str, O_RDWR | O_TRUNC | O_CREAT, 0644);
+			if (fd <= 0)
+				ft_exit_clean(a, "Couldn't create file \n");
+			dup2(fd, 1);
+			a->fd_output = 1;
+			close(fd);
+			ft_putstr(a->raw[k].str);
+			remove_token_from_list(a, k);
+			ft_putstr(a->raw[k].str);
+			remove_token_from_list(a, k);
+		}
+		else if (a->raw[k].type == '#')
+		{
+			fd = open(a->raw[k + 1].str, O_RDWR | O_APPEND | O_CREAT, 0644);
+			if (fd <= 0)
+				ft_exit_clean(a, "Couldn't create file \n");
+			dup2(fd, 1);
+			a->fd_output = 1;
+			close(fd);
+			ft_putstr(a->raw[k].str);
+			remove_token_from_list(a, k);
+			ft_putstr(a->raw[k].str);
+			remove_token_from_list(a, k);
+		}
+		else
+			k++;
+	}
+}
+
+
 /*void	expansion_dup(t_a *a, int *i)
 {
 	int	pipefd[2];
@@ -28,53 +102,33 @@ void	ft_attributefd(t_a *a, int *i, int in_or_out)
 	2 pour un "append à la fin" */
 	int		fd;
 	
-	ft_putstr_fd("This is the way : ", 1);
-	ft_putstr_fd(a->raw[*i + 1].str, 1);
-	ft_putstr_fd("\n", 1);
 	if (in_or_out == 0)
 	{
 		fd = open(a->raw[*i + 1].str, O_RDONLY, 0644);
 		if (fd < 0)
 		{
-			ft_putstr_fd("EXIT: Invalid source for < \n", 1);
+			ft_putstr(MINISHELL_NAME);
+			ft_putstr(a->raw[*i + 1].str);
+			ft_putstr(": Aucun fichier ou dossier de ce type\n");
 		}
-		else
-		{
-			ft_putnbr_fd(fd, 1);
-			ft_putstr_fd(" <- We opened this fd\n", 1);
-			a->raw[a->funcpos].fd_input = fd;
-		}
+		close(fd);
 	}
+	/*
 	else if (in_or_out == 1)
 	{
 		fd = open(a->raw[*i + 1].str, O_RDWR | O_TRUNC | O_CREAT, 0644);
 		if (fd <= 0)
-		{
-			ft_putstr_fd("Couldn't create file \n", 1);
-		}
-		else
-		{
-			ft_putnbr_fd(fd, 1);
-			ft_putstr_fd(" <- The file is created, and this is its fd\n", 1);
-			a->raw[a->funcpos].fd_output = fd;
-		}
+			ft_exit_clean(a, "Couldn't create file \n");
 	}
-	else if (in_or_out == 2)
+	else
 	{
 		fd = open(a->raw[*i + 1].str, O_RDWR | O_APPEND | O_CREAT, 0644);
 		if (fd <= 0)
-		{
-			ft_putstr_fd("Couldn't create file \n", 1);
-		}
-		else
-		{
-			ft_putnbr_fd(fd, 1);
-			ft_putstr_fd(" <- The file is created, and this is its fd\n", 1);
-			a->raw[a->funcpos].fd_output = fd;
-		}
-	}
+			ft_exit_clean(a, "Couldn't create file \n");
+	}*/
 }
 
+/*
 void	ft_isbuiltin(t_a *a, int i)
 {
 	if (a->funcpos == -1 && (ft_strncmp(a->raw[i].str, "exit", 10) == 0 ||
@@ -112,32 +166,4 @@ void	ft_funcpos(t_a *a, int i)
 			ft_putstr_fd(" <-Here, we have a function\n", 1);
 			a->funcpos = i;
 		}
-}
-
-void	expansion_dup_new(t_a *a, int *i)
-{
-	replace_var_env_until_next_separator(a, i);
-	//je te fais totalement confiance sur ce coup
-
-	if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '<')
-	{
-		ft_putstr(">>>>>We found an < arrow<<<<\n");
-		ft_attributefd(a, i, 0);
-	}
-	else if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '>')
-	{
-		ft_putstr(">>>>>We found an > arrow<<<<\n");
-		ft_attributefd(a, i, 1);
-	}
-	else if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '#')
-	{
-		ft_putstr(">>>>>We found an >> arrow<<<<\n");
-		ft_attributefd(a, i, 2);
-	}
-	//si on essaye d'ecrire sur un repertoire ou un fichier ou on a pas les droits, gerrer les erreurs
-	// creation avec les bon droits 0644 pour un fichier
-	// on peut detecter si 2>fichier.txt ou 2 > fichier.txt avec a->space_before
-
-	//first of all I will try >
-	//a->v_fd = dup(1);
-}
+}*/
