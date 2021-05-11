@@ -19,12 +19,12 @@ void		ft_init_screen(t_a *a)
 
 void		ft_getcursorline(t_a *a)
 {
-	char	buff[51];
+	char	buff[501];
 	int		i;
 
 	write(STDOUT_FILENO, "\033[6n", 4);
-	i = read(STDOUT_FILENO, buff, 50);
-	if (i <= 0)
+	i = read(STDOUT_FILENO, buff, 500);
+	if (i < 0)
 		return ;
 	buff[i] = 0;
 	i = 0;

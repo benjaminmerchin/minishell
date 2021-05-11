@@ -85,7 +85,7 @@ int		calcul_k(t_a *a)
 		k++;
 	}
 	a->line = a->backup;
-	free(a->line);
+	//free(a->line);
 	a->line = a->backup_backup;
 	return (k);
 }

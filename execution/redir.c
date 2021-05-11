@@ -16,6 +16,7 @@ void	remove_token_from_list(t_a *a, int i)
 		j++;
 	}
 	(a->len_raw)--;
+	a->raw[i + j].type = 0;
 	a->raw[i + j].str = 0; //il y a un leak ici que je ne parviens pas à gérer
 }
 
@@ -25,34 +26,28 @@ void	ft_redirection(t_a *a)
 	int	fd;
 
 	k = a->i;
-	a->fd_input = 0;
-	a->fd_output = 0;
+	a->fd_input = dup(0);
+	a->fd_output = dup(1);
 	while (a->raw[k].type && a->raw[k].type != ';' && a->raw[k].type != '|')
 	{
-		if (a->raw[k].type == '>')
+		if (a->raw[k].type == '<')
 		{
 			fd = open(a->raw[k + 1].str, O_RDONLY, 0644);
 			if (fd <= 0)
 				ft_exit_clean(a, "EXIT: Invalid source for < \n");
 			dup2(fd, 0);
-			a->fd_input = 1;
 			close(fd);
-			ft_putstr(a->raw[k].str);
 			remove_token_from_list(a, k);
-			ft_putstr(a->raw[k].str);
 			remove_token_from_list(a, k);
 		}
-		else if (a->raw[k].type == '<')
+		else if (a->raw[k].type == '>')
 		{
 			fd = open(a->raw[k + 1].str, O_RDWR | O_TRUNC | O_CREAT, 0644);
 			if (fd <= 0)
 				ft_exit_clean(a, "Couldn't create file \n");
 			dup2(fd, 1);
-			a->fd_output = 1;
 			close(fd);
-			ft_putstr(a->raw[k].str);
 			remove_token_from_list(a, k);
-			ft_putstr(a->raw[k].str);
 			remove_token_from_list(a, k);
 		}
 		else if (a->raw[k].type == '#')
@@ -61,11 +56,8 @@ void	ft_redirection(t_a *a)
 			if (fd <= 0)
 				ft_exit_clean(a, "Couldn't create file \n");
 			dup2(fd, 1);
-			a->fd_output = 1;
 			close(fd);
-			ft_putstr(a->raw[k].str);
 			remove_token_from_list(a, k);
-			ft_putstr(a->raw[k].str);
 			remove_token_from_list(a, k);
 		}
 		else
@@ -73,7 +65,19 @@ void	ft_redirection(t_a *a)
 	}
 }
 
-
+void	ft_fd_closing(t_a *a)
+{
+	if (a->fd_output != 1)
+	{
+		dup2(a->fd_output, 1);
+		close(a->fd_output);
+	}
+	if (a->fd_input != 0)
+	{
+		dup2(a->fd_input, 0);
+		close(a->fd_input);
+	}
+}
 /*void	expansion_dup(t_a *a, int *i)
 {
 	int	pipefd[2];

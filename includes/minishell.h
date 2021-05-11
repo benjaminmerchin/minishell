@@ -19,7 +19,7 @@
 # define TERMCAPS 1
 # define VERBOSE 0
 # define DEBUG 0
-# define LINE_CONTENT "echo $USERa"
+# define LINE_CONTENT "echo pomme >line"
 
 int		g_fantaisie;
 
@@ -150,6 +150,7 @@ void	ft_print_string(t_a *a);
 void	ft_redirection(t_a *a);
 void	ft_attributefd(t_a *a, int *i, int in_or_out);
 void	ft_between_semicolon(t_a *a, int *i);
+void	ft_fd_closing(t_a *a);
 
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
