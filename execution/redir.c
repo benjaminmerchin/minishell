@@ -11,8 +11,6 @@ void	remove_token_from_list(t_a *a, int i)
 		a->raw[i + j].type = a->raw[i + j + 1].type;
 		a->raw[i + j].str = a->raw[i + j + 1].str;
 		a->raw[i + j].space_before = a->raw[i + j + 1].space_before;
-		a->raw[i + j].fd_input = a->raw[i + j + 1].fd_input;
-		a->raw[i + j].fd_output = a->raw[i + j + 1].fd_output;
 		j++;
 	}
 	(a->len_raw)--;
@@ -67,36 +65,11 @@ void	ft_redirection(t_a *a)
 
 void	ft_fd_closing(t_a *a)
 {
-	if (a->fd_output != 1)
-	{
-		dup2(a->fd_output, 1);
-		close(a->fd_output);
-	}
-	if (a->fd_input != 0)
-	{
-		dup2(a->fd_input, 0);
-		close(a->fd_input);
-	}
+	dup2(a->fd_output, 1);
+	close(a->fd_output);
+	dup2(a->fd_input, 0);
+	close(a->fd_input);
 }
-/*void	expansion_dup(t_a *a, int *i)
-{
-	int	pipefd[2];
-	(void)pipefd;
-
-	ft_putstr("\nYou shouldn't be there\n");
-	replace_var_env_until_next_separator(a, i);
-
-	if (a->raw[*i].type == '>') //just an example to prove that the function can remove token
-		remove_token_from_list(a, *i); //basically move all tokens one i closer
-
-	//si on essaye d'ecrire sur un repertoire ou un fichier ou on a pas les droits, gerrer les erreurs
-	// creation avec les bon droits 0644 pour un fichier
-	// on peut detecter si 2>fichier.txt ou 2 > fichier.txt avec a->space_before
-
-	//first of all I will try >
-
-	a->v_fd = dup(1);
-}*/
 
 void	ft_attributefd(t_a *a, int *i, int in_or_out)
 {

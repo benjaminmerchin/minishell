@@ -55,7 +55,7 @@ void	replace_antislash_and_content_by_value(t_a *a)
 	i = 0;
 	temp = a->line;
 	a->lock_quote = 0;
-	while (i < a->len_raw)
+	while (temp[i])
 	{
 		if (temp[i] == '\'')
 		{

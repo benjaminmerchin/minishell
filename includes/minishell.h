@@ -39,8 +39,6 @@ typedef struct	s_list
 typedef struct	s_raw {
 	int			type;
 	char		*str;
-	int			fd_input;
-	int			fd_output;
 	int			space_before; //1 si ' ' entre le token et celui d'avant, 0 sinon
 }				t_raw;
 

@@ -14,19 +14,8 @@
 
 void	temporary_set_all_input_to_0_and_output_to_1(t_a *a)
 {
-	dup2(0, a->raw->fd_input);
-	dup2(1, a->raw->fd_output);
-	int i;
-
-	i = 0;
-	while (a->raw[i].str)
-	{
-		a->raw[i].fd_input = 0;
-		a->raw[i].fd_output = 1;
-		i++;
-	}
-	a->raw[i].fd_input = 0;
-	a->raw[i].fd_output = 1;
+	dup2(0, a->fd_input);
+	dup2(1, a->fd_output);
 }
 
 void	update_pwd(t_a *a, int *i)
@@ -64,18 +53,18 @@ void	ft_echo(t_a *a, int *i)
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 	{
 		if (n_begin == 1 && a->raw[*i].space_before == 1)
-			ft_putstr_fd(" ", a->raw[*i].fd_output);
+			ft_putstr_fd(" ", 1);
 		if (ft_strncmp(a->raw[*i].str, "-n", 10) == 0 && n_begin == 0)
 			v_b_bn = 0;
 		else
 		{
-			ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
+			ft_putstr_fd(a->raw[*i].str, 1);
 			n_begin = 1;
 		}
 		(*i)++;
 	}
 	if (v_b_bn == 1)
-		ft_putchar_fd('\n', a->raw[*i - 1].fd_output);
+		ft_putchar_fd('\n', 1);
 }
 
 void	ft_parsenv_fd(t_a *a, int fd)
@@ -98,8 +87,8 @@ void	ft_pwd(t_a *a, int *i)
 {	
 	a->dollar_question = 0;
 	update_pwd(a, i);
-	ft_parsenv_fd(a, a->raw[*i].fd_output);
-	ft_putchar_fd('\n', a->raw[*i].fd_output);
+	ft_parsenv_fd(a, 1);
+	ft_putchar_fd('\n', 1);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
 }
@@ -132,9 +121,9 @@ void	ft_env(t_a *a, int *i)
 	if (!(a->raw[*i + 1].str == 0 || a->raw[*i + 1].type == '|' || a->raw[*i + 1].type == ';'))
 	{
 		a->dollar_question = 1;
-		ft_putstr_fd("env: ", a->raw[*i].fd_output);
-		ft_putstr_fd(a->raw[*i + 1].str, a->raw[*i].fd_output);
-		ft_putstr_fd(": No such file or directory\n", a->raw[*i].fd_output);
+		ft_putstr_fd("env: ", 1);
+		ft_putstr_fd(a->raw[*i + 1].str, 1);
+		ft_putstr_fd(": No such file or directory\n", 1);
 		while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 			(*i)++;
 		return ;
@@ -145,8 +134,8 @@ void	ft_env(t_a *a, int *i)
 	{
 		if (content_have_value(lst->content))
 		{
-			ft_putstr_fd(lst->content, a->raw[*i].fd_output);
-			ft_putstr_fd("\n", a->raw[*i].fd_output);
+			ft_putstr_fd(lst->content, 1);
+			ft_putstr_fd("\n", 1);
 		}
 		lst = lst->next;
 	}
@@ -165,6 +154,8 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 	int j;
 	int error;
 
+	(void)i; //i ne servait qu'à avoir des a->raw[i].fd_output, on doit pouvoir virer
+
 	j = 0;
 	error = 0;
 	while (str[j] != '=' && str[j] != '\0')
@@ -181,10 +172,10 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 	{
 		a->dollar_question = 1;
 		ft_putstr_fd("\033[033m", 1);
-		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
-		ft_putstr_fd(": export: `", a->raw[*i].fd_output);
-		ft_putstr_fd(str, a->raw[*i].fd_output);
-		ft_putstr_fd("': not a valid identifier\n", a->raw[*i].fd_output);
+		ft_putstr_fd(MINISHELL_NAME, 1);
+		ft_putstr_fd(": export: `", 1);
+		ft_putstr_fd(str, 1);
+		ft_putstr_fd("': not a valid identifier\n", 1);
 		ft_putstr_fd("\033[0m", 1);
 		return(-1);
 	}
@@ -195,11 +186,11 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 void	command_not_found(t_a *a, int *i)
 {
 	a->dollar_question = 127;
-	ft_putstr_fd("\033[031m", 1);
-	ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
-	ft_putstr_fd(": ", a->raw[*i].fd_output);
-	ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
-	ft_putstr_fd(": command not found\n", a->raw[*i].fd_output);
+	ft_putstr("\033[031m");
+	ft_putstr(MINISHELL_NAME);
+	ft_putstr(": ");
+	ft_putstr_fd(a->raw[*i].str, 1);
+	ft_putstr_fd(": command not found\n", 1);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
 	ft_putstr_fd("\033[0m", 1);
@@ -251,25 +242,26 @@ void	ft_declare_print_export(t_a *a, int *i)
 	int j;
 	t_list *lst;
 
+	(void)i; //i ne servait qu'à avoir des a->raw[i].fd_output, on doit pouvoir virer
 	lst = a->lst_env;
 	while (lst)
 	{
 		j = 0;
-		ft_putstr_fd("declare -x ", a->raw[*i - 1].fd_output);
+		ft_putstr_fd("declare -x ", 1);
 		while (lst->content[j] != '=' && lst->content[j] != '\0')
 		{
-			ft_putchar_fd(lst->content[j], a->raw[*i - 1].fd_output);
+			ft_putchar_fd(lst->content[j], 1);
 			j++;
 		}
 		if (lst->content[j] == '=')
 		{
-			ft_putchar_fd('=', a->raw[*i - 1].fd_output);
+			ft_putchar_fd('=', 1);
 			j++;
-			ft_putchar_fd('"', a->raw[*i - 1].fd_output);
-			ft_putstr_fd(lst->content + j, a->raw[*i].fd_output);
-			ft_putchar_fd('"', a->raw[*i - 1].fd_output);
+			ft_putchar_fd('"', 1);
+			ft_putstr_fd(lst->content + j, 1);
+			ft_putchar_fd('"', 1);
 		}
-		ft_putstr_fd("\n", a->raw[*i - 1].fd_output);
+		ft_putstr_fd("\n", 1);
 		lst = lst->next;
 	}
 }
@@ -376,11 +368,11 @@ void	ft_cd(t_a *a, int *i)
 	ret = chdir(a->raw[*i].str);
 	if (ret < 0)
 	{
-		ft_putstr_fd("\033[031m", a->raw[*i].fd_output);
-		ft_putstr_fd(MINISHELL_NAME, a->raw[*i].fd_output);
-		ft_putstr_fd(": cd: ", a->raw[*i].fd_output);
-		ft_putstr_fd(a->raw[*i].str, a->raw[*i].fd_output);
-		ft_putstr_fd(": No such file or directory\033\n", a->raw[*i].fd_output);
+		ft_putstr_fd("\033[031m", 1);
+		ft_putstr_fd(MINISHELL_NAME, 1);
+		ft_putstr_fd(": cd: ", 1);
+		ft_putstr_fd(a->raw[*i].str, 1);
+		ft_putstr_fd(": No such file or directory\033\n", 1);
 		a->dollar_question = 127;		
 	}
 	else
@@ -508,8 +500,8 @@ void	ft_pipe_manager(t_a *a)
 		dup2(fd[1], 1);
 		close(fd[1]);
 		ft_execution_function(a);
-		exit (a->exit_status);
-	}                     
+		exit (a->dollar_question);
+	}
 	else if (g_fantaisie > 0)
 	{
 		//on est dans droite

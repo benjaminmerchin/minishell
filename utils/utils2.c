@@ -15,6 +15,8 @@ void	ft_init_struct(t_a *a)
 	a->v_fd = -1;
 	a->dollar_question = 0;
 	g_fantaisie = -1;
+	a->fd_input = 0;
+	a->fd_output = 1;
 }
 
 void	ft_putnbr_fd(int n, int fd)
