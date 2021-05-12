@@ -14,8 +14,11 @@
 
 void	temporary_set_all_input_to_0_and_output_to_1(t_a *a)
 {
+	(void)a;
+	/*
 	dup2(0, a->fd_input);
 	dup2(1, a->fd_output);
+	*/
 }
 
 void	update_pwd(t_a *a, int *i)
@@ -421,71 +424,6 @@ int		ft_dist_to_pipe(t_a *a)
 		return (-1);	
 }
 
-/*
-void	ft_execution_backup(t_a *a)
-{
-	int status;
-	int k;
-
-
-	//first we want to link the correct fd so go through the list
-	//we also replace the $VAR by their values
-	//each token must have its correct fd
-	temporary_set_all_input_to_0_and_output_to_1(a);
-	while (a->raw[a->i].str)//on boucle entre | ou ;
-	{
-		k = 0;
-		ft_between_semicolon(a, &a->i); // besoin de reset les fd en fin d'appel 
-		if (a->raw[a->i].type == '|' || a->raw[a->i].type == ';')
-		{
-			//ft_pipemanager(a);
-			a->i++;
-		}
-		else
-		{
-			g_fantaisie = fork();
-			k = a->i;
-			if (g_fantaisie == 0)
-			{
-				ft_execution_function(a);
-				exit (a->exit_status);
-			}
-			else if (g_fantaisie < 0)
-				ft_exit_clean(a, "Error:\nFork failed\n");
-			else
-			{
-				if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
-					exit(0);
-				while (!WIFEXITED(status) && !WIFSIGNALED(status))
-					waitpid(g_fantaisie, &status, WUNTRACED);
-				a->i = k;
-				k = ft_dist_to_pipe(a);
-				ft_putstr_fd("On a attendu\n", 1);
-				if (k != -1)
-				{
-					a->i = a->i + k;
-				}
-				a->i++;
-			}
-		}
-	}
-}
-*/
-
-//dulpicate fd before fork in order to be able to restore them
-//https://youtu.be/ceNaZzEoUhk watch this video for pipes
-
-//Command list:
-//Implementer des builtins
-	//echo (-n) cd pwd export unset env exit
-//"Chercher et lancer le bon executable (basé sur une variable d’environnement PATH ou en utilisant un path absolu), comme dans bash"
-	//this means being able to execute through a fork the commends that we will try to get in the path (ls, ...)
-
-// TODO DIVERS:
-// dup & | & fd < >> >
-// ctrl + / ou D ou C (la variable globale signal)
-// norme
-
 void	ft_pipe_manager(t_a *a)
 {
 	int 	status;
@@ -504,15 +442,15 @@ void	ft_pipe_manager(t_a *a)
 	}
 	else if (g_fantaisie > 0)
 	{
+		close(fd[1]);
+		dup2(fd[0], 0);
+		close(fd[0]);
 		//on est dans droite
 		if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 			exit(0);
 		waitpid(g_fantaisie, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(g_fantaisie, &status, WUNTRACED);
-		close(fd[1]);
-		dup2(fd[0], 0);
-		close(fd[0]);
 		a->i += ft_dist_to_pipe(a) + 1;
 		ft_execution(a);
 	}

@@ -2,12 +2,18 @@
 
 void	ft_init_struct(t_a *a)
 {
+	int	i;
+
+	i = -1;
 	a->sep = SEPARATORS;
 	a->nav = 0;
 	a->nline = 0;
 	if (TERMCAPS)
 	{	a->h = malloc(sizeof(char *) * 1000);
-		a->h[0] = NULL;
+		if (!a->h)
+			exit(0);
+		while (i++ < 1000)
+			a->h[i] = NULL;
 	}
 	a->len_head = ft_strlen(MINISHELL_NAME) + 1;
 	a->fd = 0;
