@@ -12,7 +12,7 @@ void	ft_init_struct(t_a *a)
 	{	a->h = malloc(sizeof(char *) * 1000);
 		if (!a->h)
 			exit(0);
-		while (i++ < 1000)
+		while (i++ < 999)
 			a->h[i] = NULL;
 	}
 	a->len_head = ft_strlen(MINISHELL_NAME) + 1;

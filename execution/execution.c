@@ -14,11 +14,8 @@
 
 void	temporary_set_all_input_to_0_and_output_to_1(t_a *a)
 {
-	(void)a;
-	/*
 	dup2(0, a->fd_input);
 	dup2(1, a->fd_output);
-	*/
 }
 
 void	update_pwd(t_a *a, int *i)
@@ -462,7 +459,6 @@ void	ft_pipe_manager(t_a *a)
 
 void    ft_execution(t_a *a)
 {
-	temporary_set_all_input_to_0_and_output_to_1(a);
 	ft_between_semicolon(a, &a->i);
 	while (a->i < a->len_raw)//on boucle entre | ou ;
 	{

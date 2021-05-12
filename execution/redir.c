@@ -24,8 +24,6 @@ void	ft_redirection(t_a *a)
 	int	fd;
 
 	k = a->i;
-	a->fd_input = dup(0);
-	a->fd_output = dup(1);
 	while (a->raw[k].type && a->raw[k].type != ';' && a->raw[k].type != '|')
 	{
 		if (a->raw[k].type == '<')
@@ -66,9 +64,7 @@ void	ft_redirection(t_a *a)
 void	ft_fd_closing(t_a *a)
 {
 	dup2(a->fd_output, 1);
-	close(a->fd_output);
 	dup2(a->fd_input, 0);
-	close(a->fd_input);
 }
 
 void	ft_attributefd(t_a *a, int *i, int in_or_out)
@@ -104,43 +100,3 @@ void	ft_attributefd(t_a *a, int *i, int in_or_out)
 			ft_exit_clean(a, "Couldn't create file \n");
 	}*/
 }
-
-/*
-void	ft_isbuiltin(t_a *a, int i)
-{
-	if (a->funcpos == -1 && (ft_strncmp(a->raw[i].str, "exit", 10) == 0 ||
-	ft_strncmp(a->raw[i].str, "echo", 10) == 0 ||
-	ft_strncmp(a->raw[i].str, "cd", 10) == 0 ||
-	ft_strncmp(a->raw[i].str, "pwd", 10) == 0 ||
-	ft_strncmp(a->raw[i].str, "export", 10) == 0 ||
-	ft_strncmp(a->raw[i].str, "unset", 10) == 0 ||
-	ft_strncmp(a->raw[i].str, "env", 10) == 0))
-	{
-		ft_putnbr_fd(i, 1);
-		ft_putstr_fd(" <-Here, we found a builtin\n", 1);
-		a->funcpos = i;
-	}
-	if (a->raw[i].type == '|' || a->raw[i].type == ';' )
-		{
-			ft_putnbr_fd(i, 1);
-			ft_putstr_fd(" <-Here, got out of the builtin\n", 1);
-			a->funcpos = -1;
-		}
-}
-
-void	ft_funcpos(t_a *a, int i)
-{
-	if (a->raw[i].type == '|' || a->raw[i].type == ';' )
-		{
-			ft_putnbr_fd(i, 1);
-			ft_putstr_fd(" <-Here, we clear funcpos\n", 1);
-			a->funcpos = -1;
-		}
-	else if (i == 0 || a->raw[i - 1].type == '|' ||
-	a->raw[i - 1].type == ';' )
-		{
-			ft_putnbr_fd(i, 1);
-			ft_putstr_fd(" <-Here, we have a function\n", 1);
-			a->funcpos = i;
-		}
-}*/

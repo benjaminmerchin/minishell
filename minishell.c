@@ -193,6 +193,7 @@ int		main(int ac, char **av, char **env)
 		ft_split_sh(&a);
 		ft_print_string(&a); //remove at the end
 		a.i = 0;
+		temporary_set_all_input_to_0_and_output_to_1(&a);
 		ft_execution(&a); // execute the tokens
 		ft_cleanstruct(&a); //verifier quon
 		if (DEBUG)

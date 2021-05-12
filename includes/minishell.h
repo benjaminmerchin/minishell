@@ -149,6 +149,7 @@ void	ft_redirection(t_a *a);
 void	ft_attributefd(t_a *a, int *i, int in_or_out);
 void	ft_between_semicolon(t_a *a, int *i);
 void	ft_fd_closing(t_a *a);
+void	temporary_set_all_input_to_0_and_output_to_1(t_a *a);
 
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
