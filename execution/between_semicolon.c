@@ -15,17 +15,17 @@
 void	ft_between_semicolon(t_a *a, int *i)
 {
 	replace_var_env_until_next_separator(a, i);
-	if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '<')
+	if (a->raw[*i].str != 0 && a->raw[*i + 1].str != 0 && a->raw[*i].type == '<')
 	{
 		ft_putstr(">>>>>We found an < arrow<<<<\n");
 		ft_attributefd(a, i, 0);
 	}
-	else if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '>')
+	else if (a->raw[*i].str != 0 && a->raw[*i + 1].str != 0 && a->raw[*i].type == '>')
 	{
 		ft_putstr(">>>>>We found an > arrow<<<<\n");
 		ft_attributefd(a, i, 1);
 	}
-	else if (a->raw[*i + 1].str != 0 && a->raw[*i].type == '#')
+	else if (a->raw[*i].str != 0 && a->raw[*i + 1].str != 0 && a->raw[*i].type == '#')
 	{
 		ft_putstr(">>>>>We found an >> arrow<<<<\n");
 		ft_attributefd(a, i, 2);

@@ -425,6 +425,7 @@ void	ft_pipe_manager(t_a *a)
 {
 	int 	status;
 	int		fd[2];
+	int		temp;
 
 	pipe(fd);
 	g_fantaisie = fork();
@@ -432,24 +433,28 @@ void	ft_pipe_manager(t_a *a)
 	{
 		//on est dans gauche
 		close(fd[0]);
+		temp = dup(1);
 		dup2(fd[1], 1);
-		close(fd[1]);
 		ft_execution_function(a);
+		close(fd[1]);
+		dup2(temp, 1);
 		exit (a->dollar_question);
 	}
 	else if (g_fantaisie > 0)
 	{
 		close(fd[1]);
+		temp = dup(0);
 		dup2(fd[0], 0);
-		close(fd[0]);
 		//on est dans droite
 		if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 			exit(0);
 		waitpid(g_fantaisie, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(g_fantaisie, &status, WUNTRACED);
+		close(fd[0]);
 		a->i += ft_dist_to_pipe(a) + 1;
-		ft_execution(a);
+		ft_execution_sublevel(a);
+		dup2(temp, 0);
 	}
 	else
 	{
@@ -457,7 +462,23 @@ void	ft_pipe_manager(t_a *a)
 	}
 }
 
-void    ft_execution(t_a *a)
+void	ft_execution_sublevel(t_a *a)
+{
+	while (a->i < a->len_raw && a->raw[a->i].type != ';')//on boucle entre ;
+	{
+		if (ft_dist_to_pipe(a) > 0)
+		{
+			ft_pipe_manager(a);
+		}
+		else
+		{
+			ft_execution_function(a);
+		}
+		(a->i)++;
+    }	
+}
+
+void	ft_execution(t_a *a)
 {
 	ft_between_semicolon(a, &a->i);
 	while (a->i < a->len_raw)//on boucle entre | ou ;
