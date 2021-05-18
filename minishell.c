@@ -181,13 +181,15 @@ int		main(int ac, char **av, char **env)
 	ft_store_env_in_lst(&a);
 	if (TERMCAPS)
 		ft_init_termcap(&a);
-	signal(SIGINT, ft_stayinalive);
-	//signal(SIGQUIT, ft_ctrlantislash);
 	while (1)
 	{
 		ft_title();
 		if(TERMCAPS)
+		{	
+			signal(SIGINT, ft_affiche_controlesay);
+			signal(SIGQUIT, ft_nothing_to_do);
 			ft_get_keyboard_input(&a);
+		}
 		else
 			ft_parsing(&a);
 		ft_split_sh(&a);

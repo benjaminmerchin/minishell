@@ -16,7 +16,7 @@
 # define SEPARATORS " '\"|;><"
 # define MINISHELL_NAME "insert_title" //(╯°□°)╯︵ ┻━┻
 # define PRINT_TOKENS 1
-# define TERMCAPS 1
+# define TERMCAPS 0
 # define VERBOSE 0
 # define DEBUG 0
 # define LINE_CONTENT "echo pomme >line"
@@ -132,8 +132,10 @@ void	ft_appendexit(t_a *a);
 void	ft_store_env_in_lst(t_a *a);
 
 //signals
-void	ft_stayinalive(int c);
+void	ft_affiche_controlesay(int useless);
 void	ft_ctrlantislash(int useless);
+void	ft_exit_from_branch(int useless);
+void	ft_nothing_to_do(int useless);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);

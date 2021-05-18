@@ -386,6 +386,11 @@ void	ft_execution_function(t_a *a)
 {
 	//redirection: open le fichier et dup2(1 ou 0, fd), raccourcir la chaine, 
 	//verifier qu'il n'y a pas de space before
+	if(TERMCAPS)
+	{
+		signal(SIGINT, ft_exit_from_branch);
+		signal(SIGQUIT, ft_nothing_to_do);
+	}
 	ft_redirection(a);
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 		ft_exit_clean(a, "");

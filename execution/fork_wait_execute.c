@@ -150,7 +150,9 @@ void	fork_wait_execute(t_a *a, int *i)
 	pid = fork();
 	if (pid == 0) //we are in the child if pid = 0
 	{
-		//write(1, "@@@@@@@@@@", 10);
+		//ICI ON VEUT CAPTER LA VALEUR DE SORTIE DE EXECVE
+		//
+		//
 		if (execve(path, argv, aenv) == -1) //a->raw[*i].str //exiter le chemin de av[0]
 			exit (0); //remplace with strerrer & errno //on kill syst // on doit exit clean ?
 	}
@@ -170,7 +172,7 @@ void	fork_wait_execute(t_a *a, int *i)
 	free (path);
 	return ;
 }
-
+/*
 void	fork_wait_execute_backup(t_a *a, int *i)
 {
 	pid_t	pid;
@@ -207,4 +209,4 @@ void	fork_wait_execute_backup(t_a *a, int *i)
 	free (path);
 	return ;
 }
-
+*/
