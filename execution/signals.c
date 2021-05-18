@@ -4,14 +4,15 @@ void	ft_stayinalive(int useless)
 {
 	(void)useless;
 
-	if (g_fantaisie == 0)
+	if (g_fantaisie > 0)
 	{
 		ft_putstr_fd("^C\n", 1);
 		ft_title();
 		tputs(tgetstr("sc", NULL), 1, ft_putchar);
 	}
+	kill(g_fantaisie, SIGKILL);
 	g_fantaisie = 130;
-	exit(0);
+	//exit(0);
 }
 
 void	ft_ctrlantislash(int useless)

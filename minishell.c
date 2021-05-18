@@ -182,7 +182,7 @@ int		main(int ac, char **av, char **env)
 	if (TERMCAPS)
 		ft_init_termcap(&a);
 	signal(SIGINT, ft_stayinalive);
-	signal(SIGQUIT, ft_ctrlantislash);
+	//signal(SIGQUIT, ft_ctrlantislash);
 	while (1)
 	{
 		ft_title();
