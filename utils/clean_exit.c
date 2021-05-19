@@ -24,6 +24,7 @@ void	ft_cleanstruct(t_a *a)
 		free(a->line);
 	a->line = NULL;
 	a->sep = SEPARATORS;
+	ft_fd_closing(a);
 }
 
 void	ft_cleantermcaps(t_a *a)
@@ -36,6 +37,7 @@ void	ft_exit_clean(t_a *a, char *str)
 	int	i;
 
 	ft_putstr_fd(str, 2);
+	ft_fd_closing(a);
 	ft_cleanstruct(a);
 	//ft_putnbr(ft_lstsize(a->lst_env));
 	ft_lstclear(&(a->lst_env)); // free env list

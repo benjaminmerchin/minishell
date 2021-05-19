@@ -16,10 +16,10 @@
 # define SEPARATORS " '\"|;><"
 # define MINISHELL_NAME "insert_title" //(╯°□°)╯︵ ┻━┻
 # define PRINT_TOKENS 1
-# define TERMCAPS 0
+# define TERMCAPS 1
 # define VERBOSE 0
 # define DEBUG 0
-# define LINE_CONTENT "echo pomme >line"
+# define LINE_CONTENT "echo pomme >line \n echo pomme"
 
 int		g_fantaisie;
 
@@ -151,7 +151,7 @@ void	ft_redirection(t_a *a);
 void	ft_attributefd(t_a *a, int *i, int in_or_out);
 void	ft_between_semicolon(t_a *a, int *i);
 void	ft_fd_closing(t_a *a);
-void	temporary_set_all_input_to_0_and_output_to_1(t_a *a);
+void	ft_backup_stdinandout(t_a *a);
 void    ft_execution_sublevel(t_a *a);
 
 //benjamin

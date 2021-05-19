@@ -12,10 +12,10 @@
 
 #include "../includes/minishell.h"
 
-void	temporary_set_all_input_to_0_and_output_to_1(t_a *a)
+void	ft_backup_stdinandout(t_a *a)
 {
-	dup2(0, a->fd_input);
-	dup2(1, a->fd_output);
+	a->fd_input = dup(0);
+	a->fd_output = dup(1);
 }
 
 void	update_pwd(t_a *a, int *i)
@@ -409,7 +409,6 @@ void	ft_execution_function(t_a *a)
 	else
 		fork_wait_execute(a, &a->i); // here try to find the executables
 	//ici on close et on remet les fd
-	ft_fd_closing(a);
 }
 
 int		ft_dist_to_pipe(t_a *a)
