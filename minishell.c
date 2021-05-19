@@ -53,6 +53,9 @@ void	ft_store_env_in_lst(t_a *a)
 	lst = ft_lstnew(char_temp);
 	while (a->env[i - 1] && a->env[i])
 	{
+		//Nous avons besoin de la longueur d'env pour les termcaps
+		if (ft_strncmp("PWD=", a->env[i], 4) == 0)
+			a->len_head += ft_strlen(a->env[i] + 4);
 		char_temp = ft_strdup(a->env[i]);
 		temp = ft_lstnew(char_temp);
 		ft_lstadd_back(&lst, temp);
@@ -197,7 +200,6 @@ int		main(int ac, char **av, char **env)
 		a.i = 0;
 		ft_backup_stdinandout(&a);
 		ft_execution(&a); // execute the tokens
-		//ft_fd_closing(&a);
 		ft_cleanstruct(&a); //verifier quon
 		if (DEBUG)
 			exit (0);

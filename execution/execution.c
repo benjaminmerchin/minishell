@@ -409,6 +409,7 @@ void	ft_execution_function(t_a *a)
 	else
 		fork_wait_execute(a, &a->i); // here try to find the executables
 	//ici on close et on remet les fd
+	//ft_fd_closing(a);
 }
 
 int		ft_dist_to_pipe(t_a *a)

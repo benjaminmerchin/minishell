@@ -22,7 +22,6 @@ void	ft_parsenv(t_a *a)
 		if (ft_strncmp("PWD=", lst->content, 4) == 0)
 		{
 			ft_putstr_fd(lst->content + 4, 1);
-			a->len_head += ft_strlen(lst->content);
 			return ;
 		}
 		lst = lst->next;
