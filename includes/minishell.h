@@ -136,6 +136,7 @@ void	ft_affiche_controlesay(int useless);
 void	ft_ctrlantislash(int useless);
 void	ft_exit_from_branch(int useless);
 void	ft_nothing_to_do(int useless);
+void	ft_ctrlc_in_buffer(int useless);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);

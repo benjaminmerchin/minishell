@@ -8,6 +8,15 @@ void	ft_affiche_controlesay(int useless)
 	tputs(tgetstr("sc", NULL), 1, ft_putchar);
 }
 
+void	ft_ctrlc_in_buffer(int i)
+{
+	i = 0;
+	ft_putstr_fd("-controle c avec une chaine de caracteres\n", 1);
+	ft_title();
+	g_fantaisie = -30;
+	tputs(tgetstr("sc", NULL), 1, ft_putchar);
+}
+
 void	ft_exit_from_branch(int useless)
 {
 	(void)useless;
@@ -31,7 +40,7 @@ void	ft_ctrlantislash(int useless)
 	(void)useless;
 	if (g_fantaisie == 0)
 	{
-		kill(g_fantaisie, SIGKILL);
+		kill(g_fantaisie, SIGINT);
 		exit(0);
 	}
 	ft_putstr_fd("Quit (core dumped) - LE MESSAGE DU CTRL ANTISLASH DANS UNE FONCTION BLOQUANTE\n", 1);

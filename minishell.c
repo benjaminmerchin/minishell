@@ -150,8 +150,17 @@ void	ft_get_keyboard_input(t_a *a)
 	ft_getcursorline(a);
 	while((ret = read(a->fd, a->buff, 4)))
 	{
+		if (g_fantaisie == -30)
+		{
+			g_fantaisie = 1;
+			a->h[a->nav][0] = 0;
+		}
+		if (ft_strlen(a->h[a->nav]) > 0)
+			signal(SIGINT, ft_ctrlc_in_buffer);
+		else
+			signal(SIGINT, ft_affiche_controlesay);
 		a->buff[ret] = 0;
-		if (a->buff[0] == 4)
+		if (a->buff[0] == 4 && ft_strlen(a->h[a->nav]) == 0)
 			ft_appendexit(a);
 		if (a->buff[0] == '\n')
 		{
