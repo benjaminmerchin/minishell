@@ -55,7 +55,7 @@ void	ft_exit_clean(t_a *a, char *str)
 		}
 		ft_cleantermcaps(a); //clairement ça ne clean pas encore tout
 	}
-	exit (0);
+	exit (a->dollar_question);
 }
 
 void	set_backup_and_exit(t_a *a, char *str)

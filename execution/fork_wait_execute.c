@@ -150,8 +150,8 @@ void	fork_wait_execute(t_a *a, int *i)
 	pid = fork();
 	if (pid == 0) //we are in the child if pid = 0
 	{
+
 		//ICI ON VEUT CAPTER LA VALEUR DE SORTIE DE EXECVE
-		//
 		//
 		if (execve(path, argv, aenv) == -1) //a->raw[*i].str //exiter le chemin de av[0]
 			exit (0); //remplace with strerrer & errno //on kill syst // on doit exit clean ?
@@ -164,6 +164,7 @@ void	fork_wait_execute(t_a *a, int *i)
 		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
+		a->dollar_question = (status % 255) % 127;
 	}
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;

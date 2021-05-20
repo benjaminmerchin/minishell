@@ -15,9 +15,9 @@ void	ft_exit_from_branch(int useless)
 	{
 		ft_putstr_fd("^C\n", 1);
 		g_fantaisie = 130;
-		exit(0);
+		exit(130);
 	}
-	ft_putstr_fd("^C -VALIDER CE MESSAGE SELON L OS\n", 1);
+	ft_putstr_fd("^C - VALIDER CE MESSAGE SELON L OS\n", 1);
 }
 
 void	ft_nothing_to_do(int useless)

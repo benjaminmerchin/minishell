@@ -46,7 +46,6 @@ void	ft_echo(t_a *a, int *i)
 	int	v_b_bn; //variable boolean to manage the -n flag
 	int	n_begin; //-n flag only accepted at the beginning
 
-	a->dollar_question = 0;
 	(*i)++;
 	v_b_bn = 1;
 	n_begin = 0;
@@ -65,6 +64,7 @@ void	ft_echo(t_a *a, int *i)
 	}
 	if (v_b_bn == 1)
 		ft_putchar_fd('\n', 1);
+	a->dollar_question = 0;
 }
 
 void	ft_parsenv_fd(t_a *a, int fd)
@@ -452,7 +452,7 @@ void	ft_pipe_manager(t_a *a)
 		dup2(fd[0], 0);
 		//on est dans droite
 		if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
-			exit(0);
+			exit(a->dollar_question);
 		waitpid(g_fantaisie, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(g_fantaisie, &status, WUNTRACED);
@@ -463,7 +463,7 @@ void	ft_pipe_manager(t_a *a)
 	}
 	else
 	{
-		exit(0);
+		exit(a->dollar_question);
 	}
 }
 

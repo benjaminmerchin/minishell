@@ -162,8 +162,11 @@ void	ft_get_keyboard_input(t_a *a)
 				ft_putstr_fd("\n", 1);
 			return ;
 		}
-		else if (a->buff[0] == 127 && ft_strlen(a->h[a->nav]) > 0)
-			a->h[a->nav][ft_strlen(a->h[a->nav]) - 1] = 0;
+		else if (a->buff[0] == 127)
+			{
+			if (ft_strlen(a->h[a->nav]) > 0)
+				a->h[a->nav][ft_strlen(a->h[a->nav]) - 1] = 0;
+			}
 		else if (a->buff[0] == 27 && a->buff[1] == '[')
 			ft_updown(a);
 		else
@@ -202,7 +205,7 @@ int		main(int ac, char **av, char **env)
 		ft_execution(&a); // execute the tokens
 		ft_cleanstruct(&a); //verifier quon
 		if (DEBUG)
-			exit (0);
+			exit(0);
 	}
 	return (0);
 }

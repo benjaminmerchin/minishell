@@ -39,8 +39,11 @@ void		ft_do_we_jump(t_a *a)
 {
 	int	nl;
 	int fd;
+	int i;
 
 	nl = (ft_strlen(a->h[a->nav]) + a->len_head + 2) / a->column_term;
+	if (nl + a->current_line <= a->line_term)
+		return ;
 	while (nl > a->line_term - a->current_line)
 	{
 		fd = open("./Termcaps", O_RDWR | O_APPEND | O_CREAT, 0644);
@@ -53,14 +56,16 @@ void		ft_do_we_jump(t_a *a)
 		ft_putstr_fd(ft_itoa(a->line_term), fd);
 		ft_putstr_fd(" <-line term\n", fd);
 		close(fd);
-
-		tputs(a->sf, 1, ft_putchar);
-		a->current_line = a->current_line - 1;
-		tputs(tgoto(a->cm, 0, a->current_line - 1), 1, ft_putchar);
-		tputs(a->cd, 1, ft_putchar);
-		ft_title();
-		tputs(a->sc, 1, ft_putchar);
+		
+		a->current_line--;
 	}
+	i = -1;
+	while (++i < nl)
+		tputs(a->sf, 1, ft_putchar);
+	tputs(tgoto(a->cm, 0, a->current_line - 1), 1, ft_putchar);
+	tputs(a->cd, 1, ft_putchar);
+	ft_title();
+	tputs(a->sc, 1, ft_putchar);
 }
 
 void	ft_screen(t_a *a)
@@ -70,3 +75,6 @@ void	ft_screen(t_a *a)
 	tputs(a->cd, 1, ft_putchar);
 	ft_putstr_fd(a->h[a->nav], 1);
 }
+
+
+//((ft_strlen(a->h[a->nav]) + a->len_head + 2) % a->column_term)
