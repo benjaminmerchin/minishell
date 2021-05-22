@@ -35,7 +35,6 @@ void	ft_init_termcap(t_a *a)
 	a->up = tgetstr("up", NULL);
 	a->dw = tgetstr("do", NULL);
 	//tputs(a->cl, 1, ft_putchar);
-	ft_raw_mode(a);
 }
 
 void	ft_save_hist(t_a *a, char *line)

@@ -146,6 +146,7 @@ void	ft_get_keyboard_input(t_a *a)
 	a->nav = a->nline - 1;
 	a->h[a->nav] = malloc(sizeof(char));
 	a->h[a->nav][0] = 0;
+	a->buff[0] = 0;
 	ft_init_screen(a);
 	ft_getcursorline(a);
 	while((ret = read(a->fd, a->buff, 4)))
@@ -178,7 +179,7 @@ void	ft_get_keyboard_input(t_a *a)
 			}
 		else if (a->buff[0] == 27 && a->buff[1] == '[')
 			ft_updown(a);
-		else
+		else if (a->buff[0] != 4)
 			ft_appendbuffer(a, ft_strlen(a->buff));
 		ft_screen(a);
 	}
@@ -201,9 +202,11 @@ int		main(int ac, char **av, char **env)
 		ft_title();
 		if(TERMCAPS)
 		{	
+			ft_raw_mode(&a);
 			signal(SIGINT, ft_affiche_controlesay);
 			signal(SIGQUIT, ft_nothing_to_do);
 			ft_get_keyboard_input(&a);
+			ft_cleantermcaps(&a);
 		}
 		else
 			ft_parsing(&a);

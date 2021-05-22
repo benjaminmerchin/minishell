@@ -399,6 +399,11 @@ void	ft_execution_function(t_a *a)
 {
 	//redirection: open le fichier et dup2(1 ou 0, fd), raccourcir la chaine, 
 	//verifier qu'il n'y a pas de space before
+	if(TERMCAPS)
+	{
+		signal(SIGINT, ft_exit_from_branch);
+		signal(SIGQUIT, ft_jump_line);
+	}
 	ft_redirection(a);
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 		ft_exit_clean(a, "");
@@ -492,63 +497,6 @@ void	ft_execution_sublevel(t_a *a)
     }	
 }
 
-/*
-void	ft_execution(t_a *a)
-{
-	pid_t	pid;
-	int		listen;
-	int		ret;
-
-	listen = 1;
-	pid = fork();
-	if (pid == 0)
-	{
-		if(TERMCAPS)
-		{
-			signal(SIGINT, ft_exit_from_branch);
-			signal(SIGQUIT, ft_nothing_to_do);
-		}
-		ft_between_semicolon(a, &a->i);
-		while (a->i < a->len_raw)//on boucle entre | ou ;
-		{
-			if (ft_dist_to_pipe(a) > 0)
-			{
-				ft_pipe_manager(a);
-			}
-			else
-			{
-				ft_execution_function(a);
-			}
-			(a->i)++;
-			if (a->i < a->len_raw && a->raw[a->i - 1].type == ';')
-				ft_between_semicolon(a, &a->i);
-		}
-		listen = 0;
-	}
-	else if (pid < 0) //in case of fail
-		ft_exit_clean(a, "Error:\nFork failed\n");
-	else
-	{
-		while (listen)
-		{
-			a->buff[0] = 0;
-			ret = read(a->fd, a->buff, 4);
-			a->buff[ret] = 0;
-			if (a->buff[0] == 4)
-			{
-				ft_putstr_fd("We caught ctrl d in blocking function\n", 1);
-				kill(0, SIGINT);
-				break ;
-			}
-		}
-		ft_putstr_fd("We don't listen to ctrl-d\n", 1);
-	}
-	
-}
-
-
- je vais tenter de gerer le controle d, donc je fais un backup
-*/
 void	ft_execution(t_a *a)
 {
 	ft_between_semicolon(a, &a->i);
