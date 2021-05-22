@@ -58,6 +58,42 @@ void	ft_exit_clean(t_a *a, char *str)
 	exit (a->dollar_question);
 }
 
+void	ft_exit(t_a *a)
+{
+	int	sign;
+	int	iter;
+	
+	if (a->raw[a->i + 1].str == 0)
+		ft_exit_clean(a, "");
+	if (a->raw[a->i + 2].str != 0 && a->raw[a->i + 2].type != ';')
+	{
+		ft_putstr_fd("\033[031m", 1);
+		ft_putstr_fd(MINISHELL_NAME, 1);
+		ft_putstr_fd(": exit: too many arguments\033\n", 1);
+	}
+	iter = 0;
+	sign = 1;
+	if (a->raw[a->i + 2].str[iter] == '-')
+	{
+		sign = -1;
+		iter++;
+	}
+	while (a->raw[a->i + 2].str[iter])
+	{
+		if (!ft_isdigit(a->raw[a->i + 2].str[iter]))
+		{
+			ft_putstr_fd("\033[031m", 1);
+			ft_putstr_fd(MINISHELL_NAME, 1);
+			ft_putstr_fd(": exit: numeric argument required\033\n", 1);
+			a->dollar_question = 255;
+			ft_exit_clean(a, "");
+		}
+		iter++;
+	}
+	a->dollar_question = sign * ft_atoi(a->raw[a->i + 1].str);
+	ft_exit_clean(a, "");
+}
+
 void	set_backup_and_exit(t_a *a, char *str)
 {
 	a->line = a->backup;

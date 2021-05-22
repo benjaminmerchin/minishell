@@ -77,6 +77,7 @@ void	ft_dedoublonne(t_a *a)
 		{
 			a->h[a->nline - 1][0] = 0;
 			free(a->h[a->nline - 1]);
+			a->h[a->nline - 1] = NULL;
 		}
 		a->nline--;
 		return ;
@@ -91,7 +92,10 @@ void	ft_newline(t_a *a)
 	if (!a->h[a->nav][0])
 	{
 		if (a->h[a->nline - 1])
+		{
 			free(a->h[a->nline - 1]);
+			a->h[a->nline - 1] = NULL;
+		}
 		a->nline--;
 		return ;
 	}
@@ -204,7 +208,7 @@ int		main(int ac, char **av, char **env)
 		{	
 			ft_raw_mode(&a);
 			signal(SIGINT, ft_affiche_controlesay);
-			signal(SIGQUIT, ft_nothing_to_do);
+			signal(SIGQUIT, ft_ctrl_antislash_in_function);
 			ft_get_keyboard_input(&a);
 			ft_cleantermcaps(&a);
 		}

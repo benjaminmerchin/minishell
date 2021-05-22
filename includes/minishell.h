@@ -137,6 +137,7 @@ void	ft_jump_line(int useless);
 void	ft_exit_from_branch(int useless);
 void	ft_nothing_to_do(int useless);
 void	ft_ctrlc_in_buffer(int useless);
+void	ft_ctrl_antislash_in_function(int useless);
 
 //navigation
 void	ft_save_hist(t_a *a, char *line);
@@ -200,6 +201,7 @@ void	join_before_env_after(t_a *a, int j, int k, char *src);
 void	remove_token_from_content(t_a *a, int j, int k);
 int		verification_content_env(char *str, t_a *a);
 void	remove_token_from_list(t_a *a, int i);
+void	ft_exit(t_a *a);
 
 //listes
 t_list	*ft_lstnew(char *content);

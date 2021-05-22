@@ -151,7 +151,7 @@ void	fork_wait_execute(t_a *a, int *i)
 	if (pid == 0) //we are in the child if pid = 0
 	{
 		if (execve(path, argv, aenv) == -1) //a->raw[*i].str //exiter le chemin de av[0]
-			exit (0); //remplace with strerrer & errno //on kill syst // on doit exit clean ?
+			exit (a->dollar_question); //remplace with strerrer & errno //on kill syst // on doit exit clean ?
 	}
 	else if (pid < 0) //in case of fail
 		ft_exit_clean(a, "Error:\nFork failed\n");
@@ -160,13 +160,9 @@ void	fork_wait_execute(t_a *a, int *i)
 		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
-		a->dollar_question = (status % 255) % 127;
-		if (g_fantaisie == 130)
-		{
-			a->dollar_question = 130;
-			ft_putstr_fd("On doit avoir a->dollarQ egal a 130\n", 1);
-		}
-		
+		a->dollar_question = (status % 255);
+		if (g_fantaisie >= 127)
+			a->dollar_question = g_fantaisie;
 	}
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;

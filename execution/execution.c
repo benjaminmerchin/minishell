@@ -406,7 +406,7 @@ void	ft_execution_function(t_a *a)
 	}
 	ft_redirection(a);
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
-		ft_exit_clean(a, "");
+		ft_exit(a);
 	else if (ft_strncmp(a->raw[a->i].str, "echo", 10) == 0)
 		ft_echo(a, &a->i);
 	else if (ft_strncmp(a->raw[a->i].str, "cd", 10) == 0)
@@ -421,8 +421,6 @@ void	ft_execution_function(t_a *a)
 		ft_env(a, &a->i);
 	else
 		fork_wait_execute(a, &a->i); // here try to find the executables
-	//ici on close et on remet les fd
-	//ft_fd_closing(a);
 }
 
 int		ft_dist_to_pipe(t_a *a)
