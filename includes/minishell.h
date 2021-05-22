@@ -19,7 +19,7 @@
 # define TERMCAPS 1
 # define VERBOSE 0
 # define DEBUG 0
-# define LINE_CONTENT "echo pomme >line \n echo pomme"
+# define LINE_CONTENT "cat "
 
 int		g_fantaisie;
 
@@ -133,7 +133,7 @@ void	ft_store_env_in_lst(t_a *a);
 
 //signals
 void	ft_affiche_controlesay(int useless);
-void	ft_ctrlantislash(int useless);
+void	ft_jump_line(int useless);
 void	ft_exit_from_branch(int useless);
 void	ft_nothing_to_do(int useless);
 void	ft_ctrlc_in_buffer(int useless);
@@ -144,6 +144,8 @@ void	ft_parsing(t_a *a);
 int		get_next_line(int fd, char **line);
 int		ft_strncmp(char *s1, char *s2, int n);
 void	ft_init_termcap(t_a *a);
+void	ft_cleantermcaps(t_a *a);
+void	ft_raw_mode(t_a *a);
 void	ft_exit_clean(t_a *a, char *str);
 void	ft_print_string(t_a *a);
 
