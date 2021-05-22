@@ -142,13 +142,6 @@ void	ft_env(t_a *a, int *i)
 	(*i)++;
 }
 
-void	ft_work_in_progress(t_a *a, int *i)
-{
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-		(*i)++;
-	ft_putstr_fd("Work in progress for this command\n", 1);
-}
-
 int		ft_verification_content(char *str, t_a *a, int *i)
 {
 	int j;
@@ -287,6 +280,23 @@ void		add_me_if_i_do_not_exist_yet(t_a *a, int *i, int ret)
 		ft_lstadd_back(&(a->lst_env), ft_lstnew(ft_strdup(a->raw[*i].str)));
 }
 
+void		join_me_if_im_quotation_marks(t_a *a, int *i, int ret)
+{
+	char *temp;
+	int num;
+	
+	if (a->raw[*i + 1].type == '\'' || a->raw[*i + 1].type == '"')
+	{
+		if (a->raw[*i].str[ret] != '\0')
+			return ;
+		num = *i;
+		temp = ft_strjoin_libft(a->raw[*i].str, a->raw[*i + 1].str);
+		remove_token_from_list(a, num + 1);
+		free(a->raw[*i].str);
+		a->raw[*i].str = temp;
+	}
+}
+
 void		ft_export(t_a *a, int *i)
 {
 	int	ret;
@@ -300,7 +310,10 @@ void		ft_export(t_a *a, int *i)
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
 		if (ret > 0)
+		{
+			join_me_if_im_quotation_marks(a, i, ret);
 			add_me_if_i_do_not_exist_yet(a, i, ret);
+		}
 		(*i)++;
 	}
 }

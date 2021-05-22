@@ -197,6 +197,7 @@ void	replace_dollar_question(t_a *a, char *temp, int j, int k);
 void	join_before_env_after(t_a *a, int j, int k, char *src);
 void	remove_token_from_content(t_a *a, int j, int k);
 int		verification_content_env(char *str, t_a *a);
+void	remove_token_from_list(t_a *a, int i);
 
 //listes
 t_list	*ft_lstnew(char *content);

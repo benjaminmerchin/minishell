@@ -15,7 +15,7 @@ void	remove_token_from_list(t_a *a, int i)
 	}
 	(a->len_raw)--;
 	a->raw[i + j].type = 0;
-	a->raw[i + j].str = 0; //il y a un leak ici que je ne parviens pas à gérer
+	a->raw[i + j].str = 0;
 }
 
 void	ft_redirection(t_a *a)
