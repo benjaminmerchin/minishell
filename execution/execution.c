@@ -445,10 +445,11 @@ void	ft_pipe_manager(t_a *a)
 	int 	status;
 	int		fd[2];
 	int		temp;
+	pid_t	pid;
 
 	pipe(fd);
-	g_fantaisie = fork();
-	if (g_fantaisie == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		//on est dans gauche
 		close(fd[0]);
@@ -459,7 +460,7 @@ void	ft_pipe_manager(t_a *a)
 		dup2(temp, 1);
 		exit (a->dollar_question);
 	}
-	else if (g_fantaisie > 0)
+	else if (pid > 0)
 	{
 		close(fd[1]);
 		temp = dup(0);
@@ -467,9 +468,9 @@ void	ft_pipe_manager(t_a *a)
 		//on est dans droite
 		if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 			exit(a->dollar_question);
-		waitpid(g_fantaisie, &status, WUNTRACED);
+		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
-			waitpid(g_fantaisie, &status, WUNTRACED);
+			waitpid(pid, &status, WUNTRACED);
 		close(fd[0]);
 		a->i += ft_dist_to_pipe(a) + 1;
 		ft_execution_sublevel(a);

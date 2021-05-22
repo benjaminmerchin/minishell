@@ -161,6 +161,12 @@ void	fork_wait_execute(t_a *a, int *i)
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
 		a->dollar_question = (status % 255) % 127;
+		if (g_fantaisie == 130)
+		{
+			a->dollar_question = 130;
+			ft_putstr_fd("On doit avoir a->dollarQ egal a 130\n", 1);
+		}
+		
 	}
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
 		(*i)++;
