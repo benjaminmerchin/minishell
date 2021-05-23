@@ -5,12 +5,11 @@ void	ft_putchar_fd(char c, int fd)
 	write(fd, &c, 1);
 }
 
-int		ft_putchar(int c)
+int	ft_putchar(int c)
 {
 	write(1, &c, 1);
 	return (0);
 }
-
 
 void	ft_putstr_fd(char *s, int fd)
 {
@@ -31,7 +30,8 @@ char	*ft_strdup(char *s)
 		return (res);
 	}
 	len = ft_strlen(s) + 1;
-	if (!(res = malloc(sizeof(char) * len)))
+	res = malloc(sizeof(char) * len);
+	if (!res)
 		return (NULL);
 	while (i < len)
 	{
@@ -41,9 +41,9 @@ char	*ft_strdup(char *s)
 	return (res);
 }
 
-int		ft_strncmp(char *s1, char *s2, int n)
+int	ft_strncmp(char *s1, char *s2, int n)
 {
-	int i;
+	int	i;
 
 	if (!s1)
 		return (-1000);

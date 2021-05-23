@@ -208,7 +208,7 @@ int		main(int ac, char **av, char **env)
 		{	
 			ft_raw_mode(&a);
 			signal(SIGINT, ft_affiche_controlesay);
-			signal(SIGQUIT, ft_ctrl_antislash_in_function);
+			signal(SIGQUIT, ft_nothing_to_do);
 			ft_get_keyboard_input(&a);
 			ft_cleantermcaps(&a);
 		}

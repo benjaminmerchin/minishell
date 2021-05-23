@@ -22,7 +22,8 @@ char	*ft_strjoin(char *s1, char *s2, t_struct *data)
 	j = 0;
 	if (!s1 || !s2)
 		return (NULL);
-	if (!(str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlenn(s2) + 1))))
+	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlenn(s2) + 1));
+	if (!str)
 		return (free_null(s1));
 	while (s1[i])
 	{
@@ -40,11 +41,11 @@ char	*ft_strjoin(char *s1, char *s2, t_struct *data)
 	return (str);
 }
 
-int		get_next_line2(int fd, char **line, t_struct *data)
+int	get_next_line2(int fd, char **line, t_struct *data)
 {
 	while (data->ret > 0)
 	{
-		if (ft_strlen(data->buff + data->curs) !=
+		if (ft_strlen(data->buff + data->curs) != \
 		ft_strlenn(data->buff + data->curs))
 		{
 			*line = ft_strjoin(*line, data->buff + data->curs, data);
@@ -68,9 +69,9 @@ int		get_next_line2(int fd, char **line, t_struct *data)
 	return (0);
 }
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
-	static t_struct data;
+	static t_struct	data;
 
 	if (read(fd, data.buff, 0) < 0 || fd < 0 || fd > 10240 || line == NULL)
 		return (-1);

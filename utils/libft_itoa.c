@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_itoa.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtaverne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/23 18:39:44 by gtaverne          #+#    #+#             */
+/*   Updated: 2021/05/23 18:39:47 by gtaverne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-static char		*ft_strrev(char *str)
+static char	*ft_strrev(char *str)
 {
 	int		i;
 	int		j;
@@ -22,12 +34,15 @@ static size_t	ft_intlen(int nb)
 	size_t	i;
 
 	i = 1;
-	while (nb /= 10)
+	while (nb / 10 > 0)
+	{
+		nb /= 10;
 		++i;
+	}
 	return (i);
 }
 
-char			*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	long		nb;
 	size_t		nlen;

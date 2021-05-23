@@ -28,7 +28,7 @@ void	ft_ctrl_antislash_in_function(int useless)
 {
 	(void)useless;
 	g_fantaisie = 127;
-	ft_putstr_fd("^C - ctrl \\ dans une branche\n", 1);
+	ft_putstr_fd("Quit: 3   - ctrl \\ dans une branche\n", 1);
 }
 
 void	ft_nothing_to_do(int useless)

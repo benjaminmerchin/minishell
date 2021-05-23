@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtaverne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/23 18:55:42 by gtaverne          #+#    #+#             */
+/*   Updated: 2021/05/23 18:55:45 by gtaverne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	ft_init_struct(t_a *a)
@@ -9,7 +21,8 @@ void	ft_init_struct(t_a *a)
 	a->nav = 0;
 	a->nline = 0;
 	if (TERMCAPS)
-	{	a->h = malloc(sizeof(char *) * 1000);
+	{
+		a->h = malloc(sizeof(char *) * 1000);
 		if (!a->h)
 			exit(0);
 		while (i++ < 999)
@@ -21,13 +34,11 @@ void	ft_init_struct(t_a *a)
 	a->v_fd = -1;
 	a->dollar_question = 0;
 	g_fantaisie = -1;
-	//a->fd_input = 0;
-	//a->fd_output = 1;
 }
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	long nbr;
+	long	nbr;
 
 	nbr = n;
 	if (nbr < 0)
@@ -46,10 +57,9 @@ void	ft_putnbr_fd(int n, int fd)
 
 void	ft_print_string(t_a *a)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	//ft_putchar_fd('\n', 1);
 	if (PRINT_TOKENS == 0)
 		return ;
 	while (a->raw[i].str)

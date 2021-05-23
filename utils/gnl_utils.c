@@ -12,9 +12,9 @@
 
 #include "../includes/minishell.h"
 
-int		ft_strlenn(char *str)
+int	ft_strlenn(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
@@ -30,7 +30,7 @@ char	*free_null(char *s1)
 	return (NULL);
 }
 
-int		free_int(char **line)
+int	free_int(char **line)
 {
 	free(*line);
 	return (-1);
