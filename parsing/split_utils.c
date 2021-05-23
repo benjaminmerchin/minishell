@@ -14,6 +14,16 @@
 
 void	init_split_and_backup(t_a *a, int *i, int *k)
 {
+	int l;
+
+	l = 0;
+	while (a->line[l])
+		l++;
+	if (l > 0 && a->line[l - 1] == ' ')
+	{
+		a->line[l - 1] = '\0';
+		init_split_and_backup(a, i, k);
+	}
 	*i = 0;
 	*k = 0;
 	a->backup = a->line;
