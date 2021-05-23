@@ -42,7 +42,7 @@ void	join_before_env_after(t_a *a, int j, int k, char *src)
 void	replace_dollar_question(t_a *a, char *temp, int j, int k)
 {
 	temp = ft_itoa(a->dollar_question);
-	a->ret = ft_strlen(temp) + 1;
+	a->ret = 2;
 	join_before_env_after(a, j, k - 1, temp);
 	free(temp);
 }
