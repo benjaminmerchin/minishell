@@ -12,90 +12,9 @@
 
 #include "../includes/minishell.h"
 
-void	ft_backup_stdinandout(t_a *a)
+int	content_have_value(char *str)
 {
-	a->fd_input = dup(0);
-	a->fd_output = dup(1);
-}
-
-void	update_pwd(t_a *a, int *i)
-{
-	t_list *lst;
-	char	buff[10000];
-	char	*ptr;
-
-	(void)i;
-	lst = a->lst_env;
-	ptr = getcwd(buff, 10000);
-	if (!ptr)
-		return ;
-	while (lst)
-	{
-		if  (ft_strncmp("PWD=", lst->content, 4) == 0)
-		{
-			free(lst->content);
-			lst->content = ft_strjoin_libft("PWD=", ptr);
-			return ;
-		}
-		lst = lst->next;
-	}
-}
-
-void	ft_echo(t_a *a, int *i)
-{
-	int	v_b_bn; //variable boolean to manage the -n flag
-	int	n_begin; //-n flag only accepted at the beginning
-
-	(*i)++;
-	v_b_bn = 1;
-	n_begin = 0;
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-	{
-		if (n_begin == 1 && a->raw[*i].space_before == 1)
-			ft_putstr_fd(" ", 1);
-		if (ft_strncmp(a->raw[*i].str, "-n", 10) == 0 && n_begin == 0)
-			v_b_bn = 0;
-		else
-		{
-			ft_putstr_fd(a->raw[*i].str, 1);
-			n_begin = 1;
-		}
-		(*i)++;
-	}
-	if (v_b_bn == 1)
-		ft_putchar_fd('\n', 1);
-	a->dollar_question = 0;
-}
-
-void	ft_parsenv_fd(t_a *a, int fd)
-{
-	t_list *lst;
-
-	lst = a->lst_env;
-	while (lst)
-	{
-		if  (ft_strncmp("PWD=", lst->content, 4) == 0)
-		{
-			ft_putstr_fd(lst->content + 4, fd);
-			return ;
-		}
-		lst = lst->next;
-	}
-}
-
-void	ft_pwd(t_a *a, int *i)
-{	
-	a->dollar_question = 0;
-	update_pwd(a, i);
-	ft_parsenv_fd(a, 1);
-	ft_putchar_fd('\n', 1);
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-		(*i)++;
-}
-
-int content_have_value(char *str)
-{
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
@@ -109,27 +28,33 @@ int content_have_value(char *str)
 	return (0);
 }
 
+void	ft_env_2(t_a *a, int *i)
+{
+	a->dollar_question = 1;
+	ft_putstr_fd("env: ", 1);
+	ft_putstr_fd(a->raw[*i + 1].str, 1);
+	ft_putstr_fd(": No such file or directory\n", 1);
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' \
+	&& a->raw[*i].type != ';')
+		(*i)++;
+}
+
 void	ft_env(t_a *a, int *i)
 {
-	t_list *lst;
+	t_list	*lst;
 
 	a->dollar_question = 0;
 	lst = a->lst_env;
 	update_pwd(a, i);
-	while (a->raw[*i + 1].str && ft_strncmp(a->raw[*i].str, a->raw[*i + 1].str, 10) == 0 && ft_strlen(a->raw[*i + 1].str) == 3)
+	while (a->raw[*i + 1].str && ft_strncmp(a->raw[*i].str, \
+	a->raw[*i + 1].str, 10) == 0 && ft_strlen(a->raw[*i + 1].str) == 3)
 		(*i)++;
-	if (!(a->raw[*i + 1].str == 0 || a->raw[*i + 1].type == '|' || a->raw[*i + 1].type == ';'))
+	if (!(a->raw[*i + 1].str == 0 || a->raw[*i + 1].type == '|' \
+	|| a->raw[*i + 1].type == ';'))
 	{
-		a->dollar_question = 1;
-		ft_putstr_fd("env: ", 1);
-		ft_putstr_fd(a->raw[*i + 1].str, 1);
-		ft_putstr_fd(": No such file or directory\n", 1);
-		while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
-			(*i)++;
+		ft_env_2(a, i);
 		return ;
 	}
-	else
-		a->dollar_question = 0;
 	while (lst)
 	{
 		if (content_have_value(lst->content))
@@ -142,18 +67,17 @@ void	ft_env(t_a *a, int *i)
 	(*i)++;
 }
 
-int		ft_verification_content(char *str, t_a *a, int *i)
+int	ft_verification_content(char *str, t_a *a, int *i)
 {
-	int j;
-	int error;
+	int	j;
+	int	error;
 
-	(void)i; //i ne servait qu'à avoir des a->raw[i].fd_output, on doit pouvoir virer
-
+	(void)i;
 	j = 0;
 	error = 0;
 	while (str[j] != '=' && str[j] != '\0')
 	{
-		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_'))
+		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_')) \
 		|| (j == 0 && !(ft_isalpha(str[j]) || str[j] == '_')))
 		{
 			error = 1;
@@ -170,7 +94,7 @@ int		ft_verification_content(char *str, t_a *a, int *i)
 		ft_putstr_fd(str, 1);
 		ft_putstr_fd("': not a valid identifier\n", 1);
 		ft_putstr_fd("\033[0m", 1);
-		return(-1);
+		return (-1);
 	}
 	j++;
 	return (j);
@@ -184,7 +108,8 @@ void	command_not_found(t_a *a, int *i)
 	ft_putstr(": ");
 	ft_putstr_fd(a->raw[*i].str, 1);
 	ft_putstr_fd(": command not found\n", 1);
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' \
+	&& a->raw[*i].type != ';')
 		(*i)++;
 	ft_putstr_fd("\033[0m", 1);
 }
@@ -195,7 +120,8 @@ void	add_env(t_a *a, int *i)
 	t_list *lst;
 
 	a->dollar_question = 0;
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' \
+	&& a->raw[*i].type != ';')
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
 		if (ret > 0)
@@ -235,7 +161,7 @@ void	ft_declare_print_export(t_a *a, int *i)
 	int j;
 	t_list *lst;
 
-	(void)i; //i ne servait qu'à avoir des a->raw[i].fd_output, on doit pouvoir virer
+	(void)i;
 	lst = a->lst_env;
 	while (lst)
 	{

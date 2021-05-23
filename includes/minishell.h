@@ -170,6 +170,12 @@ int		ft_strlenn(char *str);
 char	*free_null(char *s1);
 int		free_int(char **line);
 
+//builtins
+void	ft_pwd(t_a *a, int *i);
+void	ft_parsenv_fd(t_a *a, int fd);
+void	ft_echo(t_a *a, int *i);
+void	update_pwd(t_a *a, int *i);
+
 //benjamin parsing
 void	replace_value_by_content(char *str);
 void	replace_antislash_and_content_by_value(t_a *a);

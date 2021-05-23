@@ -159,6 +159,8 @@ void	ft_get_keyboard_input(t_a *a)
 		{
 			g_fantaisie = 1;
 			a->nav = a->nline - 1;
+			if (a->h[a->nav])
+				free (a->h[a->nav]);
 			a->h[a->nav] = malloc(sizeof(char));
 			a->h[a->nav][0] = 0;
 		}
