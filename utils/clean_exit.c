@@ -58,29 +58,27 @@ void	ft_exit_clean(t_a *a, char *str)
 	exit (a->dollar_question);
 }
 
-void	ft_exit(t_a *a)
+void	ft_move_to_the_end(t_a *a)
+{
+	while (a->i < a->len_raw)
+		a->i++;
+}
+
+void	ft_manage_exit_argument(t_a *a)
 {
 	int	sign;
 	int	iter;
-	
-	if (a->raw[a->i + 1].str == 0)
-		ft_exit_clean(a, "");
-	if (a->raw[a->i + 2].str != 0 && a->raw[a->i + 2].type != ';')
-	{
-		ft_putstr_fd("\033[031m", 1);
-		ft_putstr_fd(MINISHELL_NAME, 1);
-		ft_putstr_fd(": exit: too many arguments\033\n", 1);
-	}
+
 	iter = 0;
 	sign = 1;
-	if (a->raw[a->i + 2].str[iter] == '-')
+	if (a->raw[a->i + 1].str[iter] == '-')
 	{
 		sign = -1;
 		iter++;
 	}
-	while (a->raw[a->i + 2].str[iter])
+	while (a->raw[a->i + 1].str[iter])
 	{
-		if (!ft_isdigit(a->raw[a->i + 2].str[iter]))
+		if (!ft_isdigit(a->raw[a->i + 1].str[iter]))
 		{
 			ft_putstr_fd("\033[031m", 1);
 			ft_putstr_fd(MINISHELL_NAME, 1);
@@ -91,7 +89,25 @@ void	ft_exit(t_a *a)
 		iter++;
 	}
 	a->dollar_question = sign * ft_atoi(a->raw[a->i + 1].str);
+	while (a->dollar_question < 0)
+		a->dollar_question += 256;
+	a->dollar_question = a->dollar_question % 256;
 	ft_exit_clean(a, "");
+}
+
+void	ft_exit(t_a *a)
+{
+	if (!a->raw[a->i + 1].type)
+		ft_exit_clean(a, "");
+	if (a->len_raw > a->i + 2 && a->raw[a->i + 2].type != ';')
+	{
+		ft_putstr_fd("\033[031m", 1);
+		ft_putstr_fd(MINISHELL_NAME, 1);
+		ft_putstr_fd(": exit: too many arguments\033\n", 1);
+		ft_move_to_the_end(a);
+		return ;
+	}
+	ft_manage_exit_argument(a);
 }
 
 void	set_backup_and_exit(t_a *a, char *str)
