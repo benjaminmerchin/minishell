@@ -5,7 +5,8 @@ OBJDIR	=	object
 SRC		=	minishell.c \
 			\
 			utils/utils.c utils/gnl_utils.c utils/gnl.c utils/libft_lst.c \
-			utils/utils2.c utils/clean_exit.c utils/libft.c utils/libft_split.c \
+			utils/utils2.c utils/clean_exit.c utils/clean_exit_2.c utils/libft.c \
+			utils/libft_2.c utils/libft_split.c \
 			utils/libft_itoa.c \
 			\
 			parsing/parsing.c parsing/split.c parsing/split_utils.c parsing/keymanip.c \

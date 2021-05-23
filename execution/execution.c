@@ -402,7 +402,7 @@ void	ft_execution_function(t_a *a)
 	if(TERMCAPS)
 	{
 		signal(SIGINT, ft_exit_from_branch);
-		signal(SIGQUIT, ft_jump_line);
+		signal(SIGQUIT, ft_ctrl_antislash_in_function);
 	}
 	ft_redirection(a);
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)

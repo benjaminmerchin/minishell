@@ -131,6 +131,10 @@ void	ft_get_keyboard_input(t_a *a);
 void	ft_appendexit(t_a *a);
 void	ft_store_env_in_lst(t_a *a);
 
+//exit et clean
+void	ft_manage_exit_argument(t_a *a);
+void	ft_exit_clean(t_a *a, char *str);
+
 //signals
 void	ft_affiche_controlesay(int useless);
 void	ft_jump_line(int useless);
@@ -147,7 +151,6 @@ int		ft_strncmp(char *s1, char *s2, int n);
 void	ft_init_termcap(t_a *a);
 void	ft_cleantermcaps(t_a *a);
 void	ft_raw_mode(t_a *a);
-void	ft_exit_clean(t_a *a, char *str);
 void	ft_print_string(t_a *a);
 
 //redirections
