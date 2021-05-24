@@ -223,6 +223,20 @@ void	ft_cd(t_a *a, int *i);
 void	find_home_and_replace_cd_with_home_path(t_a *a, int *i);
 void	ft_unset(t_a *a, int *i);
 void	remove_me_if_i_exist(t_a *a, int *i, int ret);
+void	add_env_or_command_not_found(t_a *a, int *i);
+void	add_env(t_a *a, int *i);
+void	command_not_found(t_a *a, int *i);
+int		ft_dist_to_pipe(t_a *a);
+void	ft_pipe_manager_pid_0(t_a *a, int fd[2]);
+void	ft_pipe_manager_2(t_a *a);
+void	signal_stuff(t_a *a);
+void	ft_execution_sublevel(t_a *a);
+void	ft_execution_function(t_a *a);
+char	*triple_strjoin(char *s1, char *s2, char *s3);
+void	ft_free_table(char **table);
+void	fork_wait_execute_extension(t_a *a, int pid, int *status);
+void	move_until_next_event(t_a *a, int *i);
+void	free_fork_wait_execute(char	**argv,	char **aenv, char *path);
 
 //listes
 t_list	*ft_lstnew(char *content);

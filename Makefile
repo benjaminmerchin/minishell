@@ -17,7 +17,8 @@ SRC		=	minishell.c \
 			execution/signals.c execution/var_env_replacement.c execution/var_env_replacement_2.c\
 			execution/redir.c execution/builtins.c execution/execution_env.c\
 			execution/execution_export.c execution/execution_export_2.c execution/execution_cd.c\
-			execution/execution_unset.c execution/redir_utils.c
+			execution/execution_unset.c execution/redir_utils.c execution/add_env_or_not_found.c\
+			execution/execution_pipe.c execution/fork_wait_execute_2.c
 OBJ 	=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 CFLAGS	=	-Wall -Wextra -Werror -g3 -fsanitize=address
 

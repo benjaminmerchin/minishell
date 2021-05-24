@@ -41,7 +41,7 @@ void	add_env(t_a *a, int *i)
 			lst = a->lst_env;
 			while (lst)
 			{
-				if  (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
+				if (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
 				{
 					free(lst->content);
 					lst->content = ft_strdup(a->raw[*i].str);
