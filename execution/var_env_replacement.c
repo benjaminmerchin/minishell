@@ -21,7 +21,7 @@ void	join_before_env_after(t_a *a, int j, int k, char *src)
 
 	m = -1;
 	n = 0;
-	temp = malloc(sizeof(char) * (ft_strlen(a->raw[j].str)
+	temp = malloc(sizeof(char) * (ft_strlen(a->raw[j].str) \
 	- a->ret + 1 + ft_strlen(src)));
 	while (++m < k)
 		temp[m] = a->raw[j].str[m];
@@ -61,11 +61,11 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 	while (lst)
 	{
 		l = 0;
-		while (lst->content[l] == a->raw[j].str[l + k]
+		while (lst->content[l] == a->raw[j].str[l + k] \
 		&& a->raw[j].str[l + k] && lst->content[l] && l < a->ret)
 			l++;
-		if (lst->content[l] == '=' && (a->raw[j].str[l + k] == '\0'
-		|| (ft_isprint(a->raw[j].str[l + k]) && (!ft_isalnum(a->raw[j].str[l
+		if (lst->content[l] == '=' && (a->raw[j].str[l + k] == '\0' \
+		|| (ft_isprint(a->raw[j].str[l + k]) && (!ft_isalnum(a->raw[j].str[l \
 		+ k]) && a->raw[j].str[l + k] != '_'))) && l > 0)
 		{
 			join_before_env_after(a, j, k - 1, lst->content + l + 1);
@@ -78,7 +78,7 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 
 void	try_to_replace_token_with_env(t_a *a, int j)
 {
-	int k;
+	int	k;
 
 	k = 0;
 	while (a->raw[j].str[k])
@@ -100,7 +100,7 @@ void	try_to_replace_token_with_env(t_a *a, int j)
 
 void	replace_var_env_until_next_separator(t_a *a, int *i)
 {
-	int j;
+	int	j;
 
 	j = *i;
 	while (a->raw[j].str != 0 && a->raw[j].type != ';')

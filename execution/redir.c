@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redir.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gtaverne <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/24 12:41:30 by gtaverne          #+#    #+#             */
+/*   Updated: 2021/05/24 12:41:33 by gtaverne         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	remove_token_from_list(t_a *a, int i)
@@ -18,7 +30,7 @@ void	remove_token_from_list(t_a *a, int i)
 	a->raw[i + j].str = 0;
 }
 
-void	ft_redirection_out(t_a *a, int k, int fd)
+int	ft_redirection_out(t_a *a, int k, int fd)
 {
 	if (a->raw[k].type == '>')
 	{
@@ -40,6 +52,9 @@ void	ft_redirection_out(t_a *a, int k, int fd)
 		remove_token_from_list(a, k);
 		remove_token_from_list(a, k);
 	}
+	if (a->raw[k].type != '#' && a->raw[k].type != '>')
+		k++;
+	return (k);
 }
 
 void	ft_redirection_in(t_a *a)
@@ -87,40 +102,12 @@ void	ft_redirection(t_a *a)
 			}
 			fd = open(a->raw[k + 1].str, O_RDONLY, 0644);
 			if (fd <= 0)
-			{
 				ft_redirection_in2(a, k);
-				return ;
-			}
 			dup2(fd, 0);
 			close(fd);
 			remove_token_from_list(a, k);
 			remove_token_from_list(a, k);
 		}
-		ft_redirection_out(a, k, fd);
-		if (a->raw[k].type != '#' && a->raw[k].type != '>')
-			k++;
-	}
-}
-
-void	ft_fd_closing(t_a *a)
-{
-	dup2(a->fd_output, 1);
-	dup2(a->fd_input, 0);
-}
-
-void	ft_attributefd(t_a *a, int *i, int in_or_out)
-{
-	int		fd;
-
-	if (in_or_out == 0)
-	{
-		fd = open(a->raw[*i + 1].str, O_RDONLY, 0644);
-		if (fd < 0)
-		{
-			ft_putstr(MINISHELL_NAME);
-			ft_putstr(a->raw[*i + 1].str);
-			ft_putstr(": Aucun fichier ou dossier de ce type\n");
-		}
-		close(fd);
+		k = ft_redirection_out(a, k, fd);
 	}
 }
