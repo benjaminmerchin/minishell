@@ -57,3 +57,9 @@ void	calcul_k_4(t_a *a)
 	(a->line)++;
 	(a->line)++;
 }
+
+void	calcul_k_7(t_a *a)
+{
+	if (DEBUG == 0)
+		free(a->line);
+}

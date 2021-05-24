@@ -83,12 +83,11 @@ void	increase_k_and_set_type_str_to_0(t_a *a, int *k)
 
 void	ft_split_sh(t_a *a)
 {
-	int		i;
-	int		k;
-	int		counter;
+	int	i;
+	int	k;
+	int	counter;
 
-	if (!(a->raw = malloc(sizeof(*a->raw) * (1 + calcul_k(a)))))
-		ft_exit_clean(a, "Error\nMalloc Failed\n");
+	malloc_correct_number_of_tokens(a);
 	replace_antislash_and_content_by_value(a);
 	init_split_and_backup(a, &i, &k);
 	while (a->line[i])
@@ -97,10 +96,10 @@ void	ft_split_sh(t_a *a)
 		if (a->line[i] == ' ' || !is_sep(a->line[i], a))
 			manage_text(a, &i, &k, &counter);
 		else if (ft_strlen(a->line) > 1
-		&& a->line[0] == '>' && a->line[1] == '>')
+			&& a->line[0] == '>' && a->line[1] == '>')
 			manage_double_greater_than_sign(a, &k);
 		else if (a->line[i] == '|' || a->line[i] == ';'
-		|| a->line[i] == '<' || a->line[i] == '>')
+			|| a->line[i] == '<' || a->line[i] == '>')
 			manage_some_tokens(a, &i, &k);
 		else if (a->line[i] == '"' || a->line[i] == '\'')
 			manage_quotes(a, &i, &k, &counter);
