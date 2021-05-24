@@ -189,6 +189,7 @@ void	calcul_k_3(t_a *a, int *i, int *counter);
 void	calcul_k_4(t_a *a);
 void	calcul_k_5(t_a *a, int *i, int *counter);
 void	calcul_k_6(t_a *a, int *i, int *counter);
+void	calcul_k_7(t_a *a);
 void	calcul_init_backup(t_a *a, int *i, int *k);
 
 void	init_split_and_backup(t_a *a, int *i, int *k);
@@ -199,6 +200,7 @@ void	manage_simple_quote(t_a *a, int *i, int *k, int *counter);
 void	manage_some_tokens(t_a *a, int *i, int *k);
 void	manage_double_greater_than_sign(t_a *a, int *k);
 void	manage_text(t_a *a, int *i, int *k, int *counter);
+void	malloc_correct_number_of_tokens(t_a *a);
 
 //benjamin execution
 void	replace_var_env_until_next_separator(t_a *a, int *i);

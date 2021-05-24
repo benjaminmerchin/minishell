@@ -12,12 +12,12 @@
 
 #include "../includes/minishell.h"
 
-void		ft_init_screen(t_a *a)
+void	ft_init_screen(t_a *a)
 {
 	tputs(a->sc, 1, ft_putchar);
 }
 
-void		ft_getcursorline(t_a *a)
+void	ft_getcursorline(t_a *a)
 {
 	char	buff[501];
 	int		i;
@@ -35,10 +35,10 @@ void		ft_getcursorline(t_a *a)
 	a->current_line = ft_atoi(&buff[i]);
 }
 
-void		ft_do_we_jump(t_a *a)
+void	ft_do_we_jump(t_a *a)
 {
 	int	nl;
-	int i;
+	int	i;
 
 	nl = (ft_strlen(a->h[a->nav]) + a->len_head + 2) / a->column_term;
 	if (nl + a->current_line <= a->line_term)

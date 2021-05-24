@@ -12,9 +12,9 @@
 
 #include "../includes/minishell.h"
 
-int		is_sep(char c, t_a *a)
+int	is_sep(char c, t_a *a)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (a->sep[i])
@@ -53,7 +53,7 @@ void	calcul_k_3(t_a *a, int *i, int *counter)
 	*i = 0;
 }
 
-void		calcul_init_backup(t_a *a, int *i, int *k)
+void	calcul_init_backup(t_a *a, int *i, int *k)
 {
 	*i = 0;
 	*k = 0;
@@ -61,7 +61,7 @@ void		calcul_init_backup(t_a *a, int *i, int *k)
 	a->backup_backup = ft_strdup(a->line);
 }
 
-int		calcul_k(t_a *a)
+int	calcul_k(t_a *a)
 {
 	int		i;
 	int		k;
@@ -75,18 +75,17 @@ int		calcul_k(t_a *a)
 		if (a->line[i] == ' ' || !is_sep(a->line[i], a))
 			calcul_k_3(a, &i, &counter);
 		else if (ft_strlen(a->line) > 1
-		&& a->line[0] == '>' && a->line[1] == '>')
+			& a->line[0] == '>' && a->line[1] == '>')
 			calcul_k_4(a);
 		else if (a->line[i] == '|' || a->line[i] == ';'
-		|| a->line[i] == '<' || a->line[i] == '>')
+			|| a->line[i] == '<' || a->line[i] == '>')
 			(a->line)++;
 		else if (a->line[i] == '"' || a->line[i] == '\'')
 			calcul_k_5(a, &i, &counter);
 		k++;
 	}
 	a->line = a->backup;
-	if (DEBUG == 0)
-		free(a->line);
+	calcul_k_7(a);
 	a->line = a->backup_backup;
 	return (k);
 }

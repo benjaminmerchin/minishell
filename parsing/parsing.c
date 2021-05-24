@@ -14,7 +14,7 @@
 
 void	ft_parsenv(t_a *a)
 {
-	t_list *lst;
+	t_list	*lst;
 
 	lst = a->lst_env;
 	while (lst)

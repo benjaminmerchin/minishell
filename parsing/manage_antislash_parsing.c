@@ -83,7 +83,7 @@ void	replace_antislash_and_content_by_value(t_a *a)
 
 void	replace_value_by_content(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
