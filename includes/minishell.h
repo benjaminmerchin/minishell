@@ -212,6 +212,18 @@ void	remove_token_from_content(t_a *a, int j, int k);
 int		verification_content_env(char *str, t_a *a);
 void	remove_token_from_list(t_a *a, int i);
 void	ft_exit(t_a *a);
+int		ft_verification_content(char *str, t_a *a, int *i);
+void	ft_env(t_a *a, int *i);
+void	ft_env_2(t_a *a, int *i);
+int		content_have_value(char *str);
+void	ft_export(t_a *a, int *i);
+void	join_me_if_im_quotation_marks(t_a *a, int *i, int ret);
+void	add_me_if_i_do_not_exist_yet(t_a *a, int *i, int ret);
+void	ft_declare_print_export(t_a *a, int *i);
+void	ft_cd(t_a *a, int *i);
+void	find_home_and_replace_cd_with_home_path(t_a *a, int *i);
+void	ft_unset(t_a *a, int *i);
+void	remove_me_if_i_exist(t_a *a, int *i, int ret);
 
 //listes
 t_list	*ft_lstnew(char *content);
