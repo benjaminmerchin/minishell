@@ -14,6 +14,7 @@
 
 void	ft_between_semicolon(t_a *a, int *i)
 {
+	ft_fd_closing(a);
 	replace_var_env_until_next_separator(a, i);
 	if (a->raw[*i].str != 0 && a->raw[*i + 1].str != 0 \
 	&& a->raw[*i].type == '<')

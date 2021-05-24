@@ -110,6 +110,8 @@ void	ft_redirection(t_a *a)
 		else
 			ft_redirection_out(a, k);
 		if (!is_sep_redir(a->raw[k].type, ";|#><"))
+		{
 			k++;
+		}
 	}
 }
