@@ -323,14 +323,17 @@ void	ft_cd(t_a *a, int *i)
 
 void	ft_execution_function(t_a *a)
 {
-	//redirection: open le fichier et dup2(1 ou 0, fd), raccourcir la chaine, 
-	//verifier qu'il n'y a pas de space before
 	if(TERMCAPS)
 	{
 		signal(SIGINT, ft_exit_from_branch);
 		signal(SIGQUIT, ft_ctrl_antislash_in_function);
 	}
 	ft_redirection(a);
+	if (g_fantaisie == -25)
+	{
+		g_fantaisie = 1;
+		return ;
+	}
 	if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 		ft_exit(a);
 	else if (ft_strncmp(a->raw[a->i].str, "echo", 10) == 0)
@@ -346,7 +349,7 @@ void	ft_execution_function(t_a *a)
 	else if (ft_strncmp(a->raw[a->i].str, "env", 10) == 0)
 		ft_env(a, &a->i);
 	else
-		fork_wait_execute(a, &a->i); // here try to find the executables
+		fork_wait_execute(a, &a->i);
 }
 
 int		ft_dist_to_pipe(t_a *a)
@@ -425,7 +428,7 @@ void	ft_execution_sublevel(t_a *a)
 void	ft_execution(t_a *a)
 {
 	ft_between_semicolon(a, &a->i);
-	while (a->i < a->len_raw)//on boucle entre | ou ;
+	while (a->i < a->len_raw)
 	{
 		if (ft_dist_to_pipe(a) > 0)
 		{

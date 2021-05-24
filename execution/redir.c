@@ -28,9 +28,35 @@ void	ft_redirection(t_a *a)
 	{
 		if (a->raw[k].type == '<')
 		{
+			if (!a->raw[k + 1].type || a->raw[k + 1].type == ';')
+			{
+				a->dollar_question = 1;
+				ft_putstr_fd("\033[033m", 1);
+				ft_putstr_fd(MINISHELL_NAME, 1);
+				ft_putstr_fd(" ", 1);
+				ft_putstr_fd("Syntax error, unexpected newline or ;\n", 1);
+				ft_putstr_fd("\033[0m", 1);
+				while (a->raw[a->i].type)
+					a->i++;
+				a->i--;
+				g_fantaisie = -25;
+				return ;
+			}
 			fd = open(a->raw[k + 1].str, O_RDONLY, 0644);
 			if (fd <= 0)
-				ft_exit_clean(a, "EXIT: Invalid source for < \n");
+			{
+				a->dollar_question = 1;
+				ft_putstr_fd("\033[033m", 1);
+				ft_putstr_fd(MINISHELL_NAME, 1);
+				ft_putstr_fd(" ", 1);
+				ft_putstr_fd(a->raw[k + 1].str, 1);
+				ft_putstr_fd("': No such file or directory\n", 1);
+				ft_putstr_fd("\033[0m", 1);
+				while (a->raw[a->i].type)
+					a->i++;
+				g_fantaisie = -25;
+				return ;
+			}
 			dup2(fd, 0);
 			close(fd);
 			remove_token_from_list(a, k);
@@ -69,10 +95,6 @@ void	ft_fd_closing(t_a *a)
 
 void	ft_attributefd(t_a *a, int *i, int in_or_out)
 {
-	/*in_or_out :
-	0 pour une source <
-	1 pour une destination >
-	2 pour un "append à la fin" */
 	int		fd;
 	
 	if (in_or_out == 0)
@@ -86,17 +108,4 @@ void	ft_attributefd(t_a *a, int *i, int in_or_out)
 		}
 		close(fd);
 	}
-	/*
-	else if (in_or_out == 1)
-	{
-		fd = open(a->raw[*i + 1].str, O_RDWR | O_TRUNC | O_CREAT, 0644);
-		if (fd <= 0)
-			ft_exit_clean(a, "Couldn't create file \n");
-	}
-	else
-	{
-		fd = open(a->raw[*i + 1].str, O_RDWR | O_APPEND | O_CREAT, 0644);
-		if (fd <= 0)
-			ft_exit_clean(a, "Couldn't create file \n");
-	}*/
 }
