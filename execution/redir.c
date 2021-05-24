@@ -33,13 +33,13 @@ void	remove_token_from_list(t_a *a, int i)
 void	ft_redirection_out(t_a *a, int k)
 {
 	int	fd;
-	
+
 	if (a->raw[k].type == '>')
 	{
 		fd = open(a->raw[k + 1].str, O_RDWR | O_TRUNC | O_CREAT, 0644);
-		if (fd  <= 0)
+		if (fd <= 0)
 			ft_exit_clean(a, "Couldn't create file \n");
-		dup2(fd , 1);
+		dup2(fd, 1);
 		close(fd);
 		remove_token_from_list(a, k);
 		remove_token_from_list(a, k);
@@ -49,39 +49,27 @@ void	ft_redirection_out(t_a *a, int k)
 		fd = open(a->raw[k + 1].str, O_RDWR | O_APPEND | O_CREAT, 0644);
 		if (fd <= 0)
 			ft_exit_clean(a, "Couldn't create file \n");
-		dup2(fd , 1);
+		dup2(fd, 1);
 		close(fd);
 		remove_token_from_list(a, k);
 		remove_token_from_list(a, k);
 	}
 }
 
-void	ft_redirection_in(t_a *a)
+int	ft_fd_neg_questionmark(int fd, t_a *a, int k)
 {
-	a->dollar_question = 2;
-	ft_putstr_fd("\033[033m", 1);
-	ft_putstr_fd(MINISHELL_NAME, 1);
-	ft_putstr_fd(" ", 1);
-	ft_putstr_fd("Syntax error, unexpected newline or ;\n", 1);
-	ft_putstr_fd("\033[0m", 1);
-	while (a->raw[a->i].type)
-		a->i++;
-	//a->i--;
-	g_fantaisie = -25;
+	if (fd <= 0)
+	{
+		ft_redirection_in2(a, k);
+		return (1);
+	}
+	return (0);
 }
 
-void	ft_redirection_in2(t_a *a, int k)
+void	remove_two_token_from_list(t_a *a, int k)
 {
-	a->dollar_question = 1;
-	ft_putstr_fd("\033[033m", 1);
-	ft_putstr_fd(MINISHELL_NAME, 1);
-	ft_putstr_fd(" ", 1);
-	ft_putstr_fd(a->raw[k + 1].str, 1);
-	ft_putstr_fd("': No such file or directory\n", 1);
-	ft_putstr_fd("\033[0m", 1);
-	while (a->raw[a->i].type)
-		a->i++;
-	g_fantaisie = -25;
+	remove_token_from_list(a, k);
+	remove_token_from_list(a, k);
 }
 
 void	ft_redirection(t_a *a)
@@ -99,19 +87,16 @@ void	ft_redirection(t_a *a)
 				ft_redirection_in(a);
 				return ;
 			}
-			fd  = open(a->raw[k + 1].str, O_RDONLY, 0644);
-			if (fd  <= 0)
-				ft_redirection_in2(a, k);
-			dup2(fd , 0);
+			fd = open(a->raw[k + 1].str, O_RDONLY, 0644);
+			if (ft_fd_neg_questionmark(fd, a, k) == 1)
+				return ;
+			dup2(fd, 0);
 			close(fd);
-			remove_token_from_list(a, k);
-			remove_token_from_list(a, k);
+			remove_two_token_from_list(a, k);
 		}
 		else
 			ft_redirection_out(a, k);
 		if (!is_sep_redir(a->raw[k].type, ";|#><"))
-		{
 			k++;
-		}
 	}
 }

@@ -48,3 +48,36 @@ int	is_sep_redir(char c, char *str)
 	}
 	return (0);
 }
+
+void	ft_redirection_in(t_a *a)
+{
+	a->dollar_question = 2;
+	ft_putstr_fd("\033[033m", 1);
+	ft_putstr_fd(MINISHELL_NAME, 1);
+	ft_putstr_fd(" ", 1);
+	ft_putstr_fd("Syntax error, unexpected newline, | or ;\n", 1);
+	ft_putstr_fd("\033[0m", 1);
+	while (a->raw[a->i].type)
+		a->i++;
+	a->i--;
+	g_fantaisie = -25;
+}
+
+void	ft_redirection_in2(t_a *a, int k)
+{
+	a->dollar_question = 1;
+	ft_putstr_fd("\033[033m", 1);
+	ft_putstr_fd(MINISHELL_NAME, 1);
+	ft_putstr_fd(" ", 1);
+	ft_putstr_fd(a->raw[k + 1].str, 1);
+	ft_putstr_fd("': No such file or directory\n", 1);
+	ft_putstr_fd("\033[0m", 1);
+	g_fantaisie = -25;
+	a->i = k;
+	while (a->raw[a->i].type)
+	{
+		if (a->raw[a->i].type == ';' || a->raw[a->i].type == '|')
+			return ;
+		a->i++;
+	}
+}
