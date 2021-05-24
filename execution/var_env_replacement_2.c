@@ -12,10 +12,10 @@
 
 #include "../includes/minishell.h"
 
-int		verification_content_env(char *str, t_a *a)
+int	verification_content_env(char *str, t_a *a)
 {
-	int j;
-	int error;
+	int	j;
+	int	error;
 
 	j = 0;
 	error = 0;
@@ -24,10 +24,10 @@ int		verification_content_env(char *str, t_a *a)
 		a->there_is_dollar_question = 1;
 		return (2);
 	}
-	while (str[j] != '$' && str[j] != '\0'
+	while (str[j] != '$' && str[j] != '\0' \
 	&& (ft_isalnum(str[j]) || str[j] == '_'))
 	{
-		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_'))
+		if ((j > 0 && !(ft_isalnum(str[j]) || str[j] == '_')) \
 		|| (j == 0 && !(ft_isalpha(str[j]) || str[j] == '_')))
 		{
 			error = 1;

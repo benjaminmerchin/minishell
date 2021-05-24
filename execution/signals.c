@@ -36,9 +36,3 @@ void	ft_nothing_to_do(int useless)
 {
 	(void)useless;
 }
-
-void	ft_jump_line(int useless)
-{
-	(void)useless;
-	ft_putstr_fd("\n", 1);
-}
