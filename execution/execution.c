@@ -12,69 +12,10 @@
 
 #include "../includes/minishell.h"
 
-void	command_not_found(t_a *a, int *i)
-{
-	a->dollar_question = 127;
-	ft_putstr("\033[031m");
-	ft_putstr(MINISHELL_NAME);
-	ft_putstr(": ");
-	ft_putstr_fd(a->raw[*i].str, 1);
-	ft_putstr_fd(": command not found\n", 1);
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' \
-	&& a->raw[*i].type != ';')
-		(*i)++;
-	ft_putstr_fd("\033[0m", 1);
-}
-
-void	add_env(t_a *a, int *i)
-{
-	int		ret;
-	t_list	*lst;
-
-	a->dollar_question = 0;
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' \
-	&& a->raw[*i].type != ';')
-	{
-		ret = ft_verification_content(a->raw[*i].str, a, i);
-		if (ret > 0)
-		{
-			lst = a->lst_env;
-			while (lst)
-			{
-				if  (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
-				{
-					free(lst->content);
-					lst->content = ft_strdup(a->raw[*i].str);
-				}
-				lst = lst->next;
-			}
-			(*i)++;
-		}
-		else
-			command_not_found(a, i);
-	}
-}
-
-void	add_env_or_command_not_found(t_a *a, int *i)
-{
-	int	j;
-
-	j = 0;
-	while (a->raw[*i].str[j] != '\0' && a->raw[*i].str[j] != '=')
-		j++;
-	if (a->raw[*i].str[j] == '=' && j != 0)
-		add_env(a, i);
-	else
-		command_not_found(a, i);
-}
-
 void	ft_execution_function(t_a *a)
 {
-	if(TERMCAPS)
-	{
-		signal(SIGINT, ft_exit_from_branch);
-		signal(SIGQUIT, ft_ctrl_antislash_in_function);
-	}
+	if (TERMCAPS)
+		signal_stuff(a);
 	ft_redirection(a);
 	if (g_fantaisie == -25)
 	{
@@ -99,20 +40,6 @@ void	ft_execution_function(t_a *a)
 		fork_wait_execute(a, &a->i);
 }
 
-int		ft_dist_to_pipe(t_a *a)
-{
-	int	k;
-
-	k = 0;
-	while (a->raw[a->i + k].str && a->raw[a->i + k].type != '|'
-	&& a->raw[a->i + k].type != ';')
-		k++;
-	if (a->raw[a->i + k].type == '|')
-		return (k);
-	else
-		return (-1);	
-}
-
 void	ft_pipe_manager(t_a *a)
 {
 	int		status;
@@ -123,15 +50,7 @@ void	ft_pipe_manager(t_a *a)
 	pipe(fd);
 	pid = fork();
 	if (pid == 0)
-	{
-		close(fd[0]);
-		temp = dup(1);
-		dup2(fd[1], 1);
-		ft_execution_function(a);
-		close(fd[1]);
-		dup2(temp, 1);
-		exit (a->dollar_question);
-	}
+		ft_pipe_manager_pid_0(a, fd);
 	else if (pid > 0)
 	{
 		close(fd[1]);
@@ -143,8 +62,7 @@ void	ft_pipe_manager(t_a *a)
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
 		close(fd[0]);
-		a->i += ft_dist_to_pipe(a) + 1;
-		ft_execution_sublevel(a);
+		ft_pipe_manager_2(a);
 		dup2(temp, 0);
 	}
 	else
@@ -153,7 +71,7 @@ void	ft_pipe_manager(t_a *a)
 
 void	ft_execution_sublevel(t_a *a)
 {
-	while (a->i < a->len_raw && a->raw[a->i].type != ';')//on boucle entre ;
+	while (a->i < a->len_raw && a->raw[a->i].type != ';')
 	{
 		if (ft_dist_to_pipe(a) > 0)
 		{
@@ -164,7 +82,7 @@ void	ft_execution_sublevel(t_a *a)
 			ft_execution_function(a);
 		}
 		(a->i)++;
-    }	
+	}
 }
 
 void	ft_execution(t_a *a)
@@ -183,5 +101,5 @@ void	ft_execution(t_a *a)
 		(a->i)++;
 		if (a->i < a->len_raw && a->raw[a->i - 1].type == ';')
 			ft_between_semicolon(a, &a->i);
-    }
+	}
 }

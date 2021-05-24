@@ -20,7 +20,7 @@ void	find_home_and_replace_cd_with_home_path(t_a *a, int *i)
 	lst = a->lst_env;
 	while (lst)
 	{
-		if  (ft_strncmp("HOME=", lst->content, 5) == 0)
+		if (ft_strncmp("HOME=", lst->content, 5) == 0)
 		{
 			free(a->raw[*i].str);
 			a->raw[*i].str = ft_strdup(lst->content + 5);
@@ -36,7 +36,8 @@ void	ft_cd(t_a *a, int *i)
 
 	(*i)++;
 	update_pwd(a, i);
-	if (a->raw[*i].str == 0 || a->raw[*i].type == '|' || a->raw[*i].type == ';')
+	if (a->raw[*i].str == 0 || a->raw[*i].type == '|'
+		|| a->raw[*i].type == ';')
 		find_home_and_replace_cd_with_home_path(a, i);
 	ret = chdir(a->raw[*i].str);
 	if (ret < 0)
@@ -46,11 +47,12 @@ void	ft_cd(t_a *a, int *i)
 		ft_putstr_fd(": cd: ", 1);
 		ft_putstr_fd(a->raw[*i].str, 1);
 		ft_putstr_fd(": No such file or directory\033\n", 1);
-		a->dollar_question = 127;		
+		a->dollar_question = 127;
 	}
 	else
 		a->dollar_question = 0;
 	update_pwd(a, i);
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|'
+		&& a->raw[*i].type != ';')
 		(*i)++;
 }

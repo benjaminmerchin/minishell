@@ -57,7 +57,7 @@ void	add_me_if_i_do_not_exist_yet(t_a *a, int *i, int ret)
 	found = 0;
 	while (lst && found == 0)
 	{
-		if  (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
+		if (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
 		{
 			free(lst->content);
 			lst->content = ft_strdup(a->raw[*i].str);
@@ -73,7 +73,7 @@ void	join_me_if_im_quotation_marks(t_a *a, int *i, int ret)
 {
 	char	*temp;
 	int		num;
-	
+
 	if (a->raw[*i + 1].type == '\'' || a->raw[*i + 1].type == '"')
 	{
 		if (a->raw[*i].str[ret] != '\0')
@@ -95,7 +95,8 @@ void	ft_export(t_a *a, int *i)
 	a->dollar_question = 0;
 	if (a->raw[*i].str == 0 || a->raw[*i].type == '|' || a->raw[*i].type == ';')
 		ft_declare_print_export(a, i);
-	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' && a->raw[*i].type != ';')
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|'
+		&& a->raw[*i].type != ';')
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
 		if (ret > 0)
