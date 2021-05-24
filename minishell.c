@@ -158,6 +158,7 @@ void	ft_get_keyboard_input(t_a *a)
 		if (g_fantaisie == -30)
 		{
 			g_fantaisie = 1;
+			a->dollar_question = 1;
 			a->nav = a->nline - 1;
 			if (a->h[a->nav])
 				free (a->h[a->nav]);
