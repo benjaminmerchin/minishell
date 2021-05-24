@@ -14,7 +14,7 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
-# define MINISHELL_NAME "insert_title" //(╯°□°)╯︵ ┻━┻
+# define MINISHELL_NAME "insert_title"
 # define PRINT_TOKENS 1
 # define TERMCAPS 1
 # define DEBUG 0
@@ -22,84 +22,77 @@
 
 int		g_fantaisie;
 
-typedef struct	s_struct
+typedef struct s_struct
 {
 	char	buff[4 + 1];
 	int		ret;
 	int		curs;
 }				t_struct;
 
-typedef struct	s_list
+typedef struct s_list
 {
 	char			*content;
 	struct s_list	*next;
 }				t_list;
 
-typedef struct	s_raw {
+typedef struct s_raw {
 	int			type;
 	char		*str;
-	int			space_before; //1 si ' ' entre le token et celui d'avant, 0 sinon
+	int			space_before;
 }				t_raw;
 
-typedef struct	s_a {
-	int			ac;
-	char		**av;
-	char		**env;
-	t_list		*lst_env;
-	char		*line;
-	char		*backup;
-	char		*backup_backup;
-	t_raw		*raw;
-	int			len_raw;
+typedef struct s_a {
+	int				ac;
+	char			**av;
+	char			**env;
+	t_list			*lst_env;
+	char			*line;
+	char			*backup;
+	char			*backup_backup;
+	t_raw			*raw;
+	int				len_raw;
 	struct termios	trms;
-	char		buff[5];
-	int			fd;
-	int			exit_status;
-	int			i;
-// Je pense qu'on va pouvoir nettoyer les fd_input et output de a->raw
-	int			fd_input;
-	int			fd_output;
+	char			buff[5];
+	int				fd;
+	int				exit_status;
+	int				i;
+	int				fd_input;
+	int				fd_output;
 
-//Section termcap
-	int			column_term;
-	int			line_term;
-	char		*me;
-	char		*cm;
-	char		*sc;
-	char		*sf;
-	char		*rc;
-	char		*cd;
-	char		*cl;
-	char		*up;
-	char		*dw;
+	int				column_term;
+	int				line_term;
+	char			*me;
+	char			*cm;
+	char			*sc;
+	char			*sf;
+	char			*rc;
+	char			*cd;
+	char			*cl;
+	char			*up;
+	char			*dw;
 
-	char		*term_type;
-	char		*str_tcapped;
+	char			*term_type;
+	char			*str_tcapped;
 
-//section pour la navigation fleche haut/bas
-	int			nav;
-	int			nline;
-	char		**h;
-//section bas de page
-	int			current_line;
-	int			len_head;
+	int				nav;
+	int				nline;
+	char			**h;
+	int				current_line;
+	int				len_head;
 
-//section utile pour split
-	char 		*sep; //a->sep = " '\"|;><";
-	char		last_sep;
-	int			lock_quote;
+	char			*sep;
+	char			last_sep;
+	int				lock_quote;
 
-//$?
-	int			dollar_question;
-	int			there_is_dollar_question;
+	int				dollar_question;
+	int				there_is_dollar_question;
 
-	int			v_fd; // -1 if everything is normal
-	int			ret;
+	int				v_fd;
+	int				ret;
 }				t_a;
 
 int		main(int ac, char **av, char **env);
 
-//En gros la libft
 void	ft_putchar_fd(char c, int fd);
 int		ft_putchar(int c);
 void	ft_putstr_fd(char *s, int fd);
@@ -121,7 +114,6 @@ char	**ft_split(char const *s, char c);
 int		ft_atoi(const char *nptr);
 char	*ft_itoa(int n);
 
-//print screens
 void	ft_screen(t_a *a);
 void	ft_init_screen(t_a *a);
 void	ft_getcursorline(t_a *a);
@@ -132,18 +124,15 @@ void	ft_store_env_in_lst(t_a *a);
 void	ft_newline(t_a *a);
 void	ft_appendbuffer(t_a *a, int k);
 
-//exit et clean
 void	ft_manage_exit_argument(t_a *a);
 void	ft_exit_clean(t_a *a, char *str);
 
-//signals
 void	ft_affiche_controlesay(int useless);
 void	ft_exit_from_branch(int useless);
 void	ft_nothing_to_do(int useless);
 void	ft_ctrlc_in_buffer(int useless);
 void	ft_ctrl_antislash_in_function(int useless);
 
-//navigation
 void	ft_save_hist(t_a *a, char *line);
 void	ft_parsing(t_a *a);
 int		get_next_line(int fd, char **line);
@@ -153,16 +142,14 @@ void	ft_cleantermcaps(t_a *a);
 void	ft_raw_mode(t_a *a);
 void	ft_print_string(t_a *a);
 
-//redirections
 void	ft_redirection(t_a *a);
 void	ft_attributefd(t_a *a, int *i, int in_or_out);
 void	ft_between_semicolon(t_a *a, int *i);
 void	ft_fd_closing(t_a *a);
 void	ft_backup_stdinandout(t_a *a);
-void    ft_execution_sublevel(t_a *a);
+void	ft_execution_sublevel(t_a *a);
 int		is_sep_redir(char c, char *str);
 
-//benjamin
 void	set_backup_and_exit(t_a *a, char *str);
 void	ft_execution(t_a *a);
 void	add_env_or_command_not_found(t_a *a, int *i);
@@ -172,13 +159,11 @@ int		ft_strlenn(char *str);
 char	*free_null(char *s1);
 int		free_int(char **line);
 
-//builtins
 void	ft_pwd(t_a *a, int *i);
 void	ft_parsenv_fd(t_a *a, int fd);
 void	ft_echo(t_a *a, int *i);
 void	update_pwd(t_a *a, int *i);
 
-//benjamin parsing
 void	replace_value_by_content(char *str);
 void	replace_antislash_and_content_by_value(t_a *a);
 void	replace_antislash_and_content_by_value2(int i, char *temp);
@@ -204,7 +189,6 @@ void	manage_double_greater_than_sign(t_a *a, int *k);
 void	manage_text(t_a *a, int *i, int *k, int *counter);
 void	malloc_correct_number_of_tokens(t_a *a);
 
-//benjamin execution
 void	replace_var_env_until_next_separator(t_a *a, int *i);
 void	try_to_replace_token_with_env(t_a *a, int j);
 void	replace_me_if_you_find_me(t_a *a, int j, int k);
@@ -240,8 +224,12 @@ void	ft_free_table(char **table);
 void	fork_wait_execute_extension(t_a *a, int pid, int *status);
 void	move_until_next_event(t_a *a, int *i);
 void	free_fork_wait_execute(char	**argv,	char **aenv, char *path);
+void	ft_appendexit(t_a *a);
+void	init_keyboard_input(t_a *a);
+void	ft_updown(t_a *a);
+void	ft_appendexit(t_a *a);
+void	init_keyboard_input(t_a *a);
 
-//listes
 t_list	*ft_lstnew(char *content);
 void	ft_lstadd_back(t_list **alst, t_list *new);
 void	ft_lstiter(t_list *lst, void (*f)(void *));

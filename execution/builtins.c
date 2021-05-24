@@ -14,6 +14,7 @@
 
 void	ft_backup_stdinandout(t_a *a)
 {
+	a->i = 0;
 	a->fd_input = dup(0);
 	a->fd_output = dup(1);
 }
