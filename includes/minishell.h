@@ -14,8 +14,8 @@
 # include <termios.h>
 
 # define SEPARATORS " '\"|;><"
-# define MINISHELL_NAME "insert_title"
-# define PRINT_TOKENS 1
+# define MINISHELL_NAME "minishell"
+# define PRINT_TOKENS 0
 # define TERMCAPS 1
 # define DEBUG 0
 # define LINE_CONTENT "cat "
