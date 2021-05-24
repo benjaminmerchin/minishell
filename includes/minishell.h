@@ -161,6 +161,8 @@ void	ft_fd_closing(t_a *a);
 void	ft_backup_stdinandout(t_a *a);
 void    ft_execution_sublevel(t_a *a);
 int		is_sep_redir(char c, char *str);
+void	ft_redirection_in(t_a *a);
+void	ft_redirection_in2(t_a *a, int k);
 
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);
