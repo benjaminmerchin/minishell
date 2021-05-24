@@ -30,14 +30,16 @@ void	remove_token_from_list(t_a *a, int i)
 	a->raw[i + j].str = 0;
 }
 
-int	ft_redirection_out(t_a *a, int k, int fd)
+void	ft_redirection_out(t_a *a, int k)
 {
+	int	fd;
+	
 	if (a->raw[k].type == '>')
 	{
 		fd = open(a->raw[k + 1].str, O_RDWR | O_TRUNC | O_CREAT, 0644);
-		if (fd <= 0)
+		if (fd  <= 0)
 			ft_exit_clean(a, "Couldn't create file \n");
-		dup2(fd, 1);
+		dup2(fd , 1);
 		close(fd);
 		remove_token_from_list(a, k);
 		remove_token_from_list(a, k);
@@ -47,14 +49,11 @@ int	ft_redirection_out(t_a *a, int k, int fd)
 		fd = open(a->raw[k + 1].str, O_RDWR | O_APPEND | O_CREAT, 0644);
 		if (fd <= 0)
 			ft_exit_clean(a, "Couldn't create file \n");
-		dup2(fd, 1);
+		dup2(fd , 1);
 		close(fd);
 		remove_token_from_list(a, k);
 		remove_token_from_list(a, k);
 	}
-	if (a->raw[k].type != '#' && a->raw[k].type != '>')
-		k++;
-	return (k);
 }
 
 void	ft_redirection_in(t_a *a)
@@ -67,7 +66,7 @@ void	ft_redirection_in(t_a *a)
 	ft_putstr_fd("\033[0m", 1);
 	while (a->raw[a->i].type)
 		a->i++;
-	a->i--;
+	//a->i--;
 	g_fantaisie = -25;
 }
 
@@ -100,14 +99,17 @@ void	ft_redirection(t_a *a)
 				ft_redirection_in(a);
 				return ;
 			}
-			fd = open(a->raw[k + 1].str, O_RDONLY, 0644);
-			if (fd <= 0)
+			fd  = open(a->raw[k + 1].str, O_RDONLY, 0644);
+			if (fd  <= 0)
 				ft_redirection_in2(a, k);
-			dup2(fd, 0);
+			dup2(fd , 0);
 			close(fd);
 			remove_token_from_list(a, k);
 			remove_token_from_list(a, k);
 		}
-		k = ft_redirection_out(a, k, fd);
+		else
+			ft_redirection_out(a, k);
+		if (!is_sep_redir(a->raw[k].type, ";|#><"))
+			k++;
 	}
 }

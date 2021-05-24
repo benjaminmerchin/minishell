@@ -129,6 +129,8 @@ void	ft_title(void);
 void	ft_get_keyboard_input(t_a *a);
 void	ft_appendexit(t_a *a);
 void	ft_store_env_in_lst(t_a *a);
+void	ft_newline(t_a *a);
+void	ft_appendbuffer(t_a *a, int k);
 
 //exit et clean
 void	ft_manage_exit_argument(t_a *a);
@@ -158,6 +160,7 @@ void	ft_between_semicolon(t_a *a, int *i);
 void	ft_fd_closing(t_a *a);
 void	ft_backup_stdinandout(t_a *a);
 void    ft_execution_sublevel(t_a *a);
+int		is_sep_redir(char c, char *str);
 
 //benjamin
 void	set_backup_and_exit(t_a *a, char *str);

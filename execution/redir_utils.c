@@ -34,3 +34,17 @@ void	ft_attributefd(t_a *a, int *i, int in_or_out)
 		close(fd);
 	}
 }
+
+int	is_sep_redir(char c, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (c == str[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
