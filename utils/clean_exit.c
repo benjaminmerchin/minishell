@@ -25,7 +25,7 @@ void	ft_cleanstruct(t_a *a)
 	a->line = NULL;
 	a->sep = SEPARATORS;
 	ft_fd_closing(a);
-	if (g_fantaisie >=0)
+	if (g_fantaisie >= 0)
 		g_fantaisie = 1;
 }
 
