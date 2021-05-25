@@ -58,12 +58,12 @@ void	ft_pipe_manager(t_a *a)
 		dup2(fd[0], 0);
 		if (ft_strncmp(a->raw[a->i].str, "exit", 10) == 0)
 			exit(a->dollar_question);
-		waitpid(pid, &status, WUNTRACED);
-		while (!WIFEXITED(status) && !WIFSIGNALED(status))
-			waitpid(pid, &status, WUNTRACED);
 		close(fd[0]);
 		ft_pipe_manager_2(a);
 		dup2(temp, 0);
+		waitpid(pid, &status, WUNTRACED);
+		while (!WIFEXITED(status) && !WIFSIGNALED(status))
+			waitpid(pid, &status, WUNTRACED);
 	}
 	else
 		exit(a->dollar_question);
@@ -87,11 +87,6 @@ void	ft_execution_sublevel(t_a *a)
 
 void	ft_execution(t_a *a)
 {
-	if (a->ending_quote == 0)
-	{
-		ft_putstr_fd("Error: missing ending quote\n", 2);
-		return ;
-	}
 	ft_between_semicolon(a, &a->i);
 	while (a->i < a->len_raw)
 	{
