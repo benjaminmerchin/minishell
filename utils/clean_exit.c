@@ -25,6 +25,8 @@ void	ft_cleanstruct(t_a *a)
 	a->line = NULL;
 	a->sep = SEPARATORS;
 	ft_fd_closing(a);
+	if (g_fantaisie >=0)
+		g_fantaisie = 1;
 }
 
 void	ft_cleantermcaps(t_a *a)

@@ -33,7 +33,7 @@ void	ft_env_2(t_a *a, int *i)
 	a->dollar_question = 1;
 	ft_putstr_fd("env: ", 1);
 	ft_putstr_fd(a->raw[*i + 1].str, 1);
-	ft_putstr_fd(": No such file or directory\n", 1);
+	ft_putstr_fd(": No such file or \n", 1);
 	while (a->raw[*i].str != 0 && a->raw[*i].type != '|' \
 	&& a->raw[*i].type != ';')
 		(*i)++;
