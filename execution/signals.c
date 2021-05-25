@@ -28,7 +28,7 @@ void	ft_exit_from_branch(int useless)
 void	ft_ctrl_antislash_in_function(int useless)
 {
 	(void)useless;
-	g_fantaisie = 127;
+	g_fantaisie = 131;
 	ft_putstr_fd("Quit: 3\n", 1);
 }
 
