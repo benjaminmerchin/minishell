@@ -46,7 +46,7 @@ void	ft_cd(t_a *a, int *i)
 		ft_putstr_fd(MINISHELL_NAME, 1);
 		ft_putstr_fd(": cd: ", 1);
 		ft_putstr_fd(a->raw[*i].str, 1);
-		ft_putstr_fd(": No such file or directory\033\n", 1);
+		ft_putstr_fd(": No such file or directory\033[0m\n", 1);
 		a->dollar_question = 1;
 	}
 	else
