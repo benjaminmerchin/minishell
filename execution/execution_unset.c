@@ -15,16 +15,25 @@
 void	remove_me_if_i_exist(t_a *a, int *i, int ret)
 {
 	t_list	*lst;
+	t_list	*lst_before;
+	int		v_bool_fist_element;
 
+	ret--;
 	lst = a->lst_env;
+	v_bool_fist_element = 1;
 	while (lst)
 	{
 		if (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
 		{
 			free(lst->content);
-			lst->content = ft_strdup(a->raw[*i].str);
+			if (v_bool_fist_element == 1)
+				a->lst_env = a->lst_env->next;
+			else
+				lst_before->next = lst->next;
 			return ;
 		}
+		v_bool_fist_element = 0;
+		lst_before = lst;
 		lst = lst->next;
 	}
 }
