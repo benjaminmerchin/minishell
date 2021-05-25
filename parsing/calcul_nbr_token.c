@@ -69,7 +69,7 @@ int	calcul_k(t_a *a)
 
 	replace_antislash_and_content_by_value(a);
 	calcul_init_backup(a, &i, &k);
-	while (a->line[i])
+	while (a->ending_quote && a->line[i])
 	{
 		calcul_k_2(a, i);
 		if (a->line[i] == ' ' || !is_sep(a->line[i], a))

@@ -33,3 +33,9 @@ void	set_backup_and_exit(t_a *a, char *str)
 	a->line = a->backup;
 	ft_exit_clean(a, str);
 }
+
+void	set_backup_and_missing_ending_line(t_a *a)
+{
+	a->line = a->backup;
+	a->ending_quote = 0;
+}

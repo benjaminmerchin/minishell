@@ -87,6 +87,11 @@ void	ft_execution_sublevel(t_a *a)
 
 void	ft_execution(t_a *a)
 {
+	if (a->ending_quote == 0)
+	{
+		ft_putstr_fd("Error: missing ending quote\n", 2);
+		return ;
+	}
 	ft_between_semicolon(a, &a->i);
 	while (a->i < a->len_raw)
 	{

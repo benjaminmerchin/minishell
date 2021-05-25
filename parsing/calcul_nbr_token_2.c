@@ -19,8 +19,8 @@ void	calcul_k_6(t_a *a, int *i, int *counter)
 	while (a->line[*counter] != '\'' && a->line[*counter] != '\0')
 		(*counter)++;
 	if (a->line[*counter] == '\0')
-		set_backup_and_exit(a, "Error\nEnding quote missing\n");
-	while (*counter > 0)
+		set_backup_and_missing_ending_line(a);
+	while (a->ending_quote && *counter > 0)
 	{
 		(*i)++;
 		(*counter)--;
@@ -38,7 +38,7 @@ void	calcul_k_5(t_a *a, int *i, int *counter)
 		while (a->line[*counter] != '"' && a->line[*counter] != '\0')
 			(*counter)++;
 		if (a->line[*counter] == '\0')
-			set_backup_and_exit(a, "Error\nEnding quote missing\n");
+			set_backup_and_missing_ending_line(a);
 		while (*counter > 0)
 		{
 			(*i)++;

@@ -85,6 +85,7 @@ void	manage_double_greater_than_sign(t_a *a, int *k)
 
 void	malloc_correct_number_of_tokens(t_a *a)
 {
+	a->ending_quote = 1;
 	a->raw = malloc(sizeof(*a->raw) * (1 + calcul_k(a)));
 	if (!a->raw)
 		ft_exit_clean(a, "Error\nMalloc Failed\n");
