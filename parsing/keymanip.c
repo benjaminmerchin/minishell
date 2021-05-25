@@ -50,9 +50,9 @@ void	ft_do_we_jump(t_a *a)
 	i = -1;
 	while (++i < nl)
 		tputs(a->sf, 1, ft_putchar);
-	tputs(tgoto(a->cm, 0, a->current_line - 1), 1, ft_putchar);
+	tputs(tgoto(a->cm, (a->len_head + 2) \
+	% a->column_term, a->current_line - 1), 1, ft_putchar);
 	tputs(a->cd, 1, ft_putchar);
-	ft_title();
 	tputs(a->sc, 1, ft_putchar);
 }
 
