@@ -83,6 +83,7 @@ typedef struct s_a {
 	char			*sep;
 	char			last_sep;
 	int				lock_quote;
+	int				ending_quote;
 
 	int				dollar_question;
 	int				there_is_dollar_question;
@@ -153,6 +154,7 @@ void	ft_redirection_in(t_a *a);
 void	ft_redirection_in2(t_a *a, int k);
 
 void	set_backup_and_exit(t_a *a, char *str);
+void	set_backup_and_missing_ending_line(t_a *a);
 void	ft_execution(t_a *a);
 void	add_env_or_command_not_found(t_a *a, int *i);
 void	fork_wait_execute(t_a *a, int *i);

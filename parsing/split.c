@@ -90,7 +90,7 @@ void	ft_split_sh(t_a *a)
 	malloc_correct_number_of_tokens(a);
 	replace_antislash_and_content_by_value(a);
 	init_split_and_backup(a, &i, &k);
-	while (a->line[i])
+	while (a->ending_quote && a->line[i])
 	{
 		skip_spaces(a, &i, &k);
 		if (a->line[i] == ' ' || !is_sep(a->line[i], a))
