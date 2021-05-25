@@ -47,7 +47,7 @@ void	ft_cd(t_a *a, int *i)
 		ft_putstr_fd(": cd: ", 1);
 		ft_putstr_fd(a->raw[*i].str, 1);
 		ft_putstr_fd(": No such file or directory\033\n", 1);
-		a->dollar_question = 127;
+		a->dollar_question = 1;
 	}
 	else
 		a->dollar_question = 0;
