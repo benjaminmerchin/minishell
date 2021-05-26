@@ -85,7 +85,7 @@ char	*does_this_function_exist(t_a *a, int *i, int j)
 		return (ft_strdup(a->raw[*i].str));
 	path = return_str_from_env(a, "PATH=");
 	temp = ft_split(path, ':');
-	while (temp[j])
+	while (temp && temp[j])
 	{
 		path = triple_strjoin(temp[j], "/", a->raw[*i].str);
 		if (stat(path, &buffer) == 0)
