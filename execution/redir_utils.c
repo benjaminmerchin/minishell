@@ -70,7 +70,7 @@ void	ft_redirection_in2(t_a *a, int k)
 	ft_putstr_fd(MINISHELL_NAME, 1);
 	ft_putstr_fd(" ", 1);
 	ft_putstr_fd(a->raw[k + 1].str, 1);
-	ft_putstr_fd("': No such file or directory\n", 1);
+	ft_putstr_fd(": No such file or directory\n", 1);
 	ft_putstr_fd("\033[0m", 1);
 	g_fantaisie = -25;
 	a->i = k;

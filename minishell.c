@@ -50,14 +50,14 @@ void	ft_get_keyboard_input(t_a *a)
 			ft_putstr_fd("\n", 1);
 			return ;
 		}
-		else if (a->buff[0] == 127)
+		else if (a->buff[0] == 127 || a->buff[0] == 8)
 		{
 			if (ft_strlen(a->h[a->nav]) > 0)
 				a->h[a->nav][ft_strlen(a->h[a->nav]) - 1] = 0;
 		}
 		else if (a->buff[0] == 27 && a->buff[1] == '[')
 			ft_updown(a);
-		else if (a->buff[0] != 4)
+		else if (a->buff[0] > 31 || a->buff[0] < 1)
 			ft_appendbuffer(a, ft_strlen(a->buff));
 		ft_screen(a);
 	}
