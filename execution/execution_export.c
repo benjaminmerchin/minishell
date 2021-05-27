@@ -55,10 +55,13 @@ void	add_me_if_i_do_not_exist_yet(t_a *a, int *i, int ret)
 
 	lst = a->lst_env;
 	found = 0;
+	ret--;
 	while (lst && found == 0)
 	{
 		if (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
 		{
+			if (lst->content[ret] != '\0' && lst->content[ret] != '=')
+				break ;
 			free(lst->content);
 			lst->content = ft_strdup(a->raw[*i].str);
 			found = 1;
