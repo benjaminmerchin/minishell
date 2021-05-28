@@ -44,7 +44,7 @@ void	ft_unset(t_a *a, int *i)
 
 	(*i)++;
 	a->dollar_question = 0;
-	if (a->raw[*i].str != 0 && a->raw[*i].type != '|'
+	while (a->raw[*i].str != 0 && a->raw[*i].type != '|'
 		&& a->raw[*i].type != ';')
 	{
 		ret = ft_verification_content(a->raw[*i].str, a, i);
@@ -52,7 +52,4 @@ void	ft_unset(t_a *a, int *i)
 			remove_me_if_i_exist(a, i, ret);
 		(*i)++;
 	}
-	while (a->raw[*i].str != 0 && a->raw[*i].type
-		!= '|' && a->raw[*i].type != ';')
-		(*i)++;
 }
