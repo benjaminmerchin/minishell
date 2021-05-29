@@ -39,14 +39,6 @@ void	join_before_env_after(t_a *a, int j, int k, char *src)
 	a->raw[j].str = temp;
 }
 
-void	replace_dollar_question(t_a *a, char *temp, int j, int k)
-{
-	temp = ft_itoa(a->dollar_question);
-	a->ret = 2;
-	join_before_env_after(a, j, k - 1, temp);
-	free(temp);
-}
-
 void	replace_me_if_you_find_me(t_a *a, int j, int k)
 {
 	t_list	*lst;
@@ -76,12 +68,23 @@ void	replace_me_if_you_find_me(t_a *a, int j, int k)
 	remove_token_from_content(a, j, k - 1);
 }
 
-void	try_to_replace_token_with_env(t_a *a, int j)
+void	operation_join_remove(t_a *a, int j, int *j_undo)
+{
+	char	*temp;
+
+	temp = ft_strjoin_libft(a->raw[j - 1].str, a->raw[j].str);
+	free(a->raw[j - 1].str);
+	a->raw[j - 1].str = temp;
+	remove_token_from_list(a, j);
+	*j_undo = 1;
+}
+
+void	try_to_replace_token_with_env(t_a *a, int j, int *j_undo)
 {
 	int	k;
 
 	k = 0;
-	while (a->raw[j].str[k])
+	while (a->raw[j].str && a->raw[j].str[k])
 	{
 		if (a->raw[j].str[k] == '$' && a->raw[j].str[k + 1] != '\0')
 		{
@@ -91,8 +94,12 @@ void	try_to_replace_token_with_env(t_a *a, int j)
 				replace_me_if_you_find_me(a, j, k);
 			else
 				remove_token_from_content(a, j, k);
+			if (j > 0 && a->raw[j].type == '"'
+				&& a->raw[j - 1].str[ft_strlen(a->raw[j - 1].str) - 1] == '='
+				&& a->raw[j].space_before == 0)
+				operation_join_remove(a, j, j_undo);
 		}
-		if (a->raw[j].str[k] == '\0')
+		if (a->raw[j].str && a->raw[j].str[k] == '\0')
 			return ;
 		k++;
 	}
@@ -101,12 +108,25 @@ void	try_to_replace_token_with_env(t_a *a, int j)
 void	replace_var_env_until_next_separator(t_a *a, int *i)
 {
 	int	j;
+	int	j_undo;
 
 	j = *i;
 	while (a->raw[j].str != 0 && a->raw[j].type != ';')
 	{
+		j_undo = 0;
 		if (a->raw[j].type != '\'')
-			try_to_replace_token_with_env(a, j);
+			try_to_replace_token_with_env(a, j, &j_undo);
+		if ((a->raw[j].type == '\'' || a->raw[j].type == '"') && j_undo == 0)
+		{
+			if (j > 0 && a->raw[j].space_before == 0
+				&& a->raw[j - 1].str[ft_strlen(a->raw[j - 1].str) - 1] == '=')
+				operation_join_remove(a, j, &j_undo);
+		}
+		if (j_undo == 1)
+		{
+			j_undo = 0;
+			j--;
+		}
 		j++;
 	}
 }

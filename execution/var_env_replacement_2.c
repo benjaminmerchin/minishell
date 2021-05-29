@@ -63,3 +63,11 @@ void	remove_token_from_content(t_a *a, int j, int k)
 	free(a->raw[j].str);
 	a->raw[j].str = temp;
 }
+
+void	replace_dollar_question(t_a *a, char *temp, int j, int k)
+{
+	temp = ft_itoa(a->dollar_question);
+	a->ret = 2;
+	join_before_env_after(a, j, k - 1, temp);
+	free(temp);
+}
