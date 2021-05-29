@@ -23,7 +23,8 @@ void	remove_me_if_i_exist(t_a *a, int *i, int ret)
 	v_bool_fist_element = 1;
 	while (lst)
 	{
-		if (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0)
+		if (ft_strncmp(a->raw[*i].str, lst->content, ret) == 0
+			&& (lst->content[ret] == '=' || lst->content[ret] == '\0'))
 		{
 			free(lst->content);
 			if (v_bool_fist_element == 1)
